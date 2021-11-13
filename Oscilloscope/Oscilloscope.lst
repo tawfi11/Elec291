@@ -1,0 +1,1948 @@
+0000              1   ;--------------------------------------------------------
+0000              2   ; File Created by C51
+0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
+0000              4   ; This file was generated Fri Apr 03 20:32:52 2020
+0000              5   ;--------------------------------------------------------
+                  5   $name Oscilloscope
+                  6   $optc51 --model-small
+0000              8            R_DSEG    segment data
+0000              9            R_CSEG    segment code
+0000             10            R_BSEG    segment bit
+0000             11            R_XSEG    segment xdata
+0000             12            R_PSEG    segment xdata
+0000             13            R_ISEG    segment idata
+0000             14            R_OSEG    segment data overlay
+0000             15            BIT_BANK  segment data overlay
+0000             16            R_HOME    segment code
+0000             17            R_GSINIT  segment code
+0000             18            R_IXSEG   segment xdata
+0000             19            R_CONST   segment code
+0000             20            R_XINIT   segment code
+0000             21            R_DINIT   segment code
+0000             22   
+0000             23   ;--------------------------------------------------------
+0000             24   ; Public variables in this module
+0000             25   ;--------------------------------------------------------
+0000             26            public _InitPinADC_PARM_2
+0000             27            public _Init_Comparator1_PARM_3
+0000             28            public _Init_Comparator1_PARM_2
+0000             29            public _main
+0000             30            public _Capture_Auto
+0000             31            public _Capture_Normal
+0000             32            public _Init_Timer2
+0000             33            public _ADC_at_Pin
+0000             34            public _InitPinADC
+0000             35            public _waitms
+0000             36            public _Timer3us
+0000             37            public _Init_Comparator1
+0000             38            public _InitADC
+0000             39            public __c51_external_startup
+0000             40            public _ADC0_ISR
+0000             41            public _CMP1_ISR
+0000             42            public _toupper
+0000             43            public _adc_scan
+0000             44            public _capture_complete
+0000             45            public _capture_rate
+0000             46            public _putchar
+0000             47            public _getchar
+0000             48   ;--------------------------------------------------------
+0000             49   ; Special Function Registers
+0000             50   ;--------------------------------------------------------
+0000             51   _ACC            DATA 0xe0
+0000             52   _ADC0ASAH       DATA 0xb6
+0000             53   _ADC0ASAL       DATA 0xb5
+0000             54   _ADC0ASCF       DATA 0xa1
+0000             55   _ADC0ASCT       DATA 0xc7
+0000             56   _ADC0CF0        DATA 0xbc
+0000             57   _ADC0CF1        DATA 0xb9
+0000             58   _ADC0CF2        DATA 0xdf
+0000             59   _ADC0CN0        DATA 0xe8
+0000             60   _ADC0CN1        DATA 0xb2
+0000             61   _ADC0CN2        DATA 0xb3
+0000             62   _ADC0GTH        DATA 0xc4
+0000             63   _ADC0GTL        DATA 0xc3
+0000             64   _ADC0H          DATA 0xbe
+0000             65   _ADC0L          DATA 0xbd
+0000             66   _ADC0LTH        DATA 0xc6
+0000             67   _ADC0LTL        DATA 0xc5
+0000             68   _ADC0MX         DATA 0xbb
+0000             69   _B              DATA 0xf0
+0000             70   _CKCON0         DATA 0x8e
+0000             71   _CKCON1         DATA 0xa6
+0000             72   _CLEN0          DATA 0xc6
+0000             73   _CLIE0          DATA 0xc7
+0000             74   _CLIF0          DATA 0xe8
+0000             75   _CLKSEL         DATA 0xa9
+0000             76   _CLOUT0         DATA 0xd1
+0000             77   _CLU0CF         DATA 0xb1
+0000             78   _CLU0FN         DATA 0xaf
+0000             79   _CLU0MX         DATA 0x84
+0000             80   _CLU1CF         DATA 0xb3
+0000             81   _CLU1FN         DATA 0xb2
+0000             82   _CLU1MX         DATA 0x85
+0000             83   _CLU2CF         DATA 0xb6
+0000             84   _CLU2FN         DATA 0xb5
+0000             85   _CLU2MX         DATA 0x91
+0000             86   _CLU3CF         DATA 0xbf
+0000             87   _CLU3FN         DATA 0xbe
+0000             88   _CLU3MX         DATA 0xae
+0000             89   _CMP0CN0        DATA 0x9b
+0000             90   _CMP0CN1        DATA 0x99
+0000             91   _CMP0MD         DATA 0x9d
+0000             92   _CMP0MX         DATA 0x9f
+0000             93   _CMP1CN0        DATA 0xbf
+0000             94   _CMP1CN1        DATA 0xac
+0000             95   _CMP1MD         DATA 0xab
+0000             96   _CMP1MX         DATA 0xaa
+0000             97   _CRC0CN0        DATA 0xce
+0000             98   _CRC0CN1        DATA 0x86
+0000             99   _CRC0CNT        DATA 0xd3
+0000            100   _CRC0DAT        DATA 0xcb
+0000            101   _CRC0FLIP       DATA 0xcf
+0000            102   _CRC0IN         DATA 0xca
+0000            103   _CRC0ST         DATA 0xd2
+0000            104   _DAC0CF0        DATA 0x91
+0000            105   _DAC0CF1        DATA 0x92
+0000            106   _DAC0H          DATA 0x85
+0000            107   _DAC0L          DATA 0x84
+0000            108   _DAC1CF0        DATA 0x93
+0000            109   _DAC1CF1        DATA 0x94
+0000            110   _DAC1H          DATA 0x8a
+0000            111   _DAC1L          DATA 0x89
+0000            112   _DAC2CF0        DATA 0x95
+0000            113   _DAC2CF1        DATA 0x96
+0000            114   _DAC2H          DATA 0x8c
+0000            115   _DAC2L          DATA 0x8b
+0000            116   _DAC3CF0        DATA 0x9a
+0000            117   _DAC3CF1        DATA 0x9c
+0000            118   _DAC3H          DATA 0x8e
+0000            119   _DAC3L          DATA 0x8d
+0000            120   _DACGCF0        DATA 0x88
+0000            121   _DACGCF1        DATA 0x98
+0000            122   _DACGCF2        DATA 0xa2
+0000            123   _DERIVID        DATA 0xad
+0000            124   _DEVICEID       DATA 0xb5
+0000            125   _DPH            DATA 0x83
+0000            126   _DPL            DATA 0x82
+0000            127   _EIE1           DATA 0xe6
+0000            128   _EIE2           DATA 0xf3
+0000            129   _EIP1           DATA 0xbb
+0000            130   _EIP1H          DATA 0xee
+0000            131   _EIP2           DATA 0xed
+0000            132   _EIP2H          DATA 0xf6
+0000            133   _EMI0CN         DATA 0xe7
+0000            134   _FLKEY          DATA 0xb7
+0000            135   _HFO0CAL        DATA 0xc7
+0000            136   _HFO1CAL        DATA 0xd6
+0000            137   _HFOCN          DATA 0xef
+0000            138   _I2C0ADM        DATA 0xff
+0000            139   _I2C0CN0        DATA 0xba
+0000            140   _I2C0DIN        DATA 0xbc
+0000            141   _I2C0DOUT       DATA 0xbb
+0000            142   _I2C0FCN0       DATA 0xad
+0000            143   _I2C0FCN1       DATA 0xab
+0000            144   _I2C0FCT        DATA 0xf5
+0000            145   _I2C0SLAD       DATA 0xbd
+0000            146   _I2C0STAT       DATA 0xb9
+0000            147   _IE             DATA 0xa8
+0000            148   _IP             DATA 0xb8
+0000            149   _IPH            DATA 0xf2
+0000            150   _IT01CF         DATA 0xe4
+0000            151   _LFO0CN         DATA 0xb1
+0000            152   _P0             DATA 0x80
+0000            153   _P0MASK         DATA 0xfe
+0000            154   _P0MAT          DATA 0xfd
+0000            155   _P0MDIN         DATA 0xf1
+0000            156   _P0MDOUT        DATA 0xa4
+0000            157   _P0SKIP         DATA 0xd4
+0000            158   _P1             DATA 0x90
+0000            159   _P1MASK         DATA 0xee
+0000            160   _P1MAT          DATA 0xed
+0000            161   _P1MDIN         DATA 0xf2
+0000            162   _P1MDOUT        DATA 0xa5
+0000            163   _P1SKIP         DATA 0xd5
+0000            164   _P2             DATA 0xa0
+0000            165   _P2MASK         DATA 0xfc
+0000            166   _P2MAT          DATA 0xfb
+0000            167   _P2MDIN         DATA 0xf3
+0000            168   _P2MDOUT        DATA 0xa6
+0000            169   _P2SKIP         DATA 0xcc
+0000            170   _P3             DATA 0xb0
+0000            171   _P3MDIN         DATA 0xf4
+0000            172   _P3MDOUT        DATA 0x9c
+0000            173   _PCA0CENT       DATA 0x9e
+0000            174   _PCA0CLR        DATA 0x9c
+0000            175   _PCA0CN0        DATA 0xd8
+0000            176   _PCA0CPH0       DATA 0xfc
+0000            177   _PCA0CPH1       DATA 0xea
+0000            178   _PCA0CPH2       DATA 0xec
+0000            179   _PCA0CPH3       DATA 0xf5
+0000            180   _PCA0CPH4       DATA 0x85
+0000            181   _PCA0CPH5       DATA 0xde
+0000            182   _PCA0CPL0       DATA 0xfb
+0000            183   _PCA0CPL1       DATA 0xe9
+0000            184   _PCA0CPL2       DATA 0xeb
+0000            185   _PCA0CPL3       DATA 0xf4
+0000            186   _PCA0CPL4       DATA 0x84
+0000            187   _PCA0CPL5       DATA 0xdd
+0000            188   _PCA0CPM0       DATA 0xda
+0000            189   _PCA0CPM1       DATA 0xdb
+0000            190   _PCA0CPM2       DATA 0xdc
+0000            191   _PCA0CPM3       DATA 0xae
+0000            192   _PCA0CPM4       DATA 0xaf
+0000            193   _PCA0CPM5       DATA 0xcc
+0000            194   _PCA0H          DATA 0xfa
+0000            195   _PCA0L          DATA 0xf9
+0000            196   _PCA0MD         DATA 0xd9
+0000            197   _PCA0POL        DATA 0x96
+0000            198   _PCA0PWM        DATA 0xf7
+0000            199   _PCON0          DATA 0x87
+0000            200   _PCON1          DATA 0xcd
+0000            201   _PFE0CN         DATA 0xc1
+0000            202   _PRTDRV         DATA 0xf6
+0000            203   _PSCTL          DATA 0x8f
+0000            204   _PSTAT0         DATA 0xaa
+0000            205   _PSW            DATA 0xd0
+0000            206   _REF0CN         DATA 0xd1
+0000            207   _REG0CN         DATA 0xc9
+0000            208   _REVID          DATA 0xb6
+0000            209   _RSTSRC         DATA 0xef
+0000            210   _SBCON1         DATA 0x94
+0000            211   _SBRLH1         DATA 0x96
+0000            212   _SBRLL1         DATA 0x95
+0000            213   _SBUF           DATA 0x99
+0000            214   _SBUF0          DATA 0x99
+0000            215   _SBUF1          DATA 0x92
+0000            216   _SCON           DATA 0x98
+0000            217   _SCON0          DATA 0x98
+0000            218   _SCON1          DATA 0xc8
+0000            219   _SFRPAGE        DATA 0xa7
+0000            220   _SFRPGCN        DATA 0xbc
+0000            221   _SFRSTACK       DATA 0xd7
+0000            222   _SMB0ADM        DATA 0xd6
+0000            223   _SMB0ADR        DATA 0xd7
+0000            224   _SMB0CF         DATA 0xc1
+0000            225   _SMB0CN0        DATA 0xc0
+0000            226   _SMB0DAT        DATA 0xc2
+0000            227   _SMB0FCN0       DATA 0xc3
+0000            228   _SMB0FCN1       DATA 0xc4
+0000            229   _SMB0FCT        DATA 0xef
+0000            230   _SMB0RXLN       DATA 0xc5
+0000            231   _SMB0TC         DATA 0xac
+0000            232   _SMOD1          DATA 0x93
+0000            233   _SP             DATA 0x81
+0000            234   _SPI0CFG        DATA 0xa1
+0000            235   _SPI0CKR        DATA 0xa2
+0000            236   _SPI0CN0        DATA 0xf8
+0000            237   _SPI0DAT        DATA 0xa3
+0000            238   _SPI0FCN0       DATA 0x9a
+0000            239   _SPI0FCN1       DATA 0x9b
+0000            240   _SPI0FCT        DATA 0xf7
+0000            241   _SPI0PCF        DATA 0xdf
+0000            242   _TCON           DATA 0x88
+0000            243   _TH0            DATA 0x8c
+0000            244   _TH1            DATA 0x8d
+0000            245   _TL0            DATA 0x8a
+0000            246   _TL1            DATA 0x8b
+0000            247   _TMOD           DATA 0x89
+0000            248   _TMR2CN0        DATA 0xc8
+0000            249   _TMR2CN1        DATA 0xfd
+0000            250   _TMR2H          DATA 0xcf
+0000            251   _TMR2L          DATA 0xce
+0000            252   _TMR2RLH        DATA 0xcb
+0000            253   _TMR2RLL        DATA 0xca
+0000            254   _TMR3CN0        DATA 0x91
+0000            255   _TMR3CN1        DATA 0xfe
+0000            256   _TMR3H          DATA 0x95
+0000            257   _TMR3L          DATA 0x94
+0000            258   _TMR3RLH        DATA 0x93
+0000            259   _TMR3RLL        DATA 0x92
+0000            260   _TMR4CN0        DATA 0x98
+0000            261   _TMR4CN1        DATA 0xff
+0000            262   _TMR4H          DATA 0xa5
+0000            263   _TMR4L          DATA 0xa4
+0000            264   _TMR4RLH        DATA 0xa3
+0000            265   _TMR4RLL        DATA 0xa2
+0000            266   _TMR5CN0        DATA 0xc0
+0000            267   _TMR5CN1        DATA 0xf1
+0000            268   _TMR5H          DATA 0xd5
+0000            269   _TMR5L          DATA 0xd4
+0000            270   _TMR5RLH        DATA 0xd3
+0000            271   _TMR5RLL        DATA 0xd2
+0000            272   _UART0PCF       DATA 0xd9
+0000            273   _UART1FCN0      DATA 0x9d
+0000            274   _UART1FCN1      DATA 0xd8
+0000            275   _UART1FCT       DATA 0xfa
+0000            276   _UART1LIN       DATA 0x9e
+0000            277   _UART1PCF       DATA 0xda
+0000            278   _VDM0CN         DATA 0xff
+0000            279   _WDTCN          DATA 0x97
+0000            280   _XBR0           DATA 0xe1
+0000            281   _XBR1           DATA 0xe2
+0000            282   _XBR2           DATA 0xe3
+0000            283   _XOSC0CN        DATA 0x86
+0000            284   _DPTR           DATA 0x8382
+0000            285   _TMR2RL         DATA 0xcbca
+0000            286   _TMR3RL         DATA 0x9392
+0000            287   _TMR4RL         DATA 0xa3a2
+0000            288   _TMR5RL         DATA 0xd3d2
+0000            289   _TMR0           DATA 0x8c8a
+0000            290   _TMR1           DATA 0x8d8b
+0000            291   _TMR2           DATA 0xcfce
+0000            292   _TMR3           DATA 0x9594
+0000            293   _TMR4           DATA 0xa5a4
+0000            294   _TMR5           DATA 0xd5d4
+0000            295   _SBRL1          DATA 0x9695
+0000            296   _PCA0           DATA 0xfaf9
+0000            297   _PCA0CP0        DATA 0xfcfb
+0000            298   _PCA0CP1        DATA 0xeae9
+0000            299   _PCA0CP2        DATA 0xeceb
+0000            300   _PCA0CP3        DATA 0xf5f4
+0000            301   _PCA0CP4        DATA 0x8584
+0000            302   _PCA0CP5        DATA 0xdedd
+0000            303   _ADC0ASA        DATA 0xb6b5
+0000            304   _ADC0GT         DATA 0xc4c3
+0000            305   _ADC0           DATA 0xbebd
+0000            306   _ADC0LT         DATA 0xc6c5
+0000            307   _DAC0           DATA 0x8584
+0000            308   _DAC1           DATA 0x8a89
+0000            309   _DAC2           DATA 0x8c8b
+0000            310   _DAC3           DATA 0x8e8d
+0000            311   ;--------------------------------------------------------
+0000            312   ; special function bits
+0000            313   ;--------------------------------------------------------
+0000            314   _ACC_0          BIT 0xe0
+0000            315   _ACC_1          BIT 0xe1
+0000            316   _ACC_2          BIT 0xe2
+0000            317   _ACC_3          BIT 0xe3
+0000            318   _ACC_4          BIT 0xe4
+0000            319   _ACC_5          BIT 0xe5
+0000            320   _ACC_6          BIT 0xe6
+0000            321   _ACC_7          BIT 0xe7
+0000            322   _TEMPE          BIT 0xe8
+0000            323   _ADGN0          BIT 0xe9
+0000            324   _ADGN1          BIT 0xea
+0000            325   _ADWINT         BIT 0xeb
+0000            326   _ADBUSY         BIT 0xec
+0000            327   _ADINT          BIT 0xed
+0000            328   _IPOEN          BIT 0xee
+0000            329   _ADEN           BIT 0xef
+0000            330   _B_0            BIT 0xf0
+0000            331   _B_1            BIT 0xf1
+0000            332   _B_2            BIT 0xf2
+0000            333   _B_3            BIT 0xf3
+0000            334   _B_4            BIT 0xf4
+0000            335   _B_5            BIT 0xf5
+0000            336   _B_6            BIT 0xf6
+0000            337   _B_7            BIT 0xf7
+0000            338   _C0FIF          BIT 0xe8
+0000            339   _C0RIF          BIT 0xe9
+0000            340   _C1FIF          BIT 0xea
+0000            341   _C1RIF          BIT 0xeb
+0000            342   _C2FIF          BIT 0xec
+0000            343   _C2RIF          BIT 0xed
+0000            344   _C3FIF          BIT 0xee
+0000            345   _C3RIF          BIT 0xef
+0000            346   _D1SRC0         BIT 0x88
+0000            347   _D1SRC1         BIT 0x89
+0000            348   _D1AMEN         BIT 0x8a
+0000            349   _D01REFSL       BIT 0x8b
+0000            350   _D3SRC0         BIT 0x8c
+0000            351   _D3SRC1         BIT 0x8d
+0000            352   _D3AMEN         BIT 0x8e
+0000            353   _D23REFSL       BIT 0x8f
+0000            354   _D0UDIS         BIT 0x98
+0000            355   _D1UDIS         BIT 0x99
+0000            356   _D2UDIS         BIT 0x9a
+0000            357   _D3UDIS         BIT 0x9b
+0000            358   _EX0            BIT 0xa8
+0000            359   _ET0            BIT 0xa9
+0000            360   _EX1            BIT 0xaa
+0000            361   _ET1            BIT 0xab
+0000            362   _ES0            BIT 0xac
+0000            363   _ET2            BIT 0xad
+0000            364   _ESPI0          BIT 0xae
+0000            365   _EA             BIT 0xaf
+0000            366   _PX0            BIT 0xb8
+0000            367   _PT0            BIT 0xb9
+0000            368   _PX1            BIT 0xba
+0000            369   _PT1            BIT 0xbb
+0000            370   _PS0            BIT 0xbc
+0000            371   _PT2            BIT 0xbd
+0000            372   _PSPI0          BIT 0xbe
+0000            373   _P0_0           BIT 0x80
+0000            374   _P0_1           BIT 0x81
+0000            375   _P0_2           BIT 0x82
+0000            376   _P0_3           BIT 0x83
+0000            377   _P0_4           BIT 0x84
+0000            378   _P0_5           BIT 0x85
+0000            379   _P0_6           BIT 0x86
+0000            380   _P0_7           BIT 0x87
+0000            381   _P1_0           BIT 0x90
+0000            382   _P1_1           BIT 0x91
+0000            383   _P1_2           BIT 0x92
+0000            384   _P1_3           BIT 0x93
+0000            385   _P1_4           BIT 0x94
+0000            386   _P1_5           BIT 0x95
+0000            387   _P1_6           BIT 0x96
+0000            388   _P1_7           BIT 0x97
+0000            389   _P2_0           BIT 0xa0
+0000            390   _P2_1           BIT 0xa1
+0000            391   _P2_2           BIT 0xa2
+0000            392   _P2_3           BIT 0xa3
+0000            393   _P2_4           BIT 0xa4
+0000            394   _P2_5           BIT 0xa5
+0000            395   _P2_6           BIT 0xa6
+0000            396   _P3_0           BIT 0xb0
+0000            397   _P3_1           BIT 0xb1
+0000            398   _P3_2           BIT 0xb2
+0000            399   _P3_3           BIT 0xb3
+0000            400   _P3_4           BIT 0xb4
+0000            401   _P3_7           BIT 0xb7
+0000            402   _CCF0           BIT 0xd8
+0000            403   _CCF1           BIT 0xd9
+0000            404   _CCF2           BIT 0xda
+0000            405   _CCF3           BIT 0xdb
+0000            406   _CCF4           BIT 0xdc
+0000            407   _CCF5           BIT 0xdd
+0000            408   _CR             BIT 0xde
+0000            409   _CF             BIT 0xdf
+0000            410   _PARITY         BIT 0xd0
+0000            411   _F1             BIT 0xd1
+0000            412   _OV             BIT 0xd2
+0000            413   _RS0            BIT 0xd3
+0000            414   _RS1            BIT 0xd4
+0000            415   _F0             BIT 0xd5
+0000            416   _AC             BIT 0xd6
+0000            417   _CY             BIT 0xd7
+0000            418   _RI             BIT 0x98
+0000            419   _TI             BIT 0x99
+0000            420   _RB8            BIT 0x9a
+0000            421   _TB8            BIT 0x9b
+0000            422   _REN            BIT 0x9c
+0000            423   _CE             BIT 0x9d
+0000            424   _SMODE          BIT 0x9e
+0000            425   _RI1            BIT 0xc8
+0000            426   _TI1            BIT 0xc9
+0000            427   _RBX1           BIT 0xca
+0000            428   _TBX1           BIT 0xcb
+0000            429   _REN1           BIT 0xcc
+0000            430   _PERR1          BIT 0xcd
+0000            431   _OVR1           BIT 0xce
+0000            432   _SI             BIT 0xc0
+0000            433   _ACK            BIT 0xc1
+0000            434   _ARBLOST        BIT 0xc2
+0000            435   _ACKRQ          BIT 0xc3
+0000            436   _STO            BIT 0xc4
+0000            437   _STA            BIT 0xc5
+0000            438   _TXMODE         BIT 0xc6
+0000            439   _MASTER         BIT 0xc7
+0000            440   _SPIEN          BIT 0xf8
+0000            441   _TXNF           BIT 0xf9
+0000            442   _NSSMD0         BIT 0xfa
+0000            443   _NSSMD1         BIT 0xfb
+0000            444   _RXOVRN         BIT 0xfc
+0000            445   _MODF           BIT 0xfd
+0000            446   _WCOL           BIT 0xfe
+0000            447   _SPIF           BIT 0xff
+0000            448   _IT0            BIT 0x88
+0000            449   _IE0            BIT 0x89
+0000            450   _IT1            BIT 0x8a
+0000            451   _IE1            BIT 0x8b
+0000            452   _TR0            BIT 0x8c
+0000            453   _TF0            BIT 0x8d
+0000            454   _TR1            BIT 0x8e
+0000            455   _TF1            BIT 0x8f
+0000            456   _T2XCLK0        BIT 0xc8
+0000            457   _T2XCLK1        BIT 0xc9
+0000            458   _TR2            BIT 0xca
+0000            459   _T2SPLIT        BIT 0xcb
+0000            460   _TF2CEN         BIT 0xcc
+0000            461   _TF2LEN         BIT 0xcd
+0000            462   _TF2L           BIT 0xce
+0000            463   _TF2H           BIT 0xcf
+0000            464   _T4XCLK0        BIT 0x98
+0000            465   _T4XCLK1        BIT 0x99
+0000            466   _TR4            BIT 0x9a
+0000            467   _T4SPLIT        BIT 0x9b
+0000            468   _TF4CEN         BIT 0x9c
+0000            469   _TF4LEN         BIT 0x9d
+0000            470   _TF4L           BIT 0x9e
+0000            471   _TF4H           BIT 0x9f
+0000            472   _T5XCLK0        BIT 0xc0
+0000            473   _T5XCLK1        BIT 0xc1
+0000            474   _TR5            BIT 0xc2
+0000            475   _T5SPLIT        BIT 0xc3
+0000            476   _TF5CEN         BIT 0xc4
+0000            477   _TF5LEN         BIT 0xc5
+0000            478   _TF5L           BIT 0xc6
+0000            479   _TF5H           BIT 0xc7
+0000            480   _RIE            BIT 0xd8
+0000            481   _RXTO0          BIT 0xd9
+0000            482   _RXTO1          BIT 0xda
+0000            483   _RFRQ           BIT 0xdb
+0000            484   _TIE            BIT 0xdc
+0000            485   _TXHOLD         BIT 0xdd
+0000            486   _TXNF1          BIT 0xde
+0000            487   _TFRQ           BIT 0xdf
+0000            488   ;--------------------------------------------------------
+0000            489   ; overlayable register banks
+0000            490   ;--------------------------------------------------------
+0000            491            rbank0 segment data overlay
+0000            492   ;--------------------------------------------------------
+0000            493   ; internal ram data
+0000            494   ;--------------------------------------------------------
+0000            495            rseg R_DSEG
+0000            496   _capture_rate:
+0000            497            ds 1
+0001            498   _main_j_1_83:
+0001            499            ds 2
+0003            500   _main_prev_trigger_channel_1_83:
+0003            501            ds 1
+0004            502   _main_prev_trigger_slope_1_83:
+0004            503            ds 1
+0005            504   _main_prev_trigger_level_1_83:
+0005            505            ds 1
+0006            506   ;--------------------------------------------------------
+0006            507   ; overlayable items in internal ram 
+0006            508   ;--------------------------------------------------------
+0000            509            rseg    R_OSEG
+0000            510            rseg    R_OSEG
+0000            511            rseg    R_OSEG
+0000            512            rseg    R_OSEG
+0000            513   _Init_Comparator1_PARM_2:
+0000            514            ds 1
+0001            515   _Init_Comparator1_PARM_3:
+0001            516            ds 1
+0002            517            rseg    R_OSEG
+0002            518            rseg    R_OSEG
+0002            519   _InitPinADC_PARM_2:
+0002            520            ds 1
+0003            521            rseg    R_OSEG
+0003            522            rseg    R_OSEG
+0003            523   ;--------------------------------------------------------
+0003            524   ; indirectly addressable internal ram data
+0003            525   ;--------------------------------------------------------
+0000            526            rseg R_ISEG
+0000            527   ;--------------------------------------------------------
+0000            528   ; absolute internal ram data
+0000            529   ;--------------------------------------------------------
+0000            530            DSEG
+0000            531   ;--------------------------------------------------------
+0000            532   ; bit data
+0000            533   ;--------------------------------------------------------
+0000            534            rseg R_BSEG
+0000            535   _capture_complete:
+0000            536            DBIT    1
+0001            537   ;--------------------------------------------------------
+0001            538   ; paged external ram data
+0001            539   ;--------------------------------------------------------
+0000            540            rseg R_PSEG
+0000            541   ;--------------------------------------------------------
+0000            542   ; external ram data
+0000            543   ;--------------------------------------------------------
+0000            544            rseg R_XSEG
+0000            545   _adc_scan:
+0000            546            ds 2048
+0800            547   ;--------------------------------------------------------
+0800            548   ; absolute external ram data
+0800            549   ;--------------------------------------------------------
+0000            550            XSEG
+0000            551   ;--------------------------------------------------------
+0000            552   ; external initialized ram data
+0000            553   ;--------------------------------------------------------
+0000            554            rseg R_IXSEG
+0000            555            rseg R_HOME
+0000            556            rseg R_GSINIT
+0000            557            rseg R_CSEG
+0000            558   ;--------------------------------------------------------
+0000            559   ; Reset entry point and interrupt vectors
+0000            560   ;--------------------------------------------------------
+0000            561            CSEG at 0x0000
+0000 020100     562            ljmp    _crt0
+0053            563            CSEG at 0x0053
+0053 020100     564            ljmp    _ADC0_ISR
+006B            565            CSEG at 0x006b
+006B 020100     566            ljmp    _CMP1_ISR
+006E            567   ;--------------------------------------------------------
+006E            568   ; global & static initialisations
+006E            569   ;--------------------------------------------------------
+0000            570            rseg R_HOME
+0000            571            rseg R_GSINIT
+0000            572            rseg R_GSINIT
+0000            573   ;--------------------------------------------------------
+0000            574   ; data variables initialization
+0000            575   ;--------------------------------------------------------
+0000            576            rseg R_DINIT
+0000            577            ; The linker places a 'ret' at the end of segment R_DINIT.
+0000            578   ;--------------------------------------------------------
+0000            579   ; code
+0000            580   ;--------------------------------------------------------
+0000            581            rseg R_CSEG
+0000            582   ;------------------------------------------------------------
+0000            583   ;Allocation info for local variables in function 'toupper'
+0000            584   ;------------------------------------------------------------
+0000            585   ;c                         Allocated to registers r2 
+0000            586   ;------------------------------------------------------------
+0000            587   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:24: char toupper (unsigned char c)
+0000            588   ;        -----------------------------------------
+0000            589   ;         function toupper
+0000            590   ;        -----------------------------------------
+0000            591   _toupper:
+0000            592            using   0
+0000 AA82       593            mov     r2,dpl
+0002            594   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:26: if((c>='a') && (c<='z'))
+0002 BA61E0     595            cjne    r2,#0x61,L002009?
+0005            596   L002009?:
+0005 4001       597            jc      L002002?
+0007 EA         598            mov     a,r2
+0008 2485       599            add     a,#0xff - 0x7A
+000A 4001       600            jc      L002002?
+000C            601   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:28: return (c-'a'+'A');
+000C 74E0       602            mov     a,#0xE0
+000E 2A         603            add     a,r2
+000F F582       604            mov     dpl,a
+0011            605   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:31: return c;
+0011 22         606            ret
+0012            607   L002002?:
+0012 8A82       608            mov     dpl,r2
+0014 22         609            ret
+0015            610   ;------------------------------------------------------------
+0015            611   ;Allocation info for local variables in function 'putchar'
+0015            612   ;------------------------------------------------------------
+0015            613   ;c                         Allocated to registers r2 
+0015            614   ;------------------------------------------------------------
+0015            615   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:34: void putchar (char c)
+0015            616   ;        -----------------------------------------
+0015            617   ;         function putchar
+0015            618   ;        -----------------------------------------
+0015            619   _putchar:
+0015 AA82       620            mov     r2,dpl
+0017            621   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:36: while (!TI);
+0017            622   L003001?:
+0017            623   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:37: TI=0;
+0017 1099A0     624            jbc     _TI,L003008?
+001A 8001       625            sjmp    L003001?
+001C            626   L003008?:
+001C            627   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:38: SBUF=c;
+001C 8A99       628            mov     _SBUF,r2
+001E 22         629            ret
+001F            630   ;------------------------------------------------------------
+001F            631   ;Allocation info for local variables in function 'getchar'
+001F            632   ;------------------------------------------------------------
+001F            633   ;c                         Allocated to registers 
+001F            634   ;------------------------------------------------------------
+001F            635   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:41: char getchar (void)
+001F            636   ;        -----------------------------------------
+001F            637   ;         function getchar
+001F            638   ;        -----------------------------------------
+001F            639   _getchar:
+001F            640   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:44: while (!RI);
+001F            641   L004001?:
+001F            642   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:45: RI=0;
+001F 109820     643            jbc     _RI,L004008?
+0022 8001       644            sjmp    L004001?
+0024            645   L004008?:
+0024            646   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:46: c=SBUF;
+0024 859982     647            mov     dpl,_SBUF
+0027            648   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:47: return c;
+0027 22         649            ret
+0028            650   ;------------------------------------------------------------
+0028            651   ;Allocation info for local variables in function 'CMP1_ISR'
+0028            652   ;------------------------------------------------------------
+0028            653   ;------------------------------------------------------------
+0028            654   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:50: void CMP1_ISR (void) interrupt INTERRUPT_CMP1
+0028            655   ;        -----------------------------------------
+0028            656   ;         function CMP1_ISR
+0028            657   ;        -----------------------------------------
+0028            658   _CMP1_ISR:
+0028 C0E0       659            push    acc
+002A C002       660            push    ar2
+002C C003       661            push    ar3
+002E C0D0       662            push    psw
+0030 75D000     663            mov     psw,#0x00
+0033            664   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:52: P0_0=1;
+0033 D280       665            setb    _P0_0
+0035            666   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:53: SFRPAGE = 0x00;
+0035 75A700     667            mov     _SFRPAGE,#0x00
+0038            668   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:54: EIE1&=~(1<<6); // ECP1. Comparator 1 (CP1) Interrupt disable.
+0038 53E6BF     669            anl     _EIE1,#0xBF
+003B            670   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:56: SFRPAGE=0x30;
+003B 75A730     671            mov     _SFRPAGE,#0x30
+003E            672   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:59: CMP1CN0&=0b_1100_1111;
+003E 53BFCF     673            anl     _CMP1CN0,#0xCF
+0041            674   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:62: ADC0ASA=((unsigned int)adc_scan)|0x0001;
+0041 7AE0       675            mov     r2,#_adc_scan
+0043 7B15       676            mov     r3,#(_adc_scan >> 8)
+0045 7401       677            mov     a,#0x01
+0047 4A         678            orl     a,r2
+0048 F5B5       679            mov     _ADC0ASA,a
+004A 8BB6       680            mov     (_ADC0ASA >> 8),r3
+004C            681   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:63: ADC0ASCT=0b00111111;
+004C 75C73F     682            mov     _ADC0ASCT,#0x3F
+004F            683   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:65: ADC0MX = QFP32_MUX_P2_1; // First channel to scan
+004F 75BB0E     684            mov     _ADC0MX,#0x0E
+0052            685   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:67: (0x1<<0); // Number of Autoscan Channels (0x0: 1 channel, 0x1: 2 channels, 0x2: 3 channels, 0x3: 4 channels)
+0052 75A101     686            mov     _ADC0ASCF,#0x01
+0055            687   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:69: ADC0ASCF|=(1<<7); // Autoscan Enable.
+0055 43A180     688            orl     _ADC0ASCF,#0x80
+0058            689   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:71: ADC0ASA+=0x80;// Configure the address for the second scan
+0058 7480       690            mov     a,#0x80
+005A 25B5       691            add     a,_ADC0ASA
+005C F5B5       692            mov     _ADC0ASA,a
+005E E4         693            clr     a
+005F 35B6       694            addc    a,(_ADC0ASA >> 8)
+0061 F5B6       695            mov     (_ADC0ASA >> 8),a
+0063            696   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:73: SFRPAGE=0x00;
+0063 75A700     697            mov     _SFRPAGE,#0x00
+0066            698   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:75: ADINT = 0;
+0066 C2ED       699            clr     _ADINT
+0068            700   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:76: TR2=1;
+0068 D2CA       701            setb    _TR2
+006A D0D0       702            pop     psw
+006C D003       703            pop     ar3
+006E D002       704            pop     ar2
+0070 D0E0       705            pop     acc
+0072 32         706            reti
+0073            707   ;        eliminated unneeded push/pop dpl
+0073            708   ;        eliminated unneeded push/pop dph
+0073            709   ;        eliminated unneeded push/pop b
+0073            710   ;------------------------------------------------------------
+0073            711   ;Allocation info for local variables in function 'ADC0_ISR'
+0073            712   ;------------------------------------------------------------
+0073            713   ;------------------------------------------------------------
+0073            714   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:79: void ADC0_ISR (void) interrupt INTERRUPT_ADC0EOC
+0073            715   ;        -----------------------------------------
+0073            716   ;         function ADC0_ISR
+0073            717   ;        -----------------------------------------
+0073            718   _ADC0_ISR:
+0073 C0E0       719            push    acc
+0075 C0D0       720            push    psw
+0077 75D000     721            mov     psw,#0x00
+007A            722   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:81: SFRPAGE=0x30;
+007A 75A730     723            mov     _SFRPAGE,#0x30
+007D            724   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:83: ADINT=0;
+007D C2ED       725            clr     _ADINT
+007F            726   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:84: if((ADC0ASCF&(1<<7))==0) // Last scan?
+007F E5A1       727            mov     a,_ADC0ASCF
+0081 20E7E0     728            jb      acc.7,L006005?
+0084            729   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:86: capture_complete=1;
+0084 D230       730            setb    _capture_complete
+0086            731   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:87: P0_0=0;
+0086 C280       732            clr     _P0_0
+0088 8001       733            sjmp    L006007?
+008A            734   L006005?:
+008A            735   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:91: if(ADC0ASA < ( (0x40*2) * (PAGES-1) ) )
+008A C3         736            clr     c
+008B E5B5       737            mov     a,_ADC0ASA
+008D 9480       738            subb    a,#0x80
+008F E5B6       739            mov     a,(_ADC0ASA >> 8)
+0091 9407       740            subb    a,#0x07
+0093 5001       741            jnc     L006002?
+0095            742   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:93: ADC0ASA+=(0x40*2); // bytes not words
+0095 7480       743            mov     a,#0x80
+0097 25B5       744            add     a,_ADC0ASA
+0099 F5B5       745            mov     _ADC0ASA,a
+009B E4         746            clr     a
+009C 35B6       747            addc    a,(_ADC0ASA >> 8)
+009E F5B6       748            mov     (_ADC0ASA >> 8),a
+00A0 8001       749            sjmp    L006007?
+00A2            750   L006002?:
+00A2            751   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:97: ADC0ASCF&=~(1<<7); // Disable autoscan
+00A2 53A17F     752            anl     _ADC0ASCF,#0x7F
+00A5            753   L006007?:
+00A5 D0D0       754            pop     psw
+00A7 D0E0       755            pop     acc
+00A9 32         756            reti
+00AA            757   ;        eliminated unneeded push/pop dpl
+00AA            758   ;        eliminated unneeded push/pop dph
+00AA            759   ;        eliminated unneeded push/pop b
+00AA            760   ;------------------------------------------------------------
+00AA            761   ;Allocation info for local variables in function '_c51_external_startup'
+00AA            762   ;------------------------------------------------------------
+00AA            763   ;------------------------------------------------------------
+00AA            764   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:102: char _c51_external_startup (void)
+00AA            765   ;        -----------------------------------------
+00AA            766   ;         function _c51_external_startup
+00AA            767   ;        -----------------------------------------
+00AA            768   __c51_external_startup:
+00AA            769   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:105: SFRPAGE = 0x00;
+00AA 75A700     770            mov     _SFRPAGE,#0x00
+00AD            771   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:106: WDTCN = 0xDE; //First key
+00AD 7597DE     772            mov     _WDTCN,#0xDE
+00B0            773   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:107: WDTCN = 0xAD; //Second key
+00B0 7597AD     774            mov     _WDTCN,#0xAD
+00B3            775   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:109: VDM0CN=0x80;       // enable VDD monitor
+00B3 75FF80     776            mov     _VDM0CN,#0x80
+00B6            777   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:110: RSTSRC=0x02|0x04;  // Enable reset on missing clock detector and VDD
+00B6 75EF06     778            mov     _RSTSRC,#0x06
+00B9            779   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:117: SFRPAGE = 0x10;
+00B9 75A710     780            mov     _SFRPAGE,#0x10
+00BC            781   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:118: PFE0CN  = 0x20; // SYSCLK < 75 MHz.
+00BC 75C120     782            mov     _PFE0CN,#0x20
+00BF            783   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:119: SFRPAGE = 0x00;
+00BF 75A700     784            mov     _SFRPAGE,#0x00
+00C2            785   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:140: CLKSEL = 0x00;
+00C2 75A900     786            mov     _CLKSEL,#0x00
+00C5            787   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:141: CLKSEL = 0x00;
+00C5 75A900     788            mov     _CLKSEL,#0x00
+00C8            789   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:142: while ((CLKSEL & 0x80) == 0);
+00C8            790   L007001?:
+00C8 E5A9       791            mov     a,_CLKSEL
+00CA 30E7A0     792            jnb     acc.7,L007001?
+00CD            793   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:143: CLKSEL = 0x03;
+00CD 75A903     794            mov     _CLKSEL,#0x03
+00D0            795   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:144: CLKSEL = 0x03;
+00D0 75A903     796            mov     _CLKSEL,#0x03
+00D3            797   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:145: while ((CLKSEL & 0x80) == 0);
+00D3            798   L007004?:
+00D3 E5A9       799            mov     a,_CLKSEL
+00D5 30E7E0     800            jnb     acc.7,L007004?
+00D8            801   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:150: P0MDOUT |= 0x13; // Enable UART0 TX as push-pull output  WARNING: P0.0, P0.1 set as outputs
+00D8 43A413     802            orl     _P0MDOUT,#0x13
+00DB            803   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:151: XBR0     = 0x01; // Enable UART0 on P0.4(TX) and P0.5(RX)                     
+00DB 75E101     804            mov     _XBR0,#0x01
+00DE            805   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:152: XBR1     = 0X00;
+00DE 75E200     806            mov     _XBR1,#0x00
+00E1            807   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:153: XBR2     = 0x40; // Enable crossbar and weak pull-ups
+00E1 75E340     808            mov     _XBR2,#0x40
+00E4            809   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:159: SCON0 = 0x10;
+00E4 759810     810            mov     _SCON0,#0x10
+00E7            811   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:160: TH1 = 0x100-((SYSCLK/BAUDRATE)/(2L*12L));
+00E7 758DE6     812            mov     _TH1,#0xE6
+00EA            813   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:161: TL1 = TH1;      // Init Timer1
+00EA 858D8B     814            mov     _TL1,_TH1
+00ED            815   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:162: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit auto-reload
+00ED 53890F     816            anl     _TMOD,#0x0F
+00F0            817   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:163: TMOD |=  0x20;                       
+00F0 438920     818            orl     _TMOD,#0x20
+00F3            819   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:164: TR1 = 1; // START Timer1
+00F3 D28E       820            setb    _TR1
+00F5            821   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:165: TI = 1;  // Indicate TX0 ready
+00F5 D299       822            setb    _TI
+00F7            823   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:167: P0_0=0;
+00F7 C280       824            clr     _P0_0
+00F9            825   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:169: return 0;
+00F9 758200     826            mov     dpl,#0x00
+00FC 22         827            ret
+00FD            828   ;------------------------------------------------------------
+00FD            829   ;Allocation info for local variables in function 'InitADC'
+00FD            830   ;------------------------------------------------------------
+00FD            831   ;------------------------------------------------------------
+00FD            832   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:172: void InitADC (void)
+00FD            833   ;        -----------------------------------------
+00FD            834   ;         function InitADC
+00FD            835   ;        -----------------------------------------
+00FD            836   _InitADC:
+00FD            837   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:174: SFRPAGE = 0x00;
+00FD 75A700     838            mov     _SFRPAGE,#0x00
+0100            839   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:175: ADEN=0; // Disable ADC
+0100 C2EF       840            clr     _ADEN
+0102            841   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:180: (0x0 << 0) ; // Accumulate n conversions: 0x0: 1, 0x1:4, 0x2:8, 0x3:16, 0x4:32
+0102 75B200     842            mov     _ADC0CN1,#0x00
+0105            843   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:184: (0x0 << 2); // 0: ADCCLK = SYSCLK. 1: ADCCLK = HFOSC0.
+0105 75BC20     844            mov     _ADC0CF0,#0x20
+0108            845   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:188: (0x01 << 0); // Conversion Tracking Time. Tadtk = ADTK / (Fsarclk)
+0108 75B901     846            mov     _ADC0CF1,#0x01
+010B            847   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:197: (0x0 << 0) ; // TEMPE. 0: Disable the Temperature Sensor. 1: Enable the Temperature Sensor.
+010B 75E800     848            mov     _ADC0CN0,#0x00
+010E            849   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:202: (0x1F << 0); // ADPWR. Power Up Delay Time. Tpwrtime = ((4 * (ADPWR + 1)) + 2) / (Fadcclk)
+010E 75DF3F     850            mov     _ADC0CF2,#0x3F
+0111            851   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:206: (0x2 << 0) ; // ADCM. 0x0: ADBUSY, 0x1: TIMER0, 0x2: TIMER2, 0x3: TIMER3, 0x4: CNVSTR, 0x5: CEX5, 0x6: TIMER4, 0x7: TIMER5, 0x8: CLU0, 0x9: CLU1, 0xA: CLU2, 0xB: CLU3
+0111 75B302     852            mov     _ADC0CN2,#0x02
+0114            853   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:208: ADEN=1; // Enable ADC
+0114 D2EF       854            setb    _ADEN
+0116            855   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:210: EIE1|=(1<<3); // ADC0 Conversion Complete Interrupt Enable
+0116 43E608     856            orl     _EIE1,#0x08
+0119 22         857            ret
+011A            858   ;------------------------------------------------------------
+011A            859   ;Allocation info for local variables in function 'Init_Comparator1'
+011A            860   ;------------------------------------------------------------
+011A            861   ;edge                      Allocated with name '_Init_Comparator1_PARM_2'
+011A            862   ;level                     Allocated with name '_Init_Comparator1_PARM_3'
+011A            863   ;channel                   Allocated to registers r2 
+011A            864   ;------------------------------------------------------------
+011A            865   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:213: void Init_Comparator1 (char channel, char edge, unsigned char level)
+011A            866   ;        -----------------------------------------
+011A            867   ;         function Init_Comparator1
+011A            868   ;        -----------------------------------------
+011A            869   _Init_Comparator1:
+011A AA82       870            mov     r2,dpl
+011C            871   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:215: SFRPAGE = 0x00;
+011C 75A700     872            mov     _SFRPAGE,#0x00
+011F            873   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:216: EIE1&=~(1<<6); // ECP1. Comparator 1 (CP1) Interrupt disable.
+011F 53E6BF     874            anl     _EIE1,#0xBF
+0122            875   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:218: SFRPAGE = 0x30;
+0122 75A730     876            mov     _SFRPAGE,#0x30
+0125            877   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:220: CMP1CN0=0x00; // Disable Comparator 1
+0125 75BF00     878            mov     _CMP1CN0,#0x00
+0128            879   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:225: (((edge=='R')?0x1:0x0)<<5) | // CPRIE. 0x0: rising edge interrupt disabled. 0x1: rising edge interrupt enabled.
+0128 7452       880            mov     a,#0x52
+012A B50020     881            cjne    a,_Init_Comparator1_PARM_2,L009003?
+012D 7B01       882            mov     r3,#0x01
+012F 8001       883            sjmp    L009004?
+0131            884   L009003?:
+0131 7B00       885            mov     r3,#0x00
+0133            886   L009004?:
+0133 EB         887            mov     a,r3
+0134 C4         888            swap    a
+0135 23         889            rl      a
+0136 54E0       890            anl     a,#0xe0
+0138 FB         891            mov     r3,a
+0139 43030C     892            orl     ar3,#0x0C
+013C            893   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:226: (((edge=='F')?0x1:0x0)<<4) | // CPFIE. 0x0: falling edge interrupt disabled. 0x1: falling edge interrupt enabled.
+013C 7446       894            mov     a,#0x46
+013E B500A0     895            cjne    a,_Init_Comparator1_PARM_2,L009005?
+0141 7C01       896            mov     r4,#0x01
+0143 8001       897            sjmp    L009006?
+0145            898   L009005?:
+0145 7C00       899            mov     r4,#0x00
+0147            900   L009006?:
+0147 EC         901            mov     a,r4
+0148 C4         902            swap    a
+0149 54F0       903            anl     a,#0xf0
+014B FC         904            mov     r4,a
+014C 4B         905            orl     a,r3
+014D F5AB       906            mov     _CMP1MD,a
+014F            907   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:232: (((channel=='2')?0x4:0x3)<<0) ; // CMXP. 0x0:P0.7. 0x1:P1.0. 0x2:P2.0. 0x3:P2.1. 0x4:P2.2: 0x5:P2.3. 0x6:P2.4. 0x7:P2.5. 0x8:P2.6. 0xa:1.8. 0xb: VDD.
+014F BA3220     908            cjne    r2,#0x32,L009007?
+0152 7A04       909            mov     r2,#0x04
+0154 8001       910            sjmp    L009008?
+0156            911   L009007?:
+0156 7A03       912            mov     r2,#0x03
+0158            913   L009008?:
+0158 74B0       914            mov     a,#0xB0
+015A 4A         915            orl     a,r2
+015B F5AA       916            mov     _CMP1MX,a
+015D            917   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:236: ((level & 0x3f)<<0) ; // DACLVL. DAC output = CMPREF * (DACLVL / 64)  
+015D 743F       918            mov     a,#0x3F
+015F 55B0       919            anl     a,_Init_Comparator1_PARM_3
+0161 FA         920            mov     r2,a
+0162 8AAC       921            mov     _CMP1CN1,r2
+0164            922   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:239: (0x1<<7); // Enable Comparator 1
+0164 75BF80     923            mov     _CMP1CN0,#0x80
+0167            924   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:241: SFRPAGE = 0x00;
+0167 75A700     925            mov     _SFRPAGE,#0x00
+016A 22         926            ret
+016B            927   ;------------------------------------------------------------
+016B            928   ;Allocation info for local variables in function 'Timer3us'
+016B            929   ;------------------------------------------------------------
+016B            930   ;us                        Allocated to registers r2 
+016B            931   ;i                         Allocated to registers r3 
+016B            932   ;------------------------------------------------------------
+016B            933   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:245: void Timer3us(unsigned char us)
+016B            934   ;        -----------------------------------------
+016B            935   ;         function Timer3us
+016B            936   ;        -----------------------------------------
+016B            937   _Timer3us:
+016B AA82       938            mov     r2,dpl
+016D            939   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:250: CKCON0|=0b_0100_0000;
+016D 438E40     940            orl     _CKCON0,#0x40
+0170            941   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:252: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+0170 7592B8     942            mov     _TMR3RL,#0xB8
+0173 7593FF     943            mov     (_TMR3RL >> 8),#0xFF
+0176            944   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:253: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+0176 859294     945            mov     _TMR3,_TMR3RL
+0179 859395     946            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
+017C            947   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:255: TMR3CN0 = 0x04;                 // Sart Timer3 and clear overflow flag
+017C 759104     948            mov     _TMR3CN0,#0x04
+017F            949   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:256: for (i = 0; i < us; i++)       // Count <us> overflows
+017F 7B00       950            mov     r3,#0x00
+0181            951   L010004?:
+0181 C3         952            clr     c
+0182 EB         953            mov     a,r3
+0183 9A         954            subb    a,r2
+0184 5001       955            jnc     L010007?
+0186            956   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:258: while (!(TMR3CN0 & 0x80));  // Wait for overflow
+0186            957   L010001?:
+0186 E591       958            mov     a,_TMR3CN0
+0188 30E720     959            jnb     acc.7,L010001?
+018B            960   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:259: TMR3CN0 &= ~(0x80);         // Clear overflow indicator
+018B 53917F     961            anl     _TMR3CN0,#0x7F
+018E            962   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:256: for (i = 0; i < us; i++)       // Count <us> overflows
+018E 0B         963            inc     r3
+018F 8001       964            sjmp    L010004?
+0191            965   L010007?:
+0191            966   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:261: TMR3CN0 = 0 ;                   // Stop Timer3 and clear overflow flag
+0191 759100     967            mov     _TMR3CN0,#0x00
+0194 22         968            ret
+0195            969   ;------------------------------------------------------------
+0195            970   ;Allocation info for local variables in function 'waitms'
+0195            971   ;------------------------------------------------------------
+0195            972   ;ms                        Allocated to registers r2 r3 
+0195            973   ;j                         Allocated to registers r4 r5 
+0195            974   ;k                         Allocated to registers r6 
+0195            975   ;------------------------------------------------------------
+0195            976   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:264: void waitms (unsigned int ms)
+0195            977   ;        -----------------------------------------
+0195            978   ;         function waitms
+0195            979   ;        -----------------------------------------
+0195            980   _waitms:
+0195 AA82       981            mov     r2,dpl
+0197 AB83       982            mov     r3,dph
+0199            983   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:268: for(j=0; j<ms; j++)
+0199 7C00       984            mov     r4,#0x00
+019B 7D00       985            mov     r5,#0x00
+019D            986   L011005?:
+019D C3         987            clr     c
+019E EC         988            mov     a,r4
+019F 9A         989            subb    a,r2
+01A0 ED         990            mov     a,r5
+01A1 9B         991            subb    a,r3
+01A2 5001       992            jnc     L011009?
+01A4            993   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:269: for (k=0; k<4; k++) Timer3us(250);
+01A4 7E00       994            mov     r6,#0x00
+01A6            995   L011001?:
+01A6 BE0468     996            cjne    r6,#0x04,L011018?
+01A9            997   L011018?:
+01A9 5001       998            jnc     L011007?
+01AB 7582FA     999            mov     dpl,#0xFA
+01AE C002      1000            push    ar2
+01B0 C003      1001            push    ar3
+01B2 C004      1002            push    ar4
+01B4 C005      1003            push    ar5
+01B6 C006      1004            push    ar6
+01B8 120100    1005            lcall   _Timer3us
+01BB D006      1006            pop     ar6
+01BD D005      1007            pop     ar5
+01BF D004      1008            pop     ar4
+01C1 D003      1009            pop     ar3
+01C3 D002      1010            pop     ar2
+01C5 0E        1011            inc     r6
+01C6 8001      1012            sjmp    L011001?
+01C8           1013   L011007?:
+01C8           1014   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:268: for(j=0; j<ms; j++)
+01C8 0C        1015            inc     r4
+01C9 BC00A0    1016            cjne    r4,#0x00,L011005?
+01CC 0D        1017            inc     r5
+01CD 8001      1018            sjmp    L011005?
+01CF           1019   L011009?:
+01CF 22        1020            ret
+01D0           1021   ;------------------------------------------------------------
+01D0           1022   ;Allocation info for local variables in function 'InitPinADC'
+01D0           1023   ;------------------------------------------------------------
+01D0           1024   ;pin_num                   Allocated with name '_InitPinADC_PARM_2'
+01D0           1025   ;portno                    Allocated to registers r2 
+01D0           1026   ;mask                      Allocated to registers r3 
+01D0           1027   ;------------------------------------------------------------
+01D0           1028   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:272: void InitPinADC (unsigned char portno, unsigned char pin_num)
+01D0           1029   ;        -----------------------------------------
+01D0           1030   ;         function InitPinADC
+01D0           1031   ;        -----------------------------------------
+01D0           1032   _InitPinADC:
+01D0 AA82      1033            mov     r2,dpl
+01D2           1034   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:276: mask=1<<pin_num;
+01D2 8560F0    1035            mov     b,_InitPinADC_PARM_2
+01D5 05F0      1036            inc     b
+01D7 7401      1037            mov     a,#0x01
+01D9 8001      1038            sjmp    L012013?
+01DB           1039   L012011?:
+01DB 25E0      1040            add     a,acc
+01DD           1041   L012013?:
+01DD D5F068    1042            djnz    b,L012011?
+01E0 FB        1043            mov     r3,a
+01E1           1044   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:278: SFRPAGE = 0x20;
+01E1 75A720    1045            mov     _SFRPAGE,#0x20
+01E4           1046   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:279: switch (portno)
+01E4 BA00A8    1047            cjne    r2,#0x00,L012014?
+01E7 8001      1048            sjmp    L012001?
+01E9           1049   L012014?:
+01E9 BA0128    1050            cjne    r2,#0x01,L012015?
+01EC 8001      1051            sjmp    L012002?
+01EE           1052   L012015?:
+01EE           1053   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:281: case 0:
+01EE BA02A8    1054            cjne    r2,#0x02,L012005?
+01F1 8001      1055            sjmp    L012003?
+01F3           1056   L012001?:
+01F3           1057   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:282: P0MDIN &= (~mask); // Set pin as analog input
+01F3 EB        1058            mov     a,r3
+01F4 F4        1059            cpl     a
+01F5 FA        1060            mov     r2,a
+01F6 52F1      1061            anl     _P0MDIN,a
+01F8           1062   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:283: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+01F8 EB        1063            mov     a,r3
+01F9 42D4      1064            orl     _P0SKIP,a
+01FB           1065   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:284: break;
+01FB           1066   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:285: case 1:
+01FB 8001      1067            sjmp    L012005?
+01FD           1068   L012002?:
+01FD           1069   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:286: P1MDIN &= (~mask); // Set pin as analog input
+01FD EB        1070            mov     a,r3
+01FE F4        1071            cpl     a
+01FF FA        1072            mov     r2,a
+0200 52F2      1073            anl     _P1MDIN,a
+0202           1074   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:287: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+0202 EB        1075            mov     a,r3
+0203 42D5      1076            orl     _P1SKIP,a
+0205           1077   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:288: break;
+0205           1078   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:289: case 2:
+0205 8001      1079            sjmp    L012005?
+0207           1080   L012003?:
+0207           1081   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:290: P2MDIN &= (~mask); // Set pin as analog input
+0207 EB        1082            mov     a,r3
+0208 F4        1083            cpl     a
+0209 FA        1084            mov     r2,a
+020A 52F3      1085            anl     _P2MDIN,a
+020C           1086   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:291: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+020C EB        1087            mov     a,r3
+020D 42CC      1088            orl     _P2SKIP,a
+020F           1089   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:295: }
+020F           1090   L012005?:
+020F           1091   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:296: SFRPAGE = 0x00;
+020F 75A700    1092            mov     _SFRPAGE,#0x00
+0212 22        1093            ret
+0213           1094   ;------------------------------------------------------------
+0213           1095   ;Allocation info for local variables in function 'ADC_at_Pin'
+0213           1096   ;------------------------------------------------------------
+0213           1097   ;pin                       Allocated to registers 
+0213           1098   ;------------------------------------------------------------
+0213           1099   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:299: unsigned int ADC_at_Pin(unsigned char pin)
+0213           1100   ;        -----------------------------------------
+0213           1101   ;         function ADC_at_Pin
+0213           1102   ;        -----------------------------------------
+0213           1103   _ADC_at_Pin:
+0213 8582BB    1104            mov     _ADC0MX,dpl
+0216           1105   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:302: ADINT = 0;
+0216 C2ED      1106            clr     _ADINT
+0218           1107   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:303: ADBUSY = 1;     // Convert voltage at the pin
+0218 D2EC      1108            setb    _ADBUSY
+021A           1109   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:304: while (!ADINT); // Wait for conversion to complete
+021A           1110   L013001?:
+021A 30ED28    1111            jnb     _ADINT,L013001?
+021D           1112   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:305: return (ADC0);
+021D 85BD82    1113            mov     dpl,_ADC0
+0220 85BE83    1114            mov     dph,(_ADC0 >> 8)
+0223 22        1115            ret
+0224           1116   ;------------------------------------------------------------
+0224           1117   ;Allocation info for local variables in function 'Init_Timer2'
+0224           1118   ;------------------------------------------------------------
+0224           1119   ;rate                      Allocated to registers r2 r3 r4 r5 
+0224           1120   ;------------------------------------------------------------
+0224           1121   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:308: void Init_Timer2 (unsigned long rate)
+0224           1122   ;        -----------------------------------------
+0224           1123   ;         function Init_Timer2
+0224           1124   ;        -----------------------------------------
+0224           1125   _Init_Timer2:
+0224 AA82      1126            mov     r2,dpl
+0226 AB83      1127            mov     r3,dph
+0228 ACF0      1128            mov     r4,b
+022A FD        1129            mov     r5,a
+022B           1130   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:310: SFRPAGE = 0x00;
+022B 75A700    1131            mov     _SFRPAGE,#0x00
+022E           1132   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:311: TMR2CN0=0x00;   // Stop Timer2; Clear TF2;
+022E 75C800    1133            mov     _TMR2CN0,#0x00
+0231           1134   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:312: CKCON0|=0b_0001_0000; // Timer 2 uses the system clock
+0231 438E10    1135            orl     _CKCON0,#0x10
+0234           1136   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:313: TMR2RL=(0x10000L-(SYSCLK/rate)); // Initialize reload value
+0234 8A00      1137            mov     __divulong_PARM_2,r2
+0236 8B01      1138            mov     (__divulong_PARM_2 + 1),r3
+0238 8C02      1139            mov     (__divulong_PARM_2 + 2),r4
+023A 8D03      1140            mov     (__divulong_PARM_2 + 3),r5
+023C 90A200    1141            mov     dptr,#0xA200
+023F 75F04A    1142            mov     b,#0x4A
+0242 7404      1143            mov     a,#0x04
+0244 120100    1144            lcall   __divulong
+0247 AA82      1145            mov     r2,dpl
+0249 AB83      1146            mov     r3,dph
+024B ACF0      1147            mov     r4,b
+024D FD        1148            mov     r5,a
+024E E4        1149            clr     a
+024F C3        1150            clr     c
+0250 9A        1151            subb    a,r2
+0251 FA        1152            mov     r2,a
+0252 E4        1153            clr     a
+0253 9B        1154            subb    a,r3
+0254 FB        1155            mov     r3,a
+0255 7401      1156            mov     a,#0x01
+0257 9C        1157            subb    a,r4
+0258 E4        1158            clr     a
+0259 9D        1159            subb    a,r5
+025A 8ACA      1160            mov     _TMR2RL,r2
+025C 8BCB      1161            mov     (_TMR2RL >> 8),r3
+025E           1162   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:314: TMR2=0xffff;   // Set to reload immediately
+025E 75CEFF    1163            mov     _TMR2,#0xFF
+0261 75CFFF    1164            mov     (_TMR2 >> 8),#0xFF
+0264 22        1165            ret
+0265           1166   ;------------------------------------------------------------
+0265           1167   ;Allocation info for local variables in function 'Capture_Normal'
+0265           1168   ;------------------------------------------------------------
+0265           1169   ;uscount                   Allocated to registers r6 r7 r0 r1 
+0265           1170   ;timeout                   Allocated to registers r2 r3 r4 r5 
+0265           1171   ;------------------------------------------------------------
+0265           1172   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:318: void Capture_Normal (void)
+0265           1173   ;        -----------------------------------------
+0265           1174   ;         function Capture_Normal
+0265           1175   ;        -----------------------------------------
+0265           1176   _Capture_Normal:
+0265           1177   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:323: switch(capture_rate)
+0265 AA70      1178            mov     r2,_capture_rate
+0267 C3        1179            clr     c
+0268 EA        1180            mov     a,r2
+0269 6480      1181            xrl     a,#0x80
+026B 94B0      1182            subb    a,#0xb0
+026D 5001      1183            jnc     L015029?
+026F 020100    1184            ljmp    L015011?
+0272           1185   L015029?:
+0272 C3        1186            clr     c
+0273 74B9      1187            mov     a,#(0x39 ^ 0x80)
+0275 8AF0      1188            mov     b,r2
+0277 63F080    1189            xrl     b,#0x80
+027A 95F0      1190            subb    a,b
+027C 5001      1191            jnc     L015030?
+027E 020100    1192            ljmp    L015011?
+0281           1193   L015030?:
+0281 EA        1194            mov     a,r2
+0282 24D0      1195            add     a,#0xd0
+0284 FA        1196            mov     r2,a
+0285 25E0      1197            add     a,acc
+0287 2A        1198            add     a,r2
+0288 90C4B8    1199            mov     dptr,#L015031?
+028B 73        1200            jmp     @a+dptr
+028C           1201   L015031?:
+028C 020100    1202            ljmp    L015001?
+028F 020100    1203            ljmp    L015002?
+0292 020100    1204            ljmp    L015003?
+0295 020100    1205            ljmp    L015004?
+0298 020100    1206            ljmp    L015005?
+029B 020100    1207            ljmp    L015006?
+029E 020100    1208            ljmp    L015007?
+02A1 020100    1209            ljmp    L015008?
+02A4 020100    1210            ljmp    L015009?
+02A7 020100    1211            ljmp    L015010?
+02AA           1212   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:325: case '0': timeout=10000L*1L;   break;
+02AA           1213   L015001?:
+02AA 7A10      1214            mov     r2,#0x10
+02AC 7B27      1215            mov     r3,#0x27
+02AE 7C00      1216            mov     r4,#0x00
+02B0 7D00      1217            mov     r5,#0x00
+02B2           1218   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:326: case '1': timeout=10000L*2L;   break;
+02B2 8001      1219            sjmp    L015012?
+02B4           1220   L015002?:
+02B4 7A20      1221            mov     r2,#0x20
+02B6 7B4E      1222            mov     r3,#0x4E
+02B8 7C00      1223            mov     r4,#0x00
+02BA 7D00      1224            mov     r5,#0x00
+02BC           1225   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:327: case '2': timeout=10000L*4L;   break;
+02BC 8001      1226            sjmp    L015012?
+02BE           1227   L015003?:
+02BE 7A40      1228            mov     r2,#0x40
+02C0 7B9C      1229            mov     r3,#0x9C
+02C2 7C00      1230            mov     r4,#0x00
+02C4 7D00      1231            mov     r5,#0x00
+02C6           1232   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:328: case '3': timeout=10000L*8L;   break;
+02C6 8001      1233            sjmp    L015012?
+02C8           1234   L015004?:
+02C8 7A80      1235            mov     r2,#0x80
+02CA 7B38      1236            mov     r3,#0x38
+02CC 7C01      1237            mov     r4,#0x01
+02CE 7D00      1238            mov     r5,#0x00
+02D0           1239   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:329: case '4': timeout=10000L*16L;  break;
+02D0 8001      1240            sjmp    L015012?
+02D2           1241   L015005?:
+02D2 7A00      1242            mov     r2,#0x00
+02D4 7B71      1243            mov     r3,#0x71
+02D6 7C02      1244            mov     r4,#0x02
+02D8 7D00      1245            mov     r5,#0x00
+02DA           1246   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:330: case '5': timeout=10000L*32L;  break;
+02DA 8001      1247            sjmp    L015012?
+02DC           1248   L015006?:
+02DC 7A00      1249            mov     r2,#0x00
+02DE 7BE2      1250            mov     r3,#0xE2
+02E0 7C04      1251            mov     r4,#0x04
+02E2 7D00      1252            mov     r5,#0x00
+02E4           1253   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:331: case '6': timeout=10000L*64L;  break;
+02E4 8001      1254            sjmp    L015012?
+02E6           1255   L015007?:
+02E6 7A00      1256            mov     r2,#0x00
+02E8 7BC4      1257            mov     r3,#0xC4
+02EA 7C09      1258            mov     r4,#0x09
+02EC 7D00      1259            mov     r5,#0x00
+02EE           1260   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:332: case '7': timeout=10000L*128L; break;
+02EE 8001      1261            sjmp    L015012?
+02F0           1262   L015008?:
+02F0 7A00      1263            mov     r2,#0x00
+02F2 7B88      1264            mov     r3,#0x88
+02F4 7C13      1265            mov     r4,#0x13
+02F6 7D00      1266            mov     r5,#0x00
+02F8           1267   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:333: case '8': timeout=10000L*256L; break;
+02F8 8001      1268            sjmp    L015012?
+02FA           1269   L015009?:
+02FA 7A00      1270            mov     r2,#0x00
+02FC 7B10      1271            mov     r3,#0x10
+02FE 7C27      1272            mov     r4,#0x27
+0300 7D00      1273            mov     r5,#0x00
+0302           1274   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:334: case '9': timeout=10000L*512L; break;
+0302 8001      1275            sjmp    L015012?
+0304           1276   L015010?:
+0304 7A00      1277            mov     r2,#0x00
+0306 7B20      1278            mov     r3,#0x20
+0308 7C4E      1279            mov     r4,#0x4E
+030A 7D00      1280            mov     r5,#0x00
+030C           1281   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:335: default:  timeout=10000L*1L;   break;
+030C 8001      1282            sjmp    L015012?
+030E           1283   L015011?:
+030E 7A10      1284            mov     r2,#0x10
+0310 7B27      1285            mov     r3,#0x27
+0312 7C00      1286            mov     r4,#0x00
+0314 7D00      1287            mov     r5,#0x00
+0316           1288   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:336: }
+0316           1289   L015012?:
+0316           1290   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:338: capture_complete=0;
+0316 C230      1291            clr     _capture_complete
+0318           1292   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:339: SFRPAGE=0x30;
+0318 75A730    1293            mov     _SFRPAGE,#0x30
+031B           1294   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:340: CMP1CN0&=0b_1100_1111; // Clear any pending comparator interrupts
+031B 53BFCF    1295            anl     _CMP1CN0,#0xCF
+031E           1296   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:341: SFRPAGE=0x00;
+031E 75A700    1297            mov     _SFRPAGE,#0x00
+0321           1298   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:342: EIE1|=(1<<6); // ECP1. Comparator 1 (CP1) Interrupt Enable.
+0321 43E640    1299            orl     _EIE1,#0x40
+0324           1300   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:344: CKCON0|=0b_0100_0000;// The input for Timer 3 is selected as SYSCLK by setting T3ML (bit 6) of CKCON0.
+0324 438E40    1301            orl     _CKCON0,#0x40
+0327           1302   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:345: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+0327 7592B8    1303            mov     _TMR3RL,#0xB8
+032A 7593FF    1304            mov     (_TMR3RL >> 8),#0xFF
+032D           1305   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:346: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+032D 859294    1306            mov     _TMR3,_TMR3RL
+0330 859395    1307            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
+0333           1308   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:347: TMR3CN0 = 0x04;                 // Sart Timer3 and clear overflow flag
+0333 759104    1309            mov     _TMR3CN0,#0x04
+0336           1310   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:349: while (!capture_complete) // Wait for conversion to complete
+0336 7E00      1311            mov     r6,#0x00
+0338 7F00      1312            mov     r7,#0x00
+033A 7800      1313            mov     r0,#0x00
+033C 7900      1314            mov     r1,#0x00
+033E           1315   L015018?:
+033E 2030F8    1316            jb      _capture_complete,L015020?
+0341           1317   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:351: while (!(TMR3CN0 & 0x80));  // Wait for overflow
+0341           1318   L015013?:
+0341 E591      1319            mov     a,_TMR3CN0
+0343 30E738    1320            jnb     acc.7,L015013?
+0346           1321   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:352: TMR3CN0 &= ~(0x80);         // Clear overflow indicator
+0346 53917F    1322            anl     _TMR3CN0,#0x7F
+0349           1323   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:353: uscount++;
+0349 0E        1324            inc     r6
+034A BE0078    1325            cjne    r6,#0x00,L015034?
+034D 0F        1326            inc     r7
+034E BF0078    1327            cjne    r7,#0x00,L015034?
+0351 08        1328            inc     r0
+0352 B80078    1329            cjne    r0,#0x00,L015034?
+0355 09        1330            inc     r1
+0356           1331   L015034?:
+0356           1332   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:354: if(uscount==timeout) break;   // WARNING: This time must be considered carefully
+0356 EE        1333            mov     a,r6
+0357 B502B8    1334            cjne    a,ar2,L015018?
+035A EF        1335            mov     a,r7
+035B B503B8    1336            cjne    a,ar3,L015018?
+035E E8        1337            mov     a,r0
+035F B504B8    1338            cjne    a,ar4,L015018?
+0362 E9        1339            mov     a,r1
+0363 B505B8    1340            cjne    a,ar5,L015018?
+0366           1341   L015020?:
+0366           1342   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:356: TMR3CN0 = 0 ;                   // Stop Timer3 and clear overflow flag
+0366 759100    1343            mov     _TMR3CN0,#0x00
+0369           1344   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:357: TR2=0;         
+0369 C2CA      1345            clr     _TR2
+036B 22        1346            ret
+036C           1347   ;------------------------------------------------------------
+036C           1348   ;Allocation info for local variables in function 'Capture_Auto'
+036C           1349   ;------------------------------------------------------------
+036C           1350   ;------------------------------------------------------------
+036C           1351   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:361: void Capture_Auto (void)
+036C           1352   ;        -----------------------------------------
+036C           1353   ;         function Capture_Auto
+036C           1354   ;        -----------------------------------------
+036C           1355   _Capture_Auto:
+036C           1356   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:363: Capture_Normal();
+036C 120100    1357            lcall   _Capture_Normal
+036F           1358   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:365: if(!capture_complete) // Timed out with no trigger, so in auto mode force a scan
+036F 2030B8    1359            jb      _capture_complete,L016006?
+0372           1360   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:367: SFRPAGE = 0x00;
+0372 75A700    1361            mov     _SFRPAGE,#0x00
+0375           1362   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:368: EIE1&=~(1<<6); // ECP1. Comparator 1 (CP1) Interrupt disable.
+0375 53E6BF    1363            anl     _EIE1,#0xBF
+0378           1364   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:370: SFRPAGE=0x30;
+0378 75A730    1365            mov     _SFRPAGE,#0x30
+037B           1366   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:372: CMP1CN0&=0b_1100_1111;// Clear both rising and falling interrupt flags
+037B 53BFCF    1367            anl     _CMP1CN0,#0xCF
+037E           1368   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:375: ADC0ASA=((unsigned int)adc_scan)|0x0001;
+037E 7AE0      1369            mov     r2,#_adc_scan
+0380 7B15      1370            mov     r3,#(_adc_scan >> 8)
+0382 7401      1371            mov     a,#0x01
+0384 4A        1372            orl     a,r2
+0385 F5B5      1373            mov     _ADC0ASA,a
+0387 8BB6      1374            mov     (_ADC0ASA >> 8),r3
+0389           1375   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:376: ADC0ASCT=0b00111111;
+0389 75C73F    1376            mov     _ADC0ASCT,#0x3F
+038C           1377   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:378: ADC0MX = QFP32_MUX_P2_1; // First channel to scan
+038C 75BB0E    1378            mov     _ADC0MX,#0x0E
+038F           1379   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:380: (0x1<<0); // Number of Autoscan Channels (0x0: 1 channel, 0x1: 2 channels, 0x2: 3 channels, 0x3: 4 channels)
+038F 75A101    1380            mov     _ADC0ASCF,#0x01
+0392           1381   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:382: ADC0ASCF|=(1<<7); // Autoscan Enable.
+0392 43A180    1382            orl     _ADC0ASCF,#0x80
+0395           1383   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:384: ADC0ASA+=0x80;// Configure the address for the second scan
+0395 7480      1384            mov     a,#0x80
+0397 25B5      1385            add     a,_ADC0ASA
+0399 F5B5      1386            mov     _ADC0ASA,a
+039B E4        1387            clr     a
+039C 35B6      1388            addc    a,(_ADC0ASA >> 8)
+039E F5B6      1389            mov     (_ADC0ASA >> 8),a
+03A0           1390   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:386: SFRPAGE=0x00;
+03A0 75A700    1391            mov     _SFRPAGE,#0x00
+03A3           1392   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:388: ADINT = 0;
+03A3 C2ED      1393            clr     _ADINT
+03A5           1394   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:389: TR2=1;
+03A5 D2CA      1395            setb    _TR2
+03A7           1396   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:391: while (!capture_complete);
+03A7           1397   L016001?:
+03A7 3030F8    1398            jnb     _capture_complete,L016001?
+03AA           1399   L016006?:
+03AA 22        1400            ret
+03AB           1401   ;------------------------------------------------------------
+03AB           1402   ;Allocation info for local variables in function 'main'
+03AB           1403   ;------------------------------------------------------------
+03AB           1404   ;j                         Allocated with name '_main_j_1_83'
+03AB           1405   ;c                         Allocated to registers r5 
+03AB           1406   ;trigger_channel           Allocated to registers r6 
+03AB           1407   ;trigger_slope             Allocated to registers r7 
+03AB           1408   ;trigger_level             Allocated to registers r0 
+03AB           1409   ;prev_trigger_channel      Allocated with name '_main_prev_trigger_channel_1_83'
+03AB           1410   ;prev_trigger_slope        Allocated with name '_main_prev_trigger_slope_1_83'
+03AB           1411   ;prev_trigger_level        Allocated with name '_main_prev_trigger_level_1_83'
+03AB           1412   ;d                         Allocated to registers r2 
+03AB           1413   ;------------------------------------------------------------
+03AB           1414   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:395: void main (void)
+03AB           1415   ;        -----------------------------------------
+03AB           1416   ;         function main
+03AB           1417   ;        -----------------------------------------
+03AB           1418   _main:
+03AB           1419   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:402: InitPinADC(2, 1); // Configure P2.1 as analog input
+03AB 756001    1420            mov     _InitPinADC_PARM_2,#0x01
+03AE 758202    1421            mov     dpl,#0x02
+03B1 120100    1422            lcall   _InitPinADC
+03B4           1423   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:403: InitPinADC(2, 2); // Configure P2.2 as analog input
+03B4 756002    1424            mov     _InitPinADC_PARM_2,#0x02
+03B7 758202    1425            mov     dpl,#0x02
+03BA 120100    1426            lcall   _InitPinADC
+03BD           1427   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:404: InitADC();
+03BD 120100    1428            lcall   _InitADC
+03C0           1429   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:405: Init_Timer2(1000000L); // Sampling rate.  Fastest possible is 1us.
+03C0 904240    1430            mov     dptr,#0x4240
+03C3 75F00F    1431            mov     b,#0x0F
+03C6 E4        1432            clr     a
+03C7 120100    1433            lcall   _Init_Timer2
+03CA           1434   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:406: capture_rate='0';
+03CA 757030    1435            mov     _capture_rate,#0x30
+03CD           1436   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:408: trigger_channel=prev_trigger_channel='1';
+03CD 758031    1437            mov     _main_prev_trigger_channel_1_83,#0x31
+03D0           1438   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:409: trigger_slope=prev_trigger_slope='F';
+03D0 75D046    1439            mov     _main_prev_trigger_slope_1_83,#0x46
+03D3           1440   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:410: trigger_level=prev_trigger_level=0x3f/3;
+03D3 752015    1441            mov     _main_prev_trigger_level_1_83,#0x15
+03D6           1442   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:411: Init_Comparator1(trigger_channel, trigger_slope, trigger_level); // Trigger: Channel 1, falling edge, VDD/3
+03D6 750046    1443            mov     _Init_Comparator1_PARM_2,#0x46
+03D9 75B015    1444            mov     _Init_Comparator1_PARM_3,#0x15
+03DC 758231    1445            mov     dpl,#0x31
+03DF 120100    1446            lcall   _Init_Comparator1
+03E2           1447   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:413: EA=1;
+03E2 D2AF      1448            setb    _EA
+03E4           1449   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:415: while(1)
+03E4           1450   L017038?:
+03E4           1451   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:417: c=toupper(getchar());
+03E4 120100    1452            lcall   _getchar
+03E7 120100    1453            lcall   _toupper
+03EA AD82      1454            mov     r5,dpl
+03EC           1455   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:418: if(c=='A') // Auto mode
+03EC BD4178    1456            cjne    r5,#0x41,L017069?
+03EF 8001      1457            sjmp    L017070?
+03F1           1458   L017069?:
+03F1 020100    1459            ljmp    L017035?
+03F4           1460   L017070?:
+03F4           1461   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:420: trigger_channel=getchar();
+03F4 120100    1462            lcall   _getchar
+03F7 AE82      1463            mov     r6,dpl
+03F9           1464   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:421: trigger_slope=toupper(getchar());
+03F9 C006      1465            push    ar6
+03FB 120100    1466            lcall   _getchar
+03FE 120100    1467            lcall   _toupper
+0401 AF82      1468            mov     r7,dpl
+0403           1469   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:422: trigger_level=getchar();       
+0403 C007      1470            push    ar7
+0405 120100    1471            lcall   _getchar
+0408 A882      1472            mov     r0,dpl
+040A D007      1473            pop     ar7
+040C D006      1474            pop     ar6
+040E           1475   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:424: if ( (trigger_channel!=prev_trigger_channel) || (trigger_slope!=prev_trigger_slope) || (trigger_level!=prev_trigger_level) )
+040E EE        1476            mov     a,r6
+040F B58038    1477            cjne    a,_main_prev_trigger_channel_1_83,L017001?
+0412 EF        1478            mov     a,r7
+0413 B5D038    1479            cjne    a,_main_prev_trigger_slope_1_83,L017001?
+0416 E8        1480            mov     a,r0
+0417 B52078    1481            cjne    a,_main_prev_trigger_level_1_83,L017075?
+041A 8001      1482            sjmp    L017002?
+041C           1483   L017075?:
+041C           1484   L017001?:
+041C           1485   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:426: Init_Comparator1(trigger_channel, trigger_slope, trigger_level);
+041C 8F00      1486            mov     _Init_Comparator1_PARM_2,r7
+041E 88B0      1487            mov     _Init_Comparator1_PARM_3,r0
+0420 8E82      1488            mov     dpl,r6
+0422 C006      1489            push    ar6
+0424 C007      1490            push    ar7
+0426 C000      1491            push    ar0
+0428 120100    1492            lcall   _Init_Comparator1
+042B D000      1493            pop     ar0
+042D D007      1494            pop     ar7
+042F D006      1495            pop     ar6
+0431           1496   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:427: prev_trigger_channel=trigger_channel;
+0431 8E80      1497            mov     _main_prev_trigger_channel_1_83,r6
+0433           1498   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:428: prev_trigger_slope=trigger_slope;
+0433 8FD0      1499            mov     _main_prev_trigger_slope_1_83,r7
+0435           1500   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:429: prev_trigger_level=trigger_level;
+0435 8820      1501            mov     _main_prev_trigger_level_1_83,r0
+0437           1502   L017002?:
+0437           1503   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:431: Capture_Auto();
+0437 120100    1504            lcall   _Capture_Auto
+043A           1505   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:433: SFRPAGE=0x20;   // UART0, CRC, and SPI can work on this page
+043A 75A720    1506            mov     _SFRPAGE,#0x20
+043D           1507   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:434: CRC0CN0=0b_0000_1000; // Initialize hardware CRC result to zero;
+043D 75CE08    1508            mov     _CRC0CN0,#0x08
+0440           1509   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:435: for(j=0; j<(0x40*PAGES); j+=2)
+0440 E4        1510            clr     a
+0441 F530      1511            mov     _main_j_1_83,a
+0443 F531      1512            mov     (_main_j_1_83 + 1),a
+0445           1513   L017040?:
+0445 74FC      1514            mov     a,#0x100 - 0x04
+0447 2531      1515            add     a,(_main_j_1_83 + 1)
+0449 4001      1516            jc      L017043?
+044B           1517   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:437: d=adc_scan[j+0]>>2;
+044B E530      1518            mov     a,_main_j_1_83
+044D 2530      1519            add     a,_main_j_1_83
+044F FB        1520            mov     r3,a
+0450 E531      1521            mov     a,(_main_j_1_83 + 1)
+0452 33        1522            rlc     a
+0453 FA        1523            mov     r2,a
+0454 EB        1524            mov     a,r3
+0455 24E0      1525            add     a,#_adc_scan
+0457 F582      1526            mov     dpl,a
+0459 EA        1527            mov     a,r2
+045A 3415      1528            addc    a,#(_adc_scan >> 8)
+045C F583      1529            mov     dph,a
+045E E0        1530            movx    a,@dptr
+045F FA        1531            mov     r2,a
+0460 A3        1532            inc     dptr
+0461 E0        1533            movx    a,@dptr
+0462 C3        1534            clr     c
+0463 13        1535            rrc     a
+0464 CA        1536            xch     a,r2
+0465 13        1537            rrc     a
+0466 CA        1538            xch     a,r2
+0467 C3        1539            clr     c
+0468 13        1540            rrc     a
+0469 CA        1541            xch     a,r2
+046A 13        1542            rrc     a
+046B CA        1543            xch     a,r2
+046C           1544   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:438: putchar(d);
+046C 8A82      1545            mov     dpl,r2
+046E C002      1546            push    ar2
+0470 120100    1547            lcall   _putchar
+0473 D002      1548            pop     ar2
+0475           1549   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:439: CRC0IN=d;// Feed new byte to hardware CRC calculator
+0475 8ACA      1550            mov     _CRC0IN,r2
+0477           1551   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:440: d=adc_scan[j+1]>>2;
+0477 7401      1552            mov     a,#0x01
+0479 2530      1553            add     a,_main_j_1_83
+047B FB        1554            mov     r3,a
+047C E4        1555            clr     a
+047D 3531      1556            addc    a,(_main_j_1_83 + 1)
+047F CB        1557            xch     a,r3
+0480 25E0      1558            add     a,acc
+0482 CB        1559            xch     a,r3
+0483 33        1560            rlc     a
+0484 FC        1561            mov     r4,a
+0485 EB        1562            mov     a,r3
+0486 24E0      1563            add     a,#_adc_scan
+0488 F582      1564            mov     dpl,a
+048A EC        1565            mov     a,r4
+048B 3415      1566            addc    a,#(_adc_scan >> 8)
+048D F583      1567            mov     dph,a
+048F E0        1568            movx    a,@dptr
+0490 FB        1569            mov     r3,a
+0491 A3        1570            inc     dptr
+0492 E0        1571            movx    a,@dptr
+0493 C3        1572            clr     c
+0494 13        1573            rrc     a
+0495 CB        1574            xch     a,r3
+0496 13        1575            rrc     a
+0497 CB        1576            xch     a,r3
+0498 C3        1577            clr     c
+0499 13        1578            rrc     a
+049A CB        1579            xch     a,r3
+049B 13        1580            rrc     a
+049C CB        1581            xch     a,r3
+049D 8B02      1582            mov     ar2,r3
+049F           1583   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:441: putchar(d);
+049F 8A82      1584            mov     dpl,r2
+04A1 C002      1585            push    ar2
+04A3 120100    1586            lcall   _putchar
+04A6 D002      1587            pop     ar2
+04A8           1588   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:442: CRC0IN=d;// Feed new byte to hardware CRC calculator
+04A8 8ACA      1589            mov     _CRC0IN,r2
+04AA           1590   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:435: for(j=0; j<(0x40*PAGES); j+=2)
+04AA 7402      1591            mov     a,#0x02
+04AC 2530      1592            add     a,_main_j_1_83
+04AE F530      1593            mov     _main_j_1_83,a
+04B0 E4        1594            clr     a
+04B1 3531      1595            addc    a,(_main_j_1_83 + 1)
+04B3 F531      1596            mov     (_main_j_1_83 + 1),a
+04B5 8001      1597            sjmp    L017040?
+04B7           1598   L017043?:
+04B7           1599   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:444: CRC0CN0=0x01; // Set bit to read hardware CRC high byte
+04B7 75CE01    1600            mov     _CRC0CN0,#0x01
+04BA           1601   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:445: putchar(CRC0DAT);
+04BA 85CB82    1602            mov     dpl,_CRC0DAT
+04BD 120100    1603            lcall   _putchar
+04C0           1604   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:446: CRC0CN0=0x00; // Clear bit to read hardware CRC low byte
+04C0 75CE00    1605            mov     _CRC0CN0,#0x00
+04C3           1606   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:447: putchar(CRC0DAT);
+04C3 85CB82    1607            mov     dpl,_CRC0DAT
+04C6 120100    1608            lcall   _putchar
+04C9           1609   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:448: SFRPAGE = 0x00;
+04C9 75A700    1610            mov     _SFRPAGE,#0x00
+04CC 020100    1611            ljmp    L017038?
+04CF           1612   L017035?:
+04CF           1613   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:450: else if (c=='N') // Normal mode
+04CF BD4E78    1614            cjne    r5,#0x4E,L017077?
+04D2 8001      1615            sjmp    L017078?
+04D4           1616   L017077?:
+04D4 020100    1617            ljmp    L017032?
+04D7           1618   L017078?:
+04D7           1619   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:452: trigger_channel=getchar();
+04D7 120100    1620            lcall   _getchar
+04DA AE82      1621            mov     r6,dpl
+04DC           1622   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:453: trigger_slope=toupper(getchar());
+04DC C006      1623            push    ar6
+04DE 120100    1624            lcall   _getchar
+04E1 120100    1625            lcall   _toupper
+04E4 AF82      1626            mov     r7,dpl
+04E6           1627   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:454: trigger_level=getchar();       
+04E6 C007      1628            push    ar7
+04E8 120100    1629            lcall   _getchar
+04EB A882      1630            mov     r0,dpl
+04ED D007      1631            pop     ar7
+04EF D006      1632            pop     ar6
+04F1           1633   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:456: if ( (trigger_channel!=prev_trigger_channel) || (trigger_slope!=prev_trigger_slope) || (trigger_level!=prev_trigger_level) )
+04F1 EE        1634            mov     a,r6
+04F2 B58038    1635            cjne    a,_main_prev_trigger_channel_1_83,L017005?
+04F5 EF        1636            mov     a,r7
+04F6 B5D038    1637            cjne    a,_main_prev_trigger_slope_1_83,L017005?
+04F9 E8        1638            mov     a,r0
+04FA B52078    1639            cjne    a,_main_prev_trigger_level_1_83,L017083?
+04FD 8001      1640            sjmp    L017006?
+04FF           1641   L017083?:
+04FF           1642   L017005?:
+04FF           1643   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:458: Init_Comparator1(trigger_channel, trigger_slope, trigger_level);
+04FF 8F00      1644            mov     _Init_Comparator1_PARM_2,r7
+0501 88B0      1645            mov     _Init_Comparator1_PARM_3,r0
+0503 8E82      1646            mov     dpl,r6
+0505 C006      1647            push    ar6
+0507 C007      1648            push    ar7
+0509 C000      1649            push    ar0
+050B 120100    1650            lcall   _Init_Comparator1
+050E D000      1651            pop     ar0
+0510 D007      1652            pop     ar7
+0512 D006      1653            pop     ar6
+0514           1654   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:459: prev_trigger_channel=trigger_channel;
+0514 8E80      1655            mov     _main_prev_trigger_channel_1_83,r6
+0516           1656   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:460: prev_trigger_slope=trigger_slope;
+0516 8FD0      1657            mov     _main_prev_trigger_slope_1_83,r7
+0518           1658   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:461: prev_trigger_level=trigger_level;
+0518 8820      1659            mov     _main_prev_trigger_level_1_83,r0
+051A           1660   L017006?:
+051A           1661   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:463: Capture_Normal();
+051A 120100    1662            lcall   _Capture_Normal
+051D           1663   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:465: SFRPAGE=0x20;   // UART0, CRC, and SPI can work on this page
+051D 75A720    1664            mov     _SFRPAGE,#0x20
+0520           1665   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:466: CRC0CN0=0b_0000_1000; // Initialize hardware CRC result to zero;
+0520 75CE08    1666            mov     _CRC0CN0,#0x08
+0523           1667   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:467: for(j=0; j<(0x40*PAGES); j+=2)
+0523 7B00      1668            mov     r3,#0x00
+0525 7C00      1669            mov     r4,#0x00
+0527           1670   L017044?:
+0527 74FC      1671            mov     a,#0x100 - 0x04
+0529 2C        1672            add     a,r4
+052A 4001      1673            jc      L017047?
+052C           1674   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:469: d=adc_scan[j+0]>>2;
+052C 8B06      1675            mov     ar6,r3
+052E EC        1676            mov     a,r4
+052F CE        1677            xch     a,r6
+0530 25E0      1678            add     a,acc
+0532 CE        1679            xch     a,r6
+0533 33        1680            rlc     a
+0534 FF        1681            mov     r7,a
+0535 EE        1682            mov     a,r6
+0536 24E0      1683            add     a,#_adc_scan
+0538 F582      1684            mov     dpl,a
+053A EF        1685            mov     a,r7
+053B 3415      1686            addc    a,#(_adc_scan >> 8)
+053D F583      1687            mov     dph,a
+053F E0        1688            movx    a,@dptr
+0540 FE        1689            mov     r6,a
+0541 A3        1690            inc     dptr
+0542 E0        1691            movx    a,@dptr
+0543 C3        1692            clr     c
+0544 13        1693            rrc     a
+0545 CE        1694            xch     a,r6
+0546 13        1695            rrc     a
+0547 CE        1696            xch     a,r6
+0548 C3        1697            clr     c
+0549 13        1698            rrc     a
+054A CE        1699            xch     a,r6
+054B 13        1700            rrc     a
+054C CE        1701            xch     a,r6
+054D 8E02      1702            mov     ar2,r6
+054F           1703   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:470: putchar(d);
+054F 8A82      1704            mov     dpl,r2
+0551 C002      1705            push    ar2
+0553 C003      1706            push    ar3
+0555 C004      1707            push    ar4
+0557 120100    1708            lcall   _putchar
+055A D004      1709            pop     ar4
+055C D003      1710            pop     ar3
+055E D002      1711            pop     ar2
+0560           1712   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:471: CRC0IN=d;// Feed new byte to hardware CRC calculator
+0560 8ACA      1713            mov     _CRC0IN,r2
+0562           1714   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:472: d=adc_scan[j+1]>>2;
+0562 7401      1715            mov     a,#0x01
+0564 2B        1716            add     a,r3
+0565 FE        1717            mov     r6,a
+0566 E4        1718            clr     a
+0567 3C        1719            addc    a,r4
+0568 CE        1720            xch     a,r6
+0569 25E0      1721            add     a,acc
+056B CE        1722            xch     a,r6
+056C 33        1723            rlc     a
+056D FF        1724            mov     r7,a
+056E EE        1725            mov     a,r6
+056F 24E0      1726            add     a,#_adc_scan
+0571 F582      1727            mov     dpl,a
+0573 EF        1728            mov     a,r7
+0574 3415      1729            addc    a,#(_adc_scan >> 8)
+0576 F583      1730            mov     dph,a
+0578 E0        1731            movx    a,@dptr
+0579 FE        1732            mov     r6,a
+057A A3        1733            inc     dptr
+057B E0        1734            movx    a,@dptr
+057C C3        1735            clr     c
+057D 13        1736            rrc     a
+057E CE        1737            xch     a,r6
+057F 13        1738            rrc     a
+0580 CE        1739            xch     a,r6
+0581 C3        1740            clr     c
+0582 13        1741            rrc     a
+0583 CE        1742            xch     a,r6
+0584 13        1743            rrc     a
+0585 CE        1744            xch     a,r6
+0586 8E02      1745            mov     ar2,r6
+0588           1746   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:473: putchar(d);
+0588 8A82      1747            mov     dpl,r2
+058A C002      1748            push    ar2
+058C C003      1749            push    ar3
+058E C004      1750            push    ar4
+0590 120100    1751            lcall   _putchar
+0593 D004      1752            pop     ar4
+0595 D003      1753            pop     ar3
+0597 D002      1754            pop     ar2
+0599           1755   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:474: CRC0IN=d;// Feed new byte to hardware CRC calculator
+0599 8ACA      1756            mov     _CRC0IN,r2
+059B           1757   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:467: for(j=0; j<(0x40*PAGES); j+=2)
+059B 7402      1758            mov     a,#0x02
+059D 2B        1759            add     a,r3
+059E FB        1760            mov     r3,a
+059F E4        1761            clr     a
+05A0 3C        1762            addc    a,r4
+05A1 FC        1763            mov     r4,a
+05A2 020100    1764            ljmp    L017044?
+05A5           1765   L017047?:
+05A5           1766   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:477: if(capture_complete)
+05A5 303078    1767            jnb     _capture_complete,L017010?
+05A8           1768   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:479: CRC0CN0=0x01; // Set bit to read hardware CRC high byte
+05A8 75CE01    1769            mov     _CRC0CN0,#0x01
+05AB           1770   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:480: putchar(CRC0DAT);
+05AB 85CB82    1771            mov     dpl,_CRC0DAT
+05AE 120100    1772            lcall   _putchar
+05B1           1773   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:481: CRC0CN0=0x00; // Clear bit to read hardware CRC low byte
+05B1 75CE00    1774            mov     _CRC0CN0,#0x00
+05B4           1775   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:482: putchar(CRC0DAT);
+05B4 85CB82    1776            mov     dpl,_CRC0DAT
+05B7 120100    1777            lcall   _putchar
+05BA           1778   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:483: SFRPAGE = 0x00;
+05BA 75A700    1779            mov     _SFRPAGE,#0x00
+05BD 020100    1780            ljmp    L017038?
+05C0           1781   L017010?:
+05C0           1782   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:487: putchar(0x00);
+05C0 758200    1783            mov     dpl,#0x00
+05C3 120100    1784            lcall   _putchar
+05C6           1785   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:488: putchar(0x00);
+05C6 758200    1786            mov     dpl,#0x00
+05C9 120100    1787            lcall   _putchar
+05CC 020100    1788            ljmp    L017038?
+05CF           1789   L017032?:
+05CF           1790   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:491: else if (c=='I') // Identify command
+05CF BD49B8    1791            cjne    r5,#0x49,L017029?
+05D2           1792   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:493: putchar('S'); // That is it!
+05D2 758253    1793            mov     dpl,#0x53
+05D5 120100    1794            lcall   _putchar
+05D8 020100    1795            ljmp    L017038?
+05DB           1796   L017029?:
+05DB           1797   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:495: else if (c=='R') // Capture rate command
+05DB BD52F8    1798            cjne    r5,#0x52,L017088?
+05DE 8001      1799            sjmp    L017089?
+05E0           1800   L017088?:
+05E0 020100    1801            ljmp    L017038?
+05E3           1802   L017089?:
+05E3           1803   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:497: c=toupper(getchar());
+05E3 120100    1804            lcall   _getchar
+05E6 120100    1805            lcall   _toupper
+05E9           1806   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:498: if(c!=capture_rate)
+05E9 E582      1807            mov     a,dpl
+05EB FD        1808            mov     r5,a
+05EC B57078    1809            cjne    a,_capture_rate,L017090?
+05EF 020100    1810            ljmp    L017038?
+05F2           1811   L017090?:
+05F2           1812   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:500: capture_rate=c;
+05F2 8D70      1813            mov     _capture_rate,r5
+05F4           1814   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:501: switch(capture_rate)
+05F4 AA70      1815            mov     r2,_capture_rate
+05F6 C3        1816            clr     c
+05F7 EA        1817            mov     a,r2
+05F8 6480      1818            xrl     a,#0x80
+05FA 94B0      1819            subb    a,#0xb0
+05FC 5001      1820            jnc     L017091?
+05FE 020100    1821            ljmp    L017038?
+0601           1822   L017091?:
+0601 C3        1823            clr     c
+0602 74B9      1824            mov     a,#(0x39 ^ 0x80)
+0604 8AF0      1825            mov     b,r2
+0606 63F080    1826            xrl     b,#0x80
+0609 95F0      1827            subb    a,b
+060B 5001      1828            jnc     L017092?
+060D 020100    1829            ljmp    L017038?
+0610           1830   L017092?:
+0610 EA        1831            mov     a,r2
+0611 24D0      1832            add     a,#0xd0
+0613 FA        1833            mov     r2,a
+0614 25E0      1834            add     a,acc
+0616 2A        1835            add     a,r2
+0617 90CF38    1836            mov     dptr,#L017093?
+061A 73        1837            jmp     @a+dptr
+061B           1838   L017093?:
+061B 020100    1839            ljmp    L017012?
+061E 020100    1840            ljmp    L017013?
+0621 020100    1841            ljmp    L017014?
+0624 020100    1842            ljmp    L017015?
+0627 020100    1843            ljmp    L017016?
+062A 020100    1844            ljmp    L017017?
+062D 020100    1845            ljmp    L017018?
+0630 020100    1846            ljmp    L017019?
+0633 020100    1847            ljmp    L017020?
+0636 020100    1848            ljmp    L017021?
+0639           1849   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:503: case '0':
+0639           1850   L017012?:
+0639           1851   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:504: Init_Timer2(1000000L); // Sampling rate.  Fastest possible is 1us.
+0639 904240    1852            mov     dptr,#0x4240
+063C 75F00F    1853            mov     b,#0x0F
+063F E4        1854            clr     a
+0640 120100    1855            lcall   _Init_Timer2
+0643           1856   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:505: break;
+0643 020100    1857            ljmp    L017038?
+0646           1858   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:506: case '1':
+0646           1859   L017013?:
+0646           1860   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:507: Init_Timer2(1000000L/2L);
+0646 90A120    1861            mov     dptr,#0xA120
+0649 75F007    1862            mov     b,#0x07
+064C E4        1863            clr     a
+064D 120100    1864            lcall   _Init_Timer2
+0650           1865   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:508: break;
+0650 020100    1866            ljmp    L017038?
+0653           1867   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:509: case '2':
+0653           1868   L017014?:
+0653           1869   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:510: Init_Timer2(1000000L/4L);
+0653 90D090    1870            mov     dptr,#0xD090
+0656 75F003    1871            mov     b,#0x03
+0659 E4        1872            clr     a
+065A 120100    1873            lcall   _Init_Timer2
+065D           1874   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:511: break;
+065D 020100    1875            ljmp    L017038?
+0660           1876   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:512: case '3':
+0660           1877   L017015?:
+0660           1878   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:513: Init_Timer2(1000000L/8L);
+0660 90E848    1879            mov     dptr,#0xE848
+0663 75F001    1880            mov     b,#0x01
+0666 E4        1881            clr     a
+0667 120100    1882            lcall   _Init_Timer2
+066A           1883   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:514: break;
+066A 020100    1884            ljmp    L017038?
+066D           1885   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:515: case '4':
+066D           1886   L017016?:
+066D           1887   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:516: Init_Timer2(1000000L/16L);
+066D 90F424    1888            mov     dptr,#0xF424
+0670 E4        1889            clr     a
+0671 F5F0      1890            mov     b,a
+0673 120100    1891            lcall   _Init_Timer2
+0676           1892   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:517: break;
+0676 020100    1893            ljmp    L017038?
+0679           1894   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:518: case '5':
+0679           1895   L017017?:
+0679           1896   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:519: Init_Timer2(1000000L/32L);
+0679 907A12    1897            mov     dptr,#0x7A12
+067C E4        1898            clr     a
+067D F5F0      1899            mov     b,a
+067F 120100    1900            lcall   _Init_Timer2
+0682           1901   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:520: break;
+0682 020100    1902            ljmp    L017038?
+0685           1903   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:521: case '6':
+0685           1904   L017018?:
+0685           1905   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:522: Init_Timer2(1000000L/64L);
+0685 903D09    1906            mov     dptr,#0x3D09
+0688 E4        1907            clr     a
+0689 F5F0      1908            mov     b,a
+068B 120100    1909            lcall   _Init_Timer2
+068E           1910   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:523: break;
+068E 020100    1911            ljmp    L017038?
+0691           1912   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:524: case '7':
+0691           1913   L017019?:
+0691           1914   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:525: Init_Timer2(1000000L/128L);
+0691 901E84    1915            mov     dptr,#0x1E84
+0694 E4        1916            clr     a
+0695 F5F0      1917            mov     b,a
+0697 120100    1918            lcall   _Init_Timer2
+069A           1919   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:526: break;
+069A 020100    1920            ljmp    L017038?
+069D           1921   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:527: case '8':
+069D           1922   L017020?:
+069D           1923   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:528: Init_Timer2(1000000L/256L);
+069D 900F42    1924            mov     dptr,#0x0F42
+06A0 E4        1925            clr     a
+06A1 F5F0      1926            mov     b,a
+06A3 120100    1927            lcall   _Init_Timer2
+06A6           1928   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:529: break;
+06A6 020100    1929            ljmp    L017038?
+06A9           1930   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:530: case '9':
+06A9           1931   L017021?:
+06A9           1932   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:531: Init_Timer2(1000000L/512L);
+06A9 9007A1    1933            mov     dptr,#0x07A1
+06AC E4        1934            clr     a
+06AD F5F0      1935            mov     b,a
+06AF 120100    1936            lcall   _Init_Timer2
+06B2           1937   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:532: break;
+06B2           1938   ;        C:\Users\nusai\Desktop\ELEC 291\Oscilloscope\Oscilloscope.c:535: }
+06B2 020100    1939            ljmp    L017038?
+06B5           1940            rseg R_CSEG
+06B5           1941   
+0000           1942            rseg R_XINIT
+0000           1943   
+0000           1944            rseg R_CONST
+0000           1945   
+006E           1946            CSEG
+006E           1947   
+006E           1948   end

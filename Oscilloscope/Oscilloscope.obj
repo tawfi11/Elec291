@@ -1,0 +1,1030 @@
+<MODULE>
+Oscilloscope
+</MODULE>
+
+<OPTC51>
+--model-small
+</OPTC51>
+
+<SEGMENTS>
+R_GSINIT,code,0000,NO
+R_BSEG,bit,0001,NO
+R_XSEG,xdata,0800,NO
+BIT_BANK,data,0000,OV
+R_CONST,code,0000,NO
+rbank0,data,0000,OV
+R_PSEG,xdata,0000,NO
+R_DINIT,code,0000,NO
+R_DSEG,data,0006,NO
+R_OSEG,data,0003,OV
+R_IXSEG,xdata,0000,NO
+R_ISEG,idata,0000,NO
+R_HOME,code,0000,NO
+R_XINIT,code,0000,NO
+R_CSEG,code,06B5,NO
+</SEGMENTS>
+
+<LOCALS>
+L002002?,R_CSEG,0012,0000
+L017021?,R_CSEG,06A9,0000
+L017020?,R_CSEG,069D,0000
+L017038?,R_CSEG,03E4,0000
+L017035?,R_CSEG,04CF,0000
+L017032?,R_CSEG,05CF,0000
+L015009?,R_CSEG,02FA,0000
+L015008?,R_CSEG,02F0,0000
+L015007?,R_CSEG,02E6,0000
+L015006?,R_CSEG,02DC,0000
+L015005?,R_CSEG,02D2,0000
+L015004?,R_CSEG,02C8,0000
+L015003?,R_CSEG,02BE,0000
+L017047?,R_CSEG,05A5,0000
+L015002?,R_CSEG,02B4,0000
+L015001?,R_CSEG,02AA,0000
+L003008?,R_CSEG,001C,0000
+L017044?,R_CSEG,0527,0000
+L017043?,R_CSEG,04B7,0000
+L017040?,R_CSEG,0445,0000
+L003001?,R_CSEG,0017,0000
+L016006?,R_CSEG,03AA,0000
+L016001?,R_CSEG,03A7,0000
+L004008?,R_CSEG,0024,0000
+L004001?,R_CSEG,001F,0000
+L011018?,R_CSEG,01A9,0000
+L017006?,R_CSEG,051A,0000
+L017005?,R_CSEG,04FF,0000
+L017002?,R_CSEG,0437,0000
+L017001?,R_CSEG,041C,0000
+L017093?,R_CSEG,061B,0000
+L017092?,R_CSEG,0610,0000
+_main_prev_trigger_level_1_83,R_DSEG,0005,0001
+L017091?,R_CSEG,0601,0000
+L017090?,R_CSEG,05F2,0000
+L012015?,R_CSEG,01EE,0000
+L012014?,R_CSEG,01E9,0000
+L012013?,R_CSEG,01DD,0000
+_main_prev_trigger_channel_1_83,R_DSEG,0003,0001
+L012011?,R_CSEG,01DB,0000
+L006007?,R_CSEG,00A5,0000
+L006005?,R_CSEG,008A,0000
+L006002?,R_CSEG,00A2,0000
+_main_j_1_83,R_DSEG,0001,0002
+_main_prev_trigger_slope_1_83,R_DSEG,0004,0001
+L010007?,R_CSEG,0191,0000
+L010004?,R_CSEG,0181,0000
+L010001?,R_CSEG,0186,0000
+L007004?,R_CSEG,00D3,0000
+L007001?,R_CSEG,00C8,0000
+L017069?,R_CSEG,03F1,0000
+L011009?,R_CSEG,01CF,0000
+L011007?,R_CSEG,01C8,0000
+L011005?,R_CSEG,019D,0000
+L017078?,R_CSEG,04D7,0000
+L017077?,R_CSEG,04D4,0000
+L011001?,R_CSEG,01A6,0000
+L017075?,R_CSEG,041C,0000
+L017070?,R_CSEG,03F4,0000
+L017089?,R_CSEG,05E3,0000
+L017088?,R_CSEG,05E0,0000
+L015018?,R_CSEG,033E,0000
+L017083?,R_CSEG,04FF,0000
+L015013?,R_CSEG,0341,0000
+L015012?,R_CSEG,0316,0000
+L015011?,R_CSEG,030E,0000
+L015010?,R_CSEG,0304,0000
+L012005?,R_CSEG,020F,0000
+L009008?,R_CSEG,0158,0000
+L009007?,R_CSEG,0156,0000
+L012003?,R_CSEG,0207,0000
+L009006?,R_CSEG,0147,0000
+L015029?,R_CSEG,0272,0000
+L012002?,R_CSEG,01FD,0000
+L009005?,R_CSEG,0145,0000
+L012001?,R_CSEG,01F3,0000
+L009004?,R_CSEG,0133,0000
+L009003?,R_CSEG,0131,0000
+L015020?,R_CSEG,0366,0000
+L015034?,R_CSEG,0356,0000
+L015031?,R_CSEG,028C,0000
+L015030?,R_CSEG,0281,0000
+L013001?,R_CSEG,021A,0000
+L017019?,R_CSEG,0691,0000
+L017018?,R_CSEG,0685,0000
+L017017?,R_CSEG,0679,0000
+L017016?,R_CSEG,066D,0000
+L017015?,R_CSEG,0660,0000
+L017014?,R_CSEG,0653,0000
+L017013?,R_CSEG,0646,0000
+L017012?,R_CSEG,0639,0000
+L017010?,R_CSEG,05C0,0000
+L017029?,R_CSEG,05DB,0000
+L002009?,R_CSEG,0005,0000
+</LOCALS>
+
+<PUBLICS>
+_InitPinADC,R_CSEG,01D0,0000
+_CMP1_ISR,R_CSEG,0028,0000
+_main,R_CSEG,03AB,0000
+_Capture_Auto,R_CSEG,036C,0000
+_Init_Timer2,R_CSEG,0224,0000
+__c51_external_startup,R_CSEG,00AA,0000
+_InitPinADC_PARM_2,R_OSEG,0002,0001
+_getchar,R_CSEG,001F,0000
+_capture_rate,R_DSEG,0000,0001
+_Init_Comparator1_PARM_2,R_OSEG,0000,0001
+_Init_Comparator1_PARM_3,R_OSEG,0001,0001
+_adc_scan,R_XSEG,0000,0800
+_InitADC,R_CSEG,00FD,0000
+_capture_complete,R_BSEG,0000,0001
+_Capture_Normal,R_CSEG,0265,0000
+_Init_Comparator1,R_CSEG,011A,0000
+_Timer3us,R_CSEG,016B,0000
+_putchar,R_CSEG,0015,0000
+_toupper,R_CSEG,0000,0000
+_ADC0_ISR,R_CSEG,0073,0000
+_ADC_at_Pin,R_CSEG,0213,0000
+_waitms,R_CSEG,0195,0000
+</PUBLICS>
+
+<EXTERNALS>
+__divulong,any,0000,0000
+__divulong_PARM_2,any,0000,0000
+_crt0,any,0000,0000
+</EXTERNALS>
+
+<CODE AT 0000>
+</CODE>
+
+<CODE R_HOME>
+</CODE>
+
+<CODE R_GSINIT>
+</CODE>
+
+<CODE R_CSEG>
+</CODE>
+
+<CODE AT 0000>
+02 addr16(_crt0;)  
+</CODE>
+
+<CODE AT 0053>
+02 addr16(_ADC0_ISR;)  
+</CODE>
+
+<CODE AT 006B>
+02 addr16(_CMP1_ISR;)  
+</CODE>
+
+<CODE R_HOME>
+</CODE>
+
+<CODE R_GSINIT>
+</CODE>
+
+<CODE R_GSINIT>
+</CODE>
+
+<CODE R_DINIT>
+</CODE>
+
+<CODE R_CSEG>
+AA 82
+BA 61 rel3(L002009?;)
+40 rel2(L002002?;)
+EA
+24 85
+40 rel2(L002002?;)
+74 E0
+2A
+F5 82
+22
+8A 82
+22
+AA 82
+10 99 rel3(L003008?;)
+80 rel2(L003001?;)
+8A 99
+22
+10 98 rel3(L004008?;)
+80 rel2(L004001?;)
+85 99 82
+22
+C0 E0
+C0 02
+C0 03
+C0 D0
+75 D0 00
+D2 80
+75 A7 00
+53 E6 BF
+75 A7 30
+53 BF CF
+7A data8(_adc_scan;)
+7B data8(_adc_scan;0x0008;>>;)
+74 01
+4A
+F5 B5
+8B B6
+75 C7 3F
+75 BB 0E
+75 A1 01
+43 A1 80
+74 80
+25 B5
+F5 B5
+E4
+35 B6
+F5 B6
+75 A7 00
+C2 ED
+D2 CA
+D0 D0
+D0 03
+D0 02
+D0 E0
+32
+C0 E0
+C0 D0
+75 D0 00
+75 A7 30
+C2 ED
+E5 A1
+20 E7 rel3(L006005?;)
+D2 bit(_capture_complete;)
+C2 80
+80 rel2(L006007?;)
+C3
+E5 B5
+94 80
+E5 B6
+94 07
+50 rel2(L006002?;)
+74 80
+25 B5
+F5 B5
+E4
+35 B6
+F5 B6
+80 rel2(L006007?;)
+53 A1 7F
+D0 D0
+D0 E0
+32
+75 A7 00
+75 97 DE
+75 97 AD
+75 FF 80
+75 EF 06
+75 A7 10
+75 C1 20
+75 A7 00
+75 A9 00
+75 A9 00
+E5 A9
+30 E7 rel3(L007001?;)
+75 A9 03
+75 A9 03
+E5 A9
+30 E7 rel3(L007004?;)
+43 A4 13
+75 E1 01
+75 E2 00
+75 E3 40
+75 98 10
+75 8D E6
+85 8D 8B
+53 89 0F
+43 89 20
+D2 8E
+D2 99
+C2 80
+75 82 00
+22
+75 A7 00
+C2 EF
+75 B2 00
+75 BC 20
+75 B9 01
+75 E8 00
+75 DF 3F
+75 B3 02
+D2 EF
+43 E6 08
+22
+AA 82
+75 A7 00
+53 E6 BF
+75 A7 30
+75 BF 00
+74 52
+B5 data8(_Init_Comparator1_PARM_2;) rel3(L009003?;)
+7B 01
+80 rel2(L009004?;)
+7B 00
+EB
+C4
+23
+54 E0
+FB
+43 03 0C
+74 46
+B5 data8(_Init_Comparator1_PARM_2;) rel3(L009005?;)
+7C 01
+80 rel2(L009006?;)
+7C 00
+EC
+C4
+54 F0
+FC
+4B
+F5 AB
+BA 32 rel3(L009007?;)
+7A 04
+80 rel2(L009008?;)
+7A 03
+74 B0
+4A
+F5 AA
+74 3F
+55 data8(_Init_Comparator1_PARM_3;)
+FA
+8A AC
+75 BF 80
+75 A7 00
+22
+AA 82
+43 8E 40
+75 92 B8
+75 93 FF
+85 92 94
+85 93 95
+75 91 04
+7B 00
+C3
+EB
+9A
+50 rel2(L010007?;)
+E5 91
+30 E7 rel3(L010001?;)
+53 91 7F
+0B
+80 rel2(L010004?;)
+75 91 00
+22
+AA 82
+AB 83
+7C 00
+7D 00
+C3
+EC
+9A
+ED
+9B
+50 rel2(L011009?;)
+7E 00
+BE 04 rel3(L011018?;)
+50 rel2(L011007?;)
+75 82 FA
+C0 02
+C0 03
+C0 04
+C0 05
+C0 06
+12 addr16(_Timer3us;)  
+D0 06
+D0 05
+D0 04
+D0 03
+D0 02
+0E
+80 rel2(L011001?;)
+0C
+BC 00 rel3(L011005?;)
+0D
+80 rel2(L011005?;)
+22
+AA 82
+85 data8(_InitPinADC_PARM_2;) F0
+05 F0
+74 01
+80 rel2(L012013?;)
+25 E0
+D5 F0 rel3(L012011?;)
+FB
+75 A7 20
+BA 00 rel3(L012014?;)
+80 rel2(L012001?;)
+BA 01 rel3(L012015?;)
+80 rel2(L012002?;)
+BA 02 rel3(L012005?;)
+80 rel2(L012003?;)
+EB
+F4
+FA
+52 F1
+EB
+42 D4
+80 rel2(L012005?;)
+EB
+F4
+FA
+52 F2
+EB
+42 D5
+80 rel2(L012005?;)
+EB
+F4
+FA
+52 F3
+EB
+42 CC
+75 A7 00
+22
+85 82 BB
+C2 ED
+D2 EC
+30 ED rel3(L013001?;)
+85 BD 82
+85 BE 83
+22
+AA 82
+AB 83
+AC F0
+FD
+75 A7 00
+75 C8 00
+43 8E 10
+8A data8(__divulong_PARM_2;)
+8B data8(__divulong_PARM_2;0x0001;+;)
+8C data8(__divulong_PARM_2;0x0002;+;)
+8D data8(__divulong_PARM_2;0x0003;+;)
+90 A2 00
+75 F0 4A
+74 04
+12 addr16(__divulong;)  
+AA 82
+AB 83
+AC F0
+FD
+E4
+C3
+9A
+FA
+E4
+9B
+FB
+74 01
+9C
+E4
+9D
+8A CA
+8B CB
+75 CE FF
+75 CF FF
+22
+AA data8(_capture_rate;)
+C3
+EA
+64 80
+94 B0
+50 rel2(L015029?;)
+02 addr16(L015011?;)  
+C3
+74 B9
+8A F0
+63 F0 80
+95 F0
+50 rel2(L015030?;)
+02 addr16(L015011?;)  
+EA
+24 D0
+FA
+25 E0
+2A
+90 data16(L015031?;)  
+73
+02 addr16(L015001?;)  
+02 addr16(L015002?;)  
+02 addr16(L015003?;)  
+02 addr16(L015004?;)  
+02 addr16(L015005?;)  
+02 addr16(L015006?;)  
+02 addr16(L015007?;)  
+02 addr16(L015008?;)  
+02 addr16(L015009?;)  
+02 addr16(L015010?;)  
+7A 10
+7B 27
+7C 00
+7D 00
+80 rel2(L015012?;)
+7A 20
+7B 4E
+7C 00
+7D 00
+80 rel2(L015012?;)
+7A 40
+7B 9C
+7C 00
+7D 00
+80 rel2(L015012?;)
+7A 80
+7B 38
+7C 01
+7D 00
+80 rel2(L015012?;)
+7A 00
+7B 71
+7C 02
+7D 00
+80 rel2(L015012?;)
+7A 00
+7B E2
+7C 04
+7D 00
+80 rel2(L015012?;)
+7A 00
+7B C4
+7C 09
+7D 00
+80 rel2(L015012?;)
+7A 00
+7B 88
+7C 13
+7D 00
+80 rel2(L015012?;)
+7A 00
+7B 10
+7C 27
+7D 00
+80 rel2(L015012?;)
+7A 00
+7B 20
+7C 4E
+7D 00
+80 rel2(L015012?;)
+7A 10
+7B 27
+7C 00
+7D 00
+C2 bit(_capture_complete;)
+75 A7 30
+53 BF CF
+75 A7 00
+43 E6 40
+43 8E 40
+75 92 B8
+75 93 FF
+85 92 94
+85 93 95
+75 91 04
+7E 00
+7F 00
+78 00
+79 00
+20 bit(_capture_complete;) rel3(L015020?;)
+E5 91
+30 E7 rel3(L015013?;)
+53 91 7F
+0E
+BE 00 rel3(L015034?;)
+0F
+BF 00 rel3(L015034?;)
+08
+B8 00 rel3(L015034?;)
+09
+EE
+B5 02 rel3(L015018?;)
+EF
+B5 03 rel3(L015018?;)
+E8
+B5 04 rel3(L015018?;)
+E9
+B5 05 rel3(L015018?;)
+75 91 00
+C2 CA
+22
+12 addr16(_Capture_Normal;)  
+20 bit(_capture_complete;) rel3(L016006?;)
+75 A7 00
+53 E6 BF
+75 A7 30
+53 BF CF
+7A data8(_adc_scan;)
+7B data8(_adc_scan;0x0008;>>;)
+74 01
+4A
+F5 B5
+8B B6
+75 C7 3F
+75 BB 0E
+75 A1 01
+43 A1 80
+74 80
+25 B5
+F5 B5
+E4
+35 B6
+F5 B6
+75 A7 00
+C2 ED
+D2 CA
+30 bit(_capture_complete;) rel3(L016001?;)
+22
+75 data8(_InitPinADC_PARM_2;) 01
+75 82 02
+12 addr16(_InitPinADC;)  
+75 data8(_InitPinADC_PARM_2;) 02
+75 82 02
+12 addr16(_InitPinADC;)  
+12 addr16(_InitADC;)  
+90 42 40
+75 F0 0F
+E4
+12 addr16(_Init_Timer2;)  
+75 data8(_capture_rate;) 30
+75 data8(_main_prev_trigger_channel_1_83;) 31
+75 data8(_main_prev_trigger_slope_1_83;) 46
+75 data8(_main_prev_trigger_level_1_83;) 15
+75 data8(_Init_Comparator1_PARM_2;) 46
+75 data8(_Init_Comparator1_PARM_3;) 15
+75 82 31
+12 addr16(_Init_Comparator1;)  
+D2 AF
+12 addr16(_getchar;)  
+12 addr16(_toupper;)  
+AD 82
+BD 41 rel3(L017069?;)
+80 rel2(L017070?;)
+02 addr16(L017035?;)  
+12 addr16(_getchar;)  
+AE 82
+C0 06
+12 addr16(_getchar;)  
+12 addr16(_toupper;)  
+AF 82
+C0 07
+12 addr16(_getchar;)  
+A8 82
+D0 07
+D0 06
+EE
+B5 data8(_main_prev_trigger_channel_1_83;) rel3(L017001?;)
+EF
+B5 data8(_main_prev_trigger_slope_1_83;) rel3(L017001?;)
+E8
+B5 data8(_main_prev_trigger_level_1_83;) rel3(L017075?;)
+80 rel2(L017002?;)
+8F data8(_Init_Comparator1_PARM_2;)
+88 data8(_Init_Comparator1_PARM_3;)
+8E 82
+C0 06
+C0 07
+C0 00
+12 addr16(_Init_Comparator1;)  
+D0 00
+D0 07
+D0 06
+8E data8(_main_prev_trigger_channel_1_83;)
+8F data8(_main_prev_trigger_slope_1_83;)
+88 data8(_main_prev_trigger_level_1_83;)
+12 addr16(_Capture_Auto;)  
+75 A7 20
+75 CE 08
+E4
+F5 data8(_main_j_1_83;)
+F5 data8(_main_j_1_83;0x0001;+;)
+74 FC
+25 data8(_main_j_1_83;0x0001;+;)
+40 rel2(L017043?;)
+E5 data8(_main_j_1_83;)
+25 data8(_main_j_1_83;)
+FB
+E5 data8(_main_j_1_83;0x0001;+;)
+33
+FA
+EB
+24 data8(_adc_scan;)
+F5 82
+EA
+34 data8(_adc_scan;0x0008;>>;)
+F5 83
+E0
+FA
+A3
+E0
+C3
+13
+CA
+13
+CA
+C3
+13
+CA
+13
+CA
+8A 82
+C0 02
+12 addr16(_putchar;)  
+D0 02
+8A CA
+74 01
+25 data8(_main_j_1_83;)
+FB
+E4
+35 data8(_main_j_1_83;0x0001;+;)
+CB
+25 E0
+CB
+33
+FC
+EB
+24 data8(_adc_scan;)
+F5 82
+EC
+34 data8(_adc_scan;0x0008;>>;)
+F5 83
+E0
+FB
+A3
+E0
+C3
+13
+CB
+13
+CB
+C3
+13
+CB
+13
+CB
+8B 02
+8A 82
+C0 02
+12 addr16(_putchar;)  
+D0 02
+8A CA
+74 02
+25 data8(_main_j_1_83;)
+F5 data8(_main_j_1_83;)
+E4
+35 data8(_main_j_1_83;0x0001;+;)
+F5 data8(_main_j_1_83;0x0001;+;)
+80 rel2(L017040?;)
+75 CE 01
+85 CB 82
+12 addr16(_putchar;)  
+75 CE 00
+85 CB 82
+12 addr16(_putchar;)  
+75 A7 00
+02 addr16(L017038?;)  
+BD 4E rel3(L017077?;)
+80 rel2(L017078?;)
+02 addr16(L017032?;)  
+12 addr16(_getchar;)  
+AE 82
+C0 06
+12 addr16(_getchar;)  
+12 addr16(_toupper;)  
+AF 82
+C0 07
+12 addr16(_getchar;)  
+A8 82
+D0 07
+D0 06
+EE
+B5 data8(_main_prev_trigger_channel_1_83;) rel3(L017005?;)
+EF
+B5 data8(_main_prev_trigger_slope_1_83;) rel3(L017005?;)
+E8
+B5 data8(_main_prev_trigger_level_1_83;) rel3(L017083?;)
+80 rel2(L017006?;)
+8F data8(_Init_Comparator1_PARM_2;)
+88 data8(_Init_Comparator1_PARM_3;)
+8E 82
+C0 06
+C0 07
+C0 00
+12 addr16(_Init_Comparator1;)  
+D0 00
+D0 07
+D0 06
+8E data8(_main_prev_trigger_channel_1_83;)
+8F data8(_main_prev_trigger_slope_1_83;)
+88 data8(_main_prev_trigger_level_1_83;)
+12 addr16(_Capture_Normal;)  
+75 A7 20
+75 CE 08
+7B 00
+7C 00
+74 FC
+2C
+40 rel2(L017047?;)
+8B 06
+EC
+CE
+25 E0
+CE
+33
+FF
+EE
+24 data8(_adc_scan;)
+F5 82
+EF
+34 data8(_adc_scan;0x0008;>>;)
+F5 83
+E0
+FE
+A3
+E0
+C3
+13
+CE
+13
+CE
+C3
+13
+CE
+13
+CE
+8E 02
+8A 82
+C0 02
+C0 03
+C0 04
+12 addr16(_putchar;)  
+D0 04
+D0 03
+D0 02
+8A CA
+74 01
+2B
+FE
+E4
+3C
+CE
+25 E0
+CE
+33
+FF
+EE
+24 data8(_adc_scan;)
+F5 82
+EF
+34 data8(_adc_scan;0x0008;>>;)
+F5 83
+E0
+FE
+A3
+E0
+C3
+13
+CE
+13
+CE
+C3
+13
+CE
+13
+CE
+8E 02
+8A 82
+C0 02
+C0 03
+C0 04
+12 addr16(_putchar;)  
+D0 04
+D0 03
+D0 02
+8A CA
+74 02
+2B
+FB
+E4
+3C
+FC
+02 addr16(L017044?;)  
+30 bit(_capture_complete;) rel3(L017010?;)
+75 CE 01
+85 CB 82
+12 addr16(_putchar;)  
+75 CE 00
+85 CB 82
+12 addr16(_putchar;)  
+75 A7 00
+02 addr16(L017038?;)  
+75 82 00
+12 addr16(_putchar;)  
+75 82 00
+12 addr16(_putchar;)  
+02 addr16(L017038?;)  
+BD 49 rel3(L017029?;)
+75 82 53
+12 addr16(_putchar;)  
+02 addr16(L017038?;)  
+BD 52 rel3(L017088?;)
+80 rel2(L017089?;)
+02 addr16(L017038?;)  
+12 addr16(_getchar;)  
+12 addr16(_toupper;)  
+E5 82
+FD
+B5 data8(_capture_rate;) rel3(L017090?;)
+02 addr16(L017038?;)  
+8D data8(_capture_rate;)
+AA data8(_capture_rate;)
+C3
+EA
+64 80
+94 B0
+50 rel2(L017091?;)
+02 addr16(L017038?;)  
+C3
+74 B9
+8A F0
+63 F0 80
+95 F0
+50 rel2(L017092?;)
+02 addr16(L017038?;)  
+EA
+24 D0
+FA
+25 E0
+2A
+90 data16(L017093?;)  
+73
+02 addr16(L017012?;)  
+02 addr16(L017013?;)  
+02 addr16(L017014?;)  
+02 addr16(L017015?;)  
+02 addr16(L017016?;)  
+02 addr16(L017017?;)  
+02 addr16(L017018?;)  
+02 addr16(L017019?;)  
+02 addr16(L017020?;)  
+02 addr16(L017021?;)  
+90 42 40
+75 F0 0F
+E4
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+90 A1 20
+75 F0 07
+E4
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+90 D0 90
+75 F0 03
+E4
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+90 E8 48
+75 F0 01
+E4
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+90 F4 24
+E4
+F5 F0
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+90 7A 12
+E4
+F5 F0
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+90 3D 09
+E4
+F5 F0
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+90 1E 84
+E4
+F5 F0
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+90 0F 42
+E4
+F5 F0
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+90 07 A1
+E4
+F5 F0
+12 addr16(_Init_Timer2;)  
+02 addr16(L017038?;)  
+</CODE>
+
+<CODE R_CSEG>
+</CODE>
+
+<CODE R_XINIT>
+</CODE>
+
+<CODE R_CONST>
+</CODE>
+
+<CODE AT 006E>
+</CODE>

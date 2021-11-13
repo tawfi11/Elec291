@@ -1,0 +1,1344 @@
+<MODULE>
+pwm_EFM8
+</MODULE>
+
+<OPTC51>
+--model-small
+</OPTC51>
+
+<PRINTF_FLOAT>
+printf_float
+</PRINTF_FLOAT>
+
+<SEGMENTS>
+R_GSINIT,code,0000,NO
+R_BSEG,bit,0002,NO
+R_XSEG,xdata,0000,NO
+BIT_BANK,data,0000,OV
+R_CONST,code,010D,NO
+rbank0,data,0000,OV
+R_PSEG,xdata,0000,NO
+R_DINIT,code,001E,NO
+R_DSEG,data,0012,NO
+R_OSEG,data,0001,OV
+R_IXSEG,xdata,0000,NO
+R_ISEG,idata,0000,NO
+R_HOME,code,0000,NO
+R_XINIT,code,0000,NO
+R_CSEG,code,08F8,NO
+</SEGMENTS>
+
+<LOCALS>
+L017025?,R_CSEG,084A,0000
+L002004?,R_CSEG,0029,0000
+L017023?,R_CSEG,04FD,0000
+L002001?,R_CSEG,001E,0000
+L017037?,R_CSEG,0790,0000
+L017033?,R_CSEG,07CE,0000
+L015004?,R_CSEG,0350,0000
+L015001?,R_CSEG,034B,0000
+L017045?,R_CSEG,0710,0000
+L017041?,R_CSEG,0750,0000
+L017106?,R_CSEG,05F8,0000
+L017105?,R_CSEG,05F5,0000
+L017104?,R_CSEG,050A,0000
+L017103?,R_CSEG,0503,0000
+_getsn_sloc0_1_0,R_DSEG,0010,0002
+L004007?,R_CSEG,00A7,0000
+L004004?,R_CSEG,0097,0000
+__str_10,R_CONST,00A3,0000
+__str_11,R_CONST,00B1,0000
+__str_12,R_CONST,00B6,0000
+__str_13,R_CONST,00C0,0000
+__str_14,R_CONST,00CA,0000
+__str_15,R_CONST,00D2,0000
+__str_16,R_CONST,00D6,0000
+L004001?,R_CSEG,009C,0000
+L011014?,R_CSEG,017F,0000
+L011013?,R_CSEG,017D,0000
+L011011?,R_CSEG,01F5,0000
+L017002?,R_CSEG,0485,0000
+L017001?,R_CSEG,046A,0000
+L005001?,R_CSEG,00AF,0000
+L017098?,R_CSEG,048B,0000
+L012018?,R_CSEG,0274,0000
+L012015?,R_CSEG,023B,0000
+_Timer2_ISR_sloc0_1_0,R_BSEG,0001,0001
+L017057?,R_CSEG,05ED,0000
+L017051?,R_CSEG,0871,0000
+L017050?,R_CSEG,06C7,0000
+L014015?,R_CSEG,0321,0000
+L017063?,R_CSEG,08CD,0000
+L014014?,R_CSEG,031C,0000
+L017062?,R_CSEG,0445,0000
+L014013?,R_CSEG,0310,0000
+L017060?,R_CSEG,0898,0000
+L014011?,R_CSEG,030E,0000
+L011007?,R_CSEG,01D5,0000
+__str_0,R_CONST,0000,0000
+__str_1,R_CONST,0005,0000
+__str_2,R_CONST,0047,0000
+__str_3,R_CONST,0054,0000
+__str_4,R_CONST,0064,0000
+__str_5,R_CONST,006F,0000
+__str_6,R_CONST,007A,0000
+L011006?,R_CSEG,01CE,0000
+__str_7,R_CONST,0085,0000
+__str_8,R_CONST,008E,0000
+__str_9,R_CONST,0096,0000
+L011003?,R_CSEG,019A,0000
+L012008?,R_CSEG,027A,0000
+L012005?,R_CSEG,0212,0000
+L012002?,R_CSEG,025B,0000
+L012001?,R_CSEG,023E,0000
+_getsn_buff_1_64,R_DSEG,000D,0003
+L013004?,R_CSEG,02DA,0000
+L013002?,R_CSEG,02AF,0000
+L017019?,R_CSEG,04A8,0000
+L017016?,R_CSEG,04C5,0000
+L017013?,R_CSEG,04E2,0000
+L014005?,R_CSEG,0342,0000
+L014003?,R_CSEG,033A,0000
+L005011?,R_CSEG,00DB,0000
+L017029?,R_CSEG,080C,0000
+L014002?,R_CSEG,0330,0000
+L005010?,R_CSEG,00B6,0000
+L014001?,R_CSEG,0326,0000
+</LOCALS>
+
+<PUBLICS>
+_LCDprint,R_CSEG,016E,0000
+_WriteData,R_CSEG,011E,0000
+_InitPinADC,R_CSEG,0303,0000
+_Volts_at_Pin,R_CSEG,035A,0000
+_main,R_CSEG,03B5,0000
+_LCD_pulse,R_CSEG,00DD,0000
+_WriteCommand,R_CSEG,012D,0000
+_LCD_4BIT,R_CSEG,013C,0000
+__c51_external_startup,R_CSEG,0000,0000
+_InitPinADC_PARM_2,R_OSEG,0000,0001
+_LCD_byte,R_CSEG,00E8,0000
+_getsn,R_CSEG,01F6,0000
+_LCDprint_PARM_2,R_DSEG,000A,0001
+_LCDprint_PARM_3,R_BSEG,0000,0001
+_Timer2_ISR,R_CSEG,0297,0000
+_InitADC,R_CSEG,0069,0000
+_in0,R_DSEG,0002,0002
+_in1,R_DSEG,0004,0002
+_in2,R_DSEG,0006,0002
+_in3,R_DSEG,0008,0002
+_Timer3us,R_CSEG,0081,0000
+_pwm_count0,R_DSEG,0000,0001
+_pwm_count1,R_DSEG,0001,0001
+_ADC_at_Pin,R_CSEG,0346,0000
+_getsn_PARM_2,R_DSEG,000B,0002
+_waitms,R_CSEG,00AB,0000
+</PUBLICS>
+
+<EXTERNALS>
+_scanf,any,0000,0000
+__gptrget,any,0000,0000
+___uint2fs,any,0000,0000
+___fsmul,any,0000,0000
+_free,any,0000,0000
+_printf,any,0000,0000
+_malloc,any,0000,0000
+_getchar,any,0000,0000
+__gptrput,any,0000,0000
+_sprintf,any,0000,0000
+_crt0,any,0000,0000
+___fsdiv,any,0000,0000
+</EXTERNALS>
+
+<CODE AT 0000>
+</CODE>
+
+<CODE R_HOME>
+</CODE>
+
+<CODE R_GSINIT>
+</CODE>
+
+<CODE R_CSEG>
+</CODE>
+
+<CODE AT 0000>
+02 addr16(_crt0;)  
+</CODE>
+
+<CODE AT 002B>
+02 addr16(_Timer2_ISR;)  
+</CODE>
+
+<CODE R_HOME>
+</CODE>
+
+<CODE R_GSINIT>
+</CODE>
+
+<CODE R_GSINIT>
+</CODE>
+
+<CODE R_DINIT>
+75 data8(_pwm_count0;) 00
+75 data8(_pwm_count1;) 00
+75 data8(_in0;) 32
+E4
+F5 data8(_in0;0x0001;+;)
+75 data8(_in1;) 32
+E4
+F5 data8(_in1;0x0001;+;)
+75 data8(_in2;) 32
+E4
+F5 data8(_in2;0x0001;+;)
+75 data8(_in3;) 32
+E4
+F5 data8(_in3;0x0001;+;)
+</CODE>
+
+<CODE R_CSEG>
+75 A7 00
+75 97 DE
+75 97 AD
+75 FF 80
+75 EF 06
+75 A7 10
+75 C1 20
+75 A7 00
+75 A9 00
+75 A9 00
+E5 A9
+30 E7 rel3(L002001?;)
+75 A9 03
+75 A9 03
+E5 A9
+30 E7 rel3(L002004?;)
+43 A4 10
+75 E1 01
+75 E2 00
+75 E3 40
+75 98 10
+75 8D E6
+85 8D 8B
+53 89 0F
+43 89 20
+D2 8E
+D2 99
+75 C8 00
+43 8E 10
+75 CA E0
+75 CB E3
+75 CE FF
+75 CF FF
+D2 AD
+D2 CA
+D2 AF
+75 82 00
+22
+75 A7 00
+75 B2 80
+75 BC F8
+75 B9 1E
+75 E8 00
+75 DF 3F
+75 B3 00
+D2 EF
+22
+AA 82
+43 8E 40
+75 92 B8
+75 93 FF
+85 92 94
+85 93 95
+75 91 04
+7B 00
+C3
+EB
+9A
+50 rel2(L004007?;)
+E5 91
+30 E7 rel3(L004001?;)
+53 91 7F
+0B
+80 rel2(L004004?;)
+75 91 00
+22
+AA 82
+AB 83
+BA 00 rel3(L005010?;)
+BB 00 rel3(L005010?;)
+22
+75 82 F9
+C0 02
+C0 03
+12 addr16(_Timer3us;)  
+75 82 F9
+12 addr16(_Timer3us;)  
+75 82 F9
+12 addr16(_Timer3us;)  
+75 82 FA
+12 addr16(_Timer3us;)  
+D0 03
+D0 02
+1A
+BA FF rel3(L005011?;)
+1B
+80 rel2(L005001?;)
+D2 A5
+75 82 28
+12 addr16(_Timer3us;)  
+C2 A5
+22
+AA 82
+8A E0
+A2 E7
+92 A1
+A2 E6
+92 A2
+A2 E5
+92 A3
+A2 E4
+92 A4
+C0 02
+12 addr16(_LCD_pulse;)  
+75 82 28
+12 addr16(_Timer3us;)  
+D0 02
+8A E0
+A2 E3
+92 A1
+A2 E2
+92 A2
+A2 E1
+92 A3
+A2 E0
+92 A4
+02 addr16(_LCD_pulse;)  
+AA 82
+D2 A6
+8A 82
+12 addr16(_LCD_byte;)  
+90 00 02
+02 addr16(_waitms;)  
+AA 82
+C2 A6
+8A 82
+12 addr16(_LCD_byte;)  
+90 00 05
+02 addr16(_waitms;)  
+C2 A5
+90 00 14
+12 addr16(_waitms;)  
+75 82 33
+12 addr16(_WriteCommand;)  
+75 82 33
+12 addr16(_WriteCommand;)  
+75 82 32
+12 addr16(_WriteCommand;)  
+75 82 28
+12 addr16(_WriteCommand;)  
+75 82 0C
+12 addr16(_WriteCommand;)  
+75 82 01
+12 addr16(_WriteCommand;)  
+90 00 14
+02 addr16(_waitms;)  
+AA 82
+AB 83
+AC F0
+74 02
+B5 data8(_LCDprint_PARM_2;) rel3(L011013?;)
+7D C0
+80 rel2(L011014?;)
+7D 80
+8D 82
+C0 02
+C0 03
+C0 04
+12 addr16(_WriteCommand;)  
+90 00 05
+12 addr16(_waitms;)  
+D0 04
+D0 03
+D0 02
+7D 00
+7E 00
+ED
+2A
+FF
+EE
+3B
+F8
+8C 01
+8F 82
+88 83
+89 F0
+12 addr16(__gptrget;)  
+FF
+60 rel2(L011006?;)
+8F 82
+C0 02
+C0 03
+C0 04
+C0 05
+C0 06
+12 addr16(_WriteData;)  
+D0 06
+D0 05
+D0 04
+D0 03
+D0 02
+0D
+BD 00 rel3(L011003?;)
+0E
+80 rel2(L011003?;)
+30 bit(_LCDprint_PARM_3;) rel3(L011011?;)
+8D 02
+8E 03
+C3
+EA
+94 10
+EB
+64 80
+94 80
+50 rel2(L011011?;)
+75 82 20
+C0 02
+C0 03
+12 addr16(_WriteData;)  
+D0 03
+D0 02
+0A
+BA 00 rel3(L011007?;)
+0B
+80 rel2(L011007?;)
+22
+85 82 data8(_getsn_buff_1_64;)
+85 83 data8(_getsn_buff_1_64;0x0001;+;)
+85 F0 data8(_getsn_buff_1_64;0x0002;+;)
+E4
+F5 data8(_getsn_sloc0_1_0;)
+F5 data8(_getsn_sloc0_1_0;0x0001;+;)
+E5 data8(_getsn_PARM_2;)
+24 FF
+FF
+E5 data8(_getsn_PARM_2;0x0001;+;)
+34 FF
+F8
+79 00
+7A 00
+C3
+E9
+9F
+EA
+64 80
+88 F0
+63 F0 80
+95 F0
+50 rel2(L012008?;)
+C0 02
+C0 07
+C0 00
+C0 01
+12 addr16(_getchar;)  
+AB 82
+D0 01
+D0 00
+D0 07
+D0 02
+BB 0A rel3(L012015?;)
+80 rel2(L012001?;)
+BB 0D rel3(L012002?;)
+E5 data8(_getsn_sloc0_1_0;)
+25 data8(_getsn_buff_1_64;)
+FC
+E5 data8(_getsn_sloc0_1_0;0x0001;+;)
+35 data8(_getsn_buff_1_64;0x0001;+;)
+FD
+AE data8(_getsn_buff_1_64;0x0002;+;)
+8C 82
+8D 83
+8E F0
+E4
+12 addr16(__gptrput;)  
+85 data8(_getsn_sloc0_1_0;) 82
+85 data8(_getsn_sloc0_1_0;0x0001;+;) 83
+22
+E9
+25 data8(_getsn_buff_1_64;)
+FC
+EA
+35 data8(_getsn_buff_1_64;0x0001;+;)
+FD
+AE data8(_getsn_buff_1_64;0x0002;+;)
+8C 82
+8D 83
+8E F0
+EB
+12 addr16(__gptrput;)  
+09
+B9 00 rel3(L012018?;)
+0A
+89 data8(_getsn_sloc0_1_0;)
+8A data8(_getsn_sloc0_1_0;0x0001;+;)
+80 rel2(L012005?;)
+E5 data8(_getsn_sloc0_1_0;)
+25 data8(_getsn_buff_1_64;)
+FA
+E5 data8(_getsn_sloc0_1_0;0x0001;+;)
+35 data8(_getsn_buff_1_64;0x0001;+;)
+FB
+AC data8(_getsn_buff_1_64;0x0002;+;)
+8A 82
+8B 83
+8C F0
+E4
+12 addr16(__gptrput;)  
+85 data8(_getsn_PARM_2;) 82
+85 data8(_getsn_PARM_2;0x0001;+;) 83
+22
+C0 E0
+C0 02
+C0 03
+C0 D0
+75 D0 00
+C2 CF
+05 data8(_pwm_count0;)
+E5 data8(_pwm_count0;)
+24 9B
+50 rel2(L013002?;)
+75 data8(_pwm_count0;) 00
+AA data8(_pwm_count0;)
+7B 00
+C3
+E5 data8(_in0;)
+9A
+E5 data8(_in0;0x0001;+;)
+9B
+92 data8(_Timer2_ISR_sloc0_1_0;)
+B3
+92 96
+AA data8(_pwm_count0;)
+7B 00
+C3
+E5 data8(_in1;)
+9A
+E5 data8(_in1;0x0001;+;)
+9B
+92 data8(_Timer2_ISR_sloc0_1_0;)
+B3
+92 95
+05 data8(_pwm_count1;)
+E5 data8(_pwm_count1;)
+24 9B
+50 rel2(L013004?;)
+75 data8(_pwm_count1;) 00
+AA data8(_pwm_count1;)
+7B 00
+C3
+E5 data8(_in2;)
+9A
+E5 data8(_in2;0x0001;+;)
+9B
+92 data8(_Timer2_ISR_sloc0_1_0;)
+B3
+92 93
+AA data8(_pwm_count1;)
+7B 00
+C3
+E5 data8(_in3;)
+9A
+E5 data8(_in3;0x0001;+;)
+9B
+92 data8(_Timer2_ISR_sloc0_1_0;)
+B3
+92 91
+D0 D0
+D0 03
+D0 02
+D0 E0
+32
+AA 82
+85 data8(_InitPinADC_PARM_2;) F0
+05 F0
+74 01
+80 rel2(L014013?;)
+25 E0
+D5 F0 rel3(L014011?;)
+FB
+75 A7 20
+BA 00 rel3(L014014?;)
+80 rel2(L014001?;)
+BA 01 rel3(L014015?;)
+80 rel2(L014002?;)
+BA 02 rel3(L014005?;)
+80 rel2(L014003?;)
+EB
+F4
+FA
+52 F1
+EB
+42 D4
+80 rel2(L014005?;)
+EB
+F4
+FA
+52 F2
+EB
+42 D5
+80 rel2(L014005?;)
+EB
+F4
+FA
+52 F3
+EB
+42 CC
+75 A7 00
+22
+85 82 BB
+D2 EC
+20 EC rel3(L015001?;)
+D2 EC
+20 EC rel3(L015004?;)
+85 BD 82
+85 BE 83
+22
+12 addr16(_ADC_at_Pin;)  
+12 addr16(___uint2fs;)  
+AA 82
+AB 83
+AC F0
+FD
+C0 02
+C0 03
+C0 04
+C0 05
+90 6C 8B
+75 F0 53
+74 40
+12 addr16(___fsmul;)  
+AA 82
+AB 83
+AC F0
+FD
+E5 81
+24 FC
+F5 81
+E4
+C0 E0
+74 FC
+C0 E0
+74 7F
+C0 E0
+74 46
+C0 E0
+8A 82
+8B 83
+8C F0
+ED
+12 addr16(___fsdiv;)  
+AA 82
+AB 83
+AC F0
+FD
+E5 81
+24 FC
+F5 81
+8A 82
+8B 83
+8C F0
+ED
+22
+7A 00
+7B 00
+75 data8(_InitPinADC_PARM_2;) 00
+75 82 01
+C0 02
+C0 03
+12 addr16(_InitPinADC;)  
+12 addr16(_InitADC;)  
+12 addr16(_LCD_4BIT;)  
+90 01 F4
+12 addr16(_waitms;)  
+74 data8(__str_0;)
+C0 E0
+74 data8(__str_0;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+15 81
+15 81
+15 81
+74 data8(__str_1;)
+C0 E0
+74 data8(__str_1;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+15 81
+15 81
+15 81
+74 data8(_in3;)
+C0 E0
+74 data8(_in3;0x0008;>>;)
+C0 E0
+74 40
+C0 E0
+74 data8(_in2;)
+C0 E0
+74 data8(_in2;0x0008;>>;)
+C0 E0
+74 40
+C0 E0
+74 data8(_in1;)
+C0 E0
+74 data8(_in1;0x0008;>>;)
+C0 E0
+74 40
+C0 E0
+74 data8(_in0;)
+C0 E0
+74 data8(_in0;0x0008;>>;)
+C0 E0
+74 40
+C0 E0
+74 data8(__str_2;)
+C0 E0
+74 data8(__str_2;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_scanf;)  
+E5 81
+24 F1
+F5 81
+D0 03
+D0 02
+C3
+74 64
+95 data8(_in0;)
+E4
+95 data8(_in0;0x0001;+;)
+40 rel2(L017001?;)
+74 64
+95 data8(_in1;)
+E4
+95 data8(_in1;0x0001;+;)
+40 rel2(L017001?;)
+74 64
+95 data8(_in2;)
+E4
+95 data8(_in2;0x0001;+;)
+40 rel2(L017001?;)
+74 64
+95 data8(_in3;)
+E4
+95 data8(_in3;0x0001;+;)
+50 rel2(L017002?;)
+75 data8(_in0;) 32
+E4
+F5 data8(_in0;0x0001;+;)
+75 data8(_in1;) 32
+E4
+F5 data8(_in1;0x0001;+;)
+75 data8(_in2;) 32
+E4
+F5 data8(_in2;0x0001;+;)
+75 data8(_in3;) 32
+E4
+F5 data8(_in3;0x0001;+;)
+02 addr16(L017063?;)  
+20 97 rel3(L017098?;)
+02 addr16(L017063?;)  
+20 85 rel3(L017019?;)
+75 data8(_in0;) 1E
+E4
+F5 data8(_in0;0x0001;+;)
+75 data8(_in1;) 46
+E4
+F5 data8(_in1;0x0001;+;)
+75 data8(_in2;) 1E
+E4
+F5 data8(_in2;0x0001;+;)
+75 data8(_in3;) 46
+E4
+F5 data8(_in3;0x0001;+;)
+80 rel2(L017023?;)
+20 87 rel3(L017016?;)
+75 data8(_in0;) 46
+E4
+F5 data8(_in0;0x0001;+;)
+75 data8(_in1;) 1E
+E4
+F5 data8(_in1;0x0001;+;)
+75 data8(_in2;) 46
+E4
+F5 data8(_in2;0x0001;+;)
+75 data8(_in3;) 1E
+E4
+F5 data8(_in3;0x0001;+;)
+80 rel2(L017023?;)
+20 92 rel3(L017013?;)
+75 data8(_in0;) 1E
+E4
+F5 data8(_in0;0x0001;+;)
+75 data8(_in1;) 46
+E4
+F5 data8(_in1;0x0001;+;)
+75 data8(_in2;) 32
+E4
+F5 data8(_in2;0x0001;+;)
+75 data8(_in3;) 32
+E4
+F5 data8(_in3;0x0001;+;)
+80 rel2(L017023?;)
+20 94 rel3(L017023?;)
+75 data8(_in0;) 32
+E4
+F5 data8(_in0;0x0001;+;)
+75 data8(_in1;) 32
+E4
+F5 data8(_in1;0x0001;+;)
+75 data8(_in2;) 1E
+E4
+F5 data8(_in2;0x0001;+;)
+75 data8(_in3;) 46
+E4
+F5 data8(_in3;0x0001;+;)
+30 83 rel3(L017103?;)
+02 addr16(L017060?;)  
+EA
+4B
+60 rel2(L017104?;)
+02 addr16(L017057?;)  
+75 data8(_LCDprint_PARM_2;) 01
+D2 bit(_LCDprint_PARM_3;)
+90 data16(__str_3;)  
+75 F0 80
+12 addr16(_LCDprint;)  
+75 data8(_LCDprint_PARM_2;) 02
+D2 bit(_LCDprint_PARM_3;)
+90 data16(__str_3;)  
+75 F0 80
+12 addr16(_LCDprint;)  
+90 00 11
+12 addr16(_malloc;)  
+AC 82
+AD 83
+7E 00
+C0 04
+C0 05
+C0 06
+C0 data8(_in1;)
+C0 data8(_in1;0x0001;+;)
+C0 data8(_in0;)
+C0 data8(_in0;0x0001;+;)
+74 data8(__str_4;)
+C0 E0
+74 data8(__str_4;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 F6
+F5 81
+D0 06
+D0 05
+D0 04
+75 data8(_LCDprint_PARM_2;) 01
+D2 bit(_LCDprint_PARM_3;)
+8C 82
+8D 83
+8E F0
+C0 04
+C0 05
+C0 06
+12 addr16(_LCDprint;)  
+D0 06
+D0 05
+D0 04
+8C 82
+8D 83
+8E F0
+12 addr16(_free;)  
+90 00 11
+12 addr16(_malloc;)  
+AF 82
+A8 83
+8F 04
+88 05
+7E 00
+C0 04
+C0 05
+C0 06
+C0 data8(_in3;)
+C0 data8(_in3;0x0001;+;)
+C0 data8(_in2;)
+C0 data8(_in2;0x0001;+;)
+74 data8(__str_5;)
+C0 E0
+74 data8(__str_5;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 F6
+F5 81
+D0 06
+D0 05
+D0 04
+75 data8(_LCDprint_PARM_2;) 02
+D2 bit(_LCDprint_PARM_3;)
+8C 82
+8D 83
+8E F0
+C0 04
+C0 05
+C0 06
+12 addr16(_LCDprint;)  
+D0 06
+D0 05
+D0 04
+8C 82
+8D 83
+8E F0
+12 addr16(_free;)  
+7A 01
+7B 00
+02 addr16(L017060?;)  
+BA 01 rel3(L017105?;)
+BB 00 rel3(L017105?;)
+80 rel2(L017106?;)
+02 addr16(L017060?;)  
+75 data8(_LCDprint_PARM_2;) 01
+D2 bit(_LCDprint_PARM_3;)
+90 data16(__str_3;)  
+75 F0 80
+12 addr16(_LCDprint;)  
+75 data8(_LCDprint_PARM_2;) 02
+D2 bit(_LCDprint_PARM_3;)
+90 data16(__str_3;)  
+75 F0 80
+12 addr16(_LCDprint;)  
+90 00 11
+12 addr16(_malloc;)  
+AF 82
+A8 83
+8F 04
+88 05
+7E 00
+C0 04
+C0 05
+C0 06
+74 data8(__str_6;)
+C0 E0
+74 data8(__str_6;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 FA
+F5 81
+D0 06
+D0 05
+D0 04
+75 data8(_LCDprint_PARM_2;) 01
+D2 bit(_LCDprint_PARM_3;)
+8C 82
+8D 83
+8E F0
+C0 04
+C0 05
+C0 06
+12 addr16(_LCDprint;)  
+D0 06
+D0 05
+D0 04
+8C 82
+8D 83
+8E F0
+12 addr16(_free;)  
+90 00 11
+12 addr16(_malloc;)  
+AF 82
+A8 83
+8F 04
+88 05
+7E 00
+C3
+E5 data8(_in1;)
+95 data8(_in0;)
+E5 data8(_in1;0x0001;+;)
+95 data8(_in0;0x0001;+;)
+50 rel2(L017050?;)
+E5 data8(_in0;)
+B5 data8(_in2;) rel3(L017050?;)
+E5 data8(_in0;0x0001;+;)
+B5 data8(_in2;0x0001;+;) rel3(L017050?;)
+E5 data8(_in1;)
+B5 data8(_in3;) rel3(L017050?;)
+E5 data8(_in1;0x0001;+;)
+B5 data8(_in3;0x0001;+;) rel3(L017050?;)
+C0 04
+C0 05
+C0 06
+74 data8(__str_7;)
+C0 E0
+74 data8(__str_7;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 FA
+F5 81
+D0 06
+D0 05
+D0 04
+02 addr16(L017051?;)  
+C3
+E5 data8(_in0;)
+95 data8(_in1;)
+E5 data8(_in0;0x0001;+;)
+95 data8(_in1;0x0001;+;)
+50 rel2(L017045?;)
+E5 data8(_in0;)
+B5 data8(_in2;) rel3(L017045?;)
+E5 data8(_in0;0x0001;+;)
+B5 data8(_in2;0x0001;+;) rel3(L017045?;)
+E5 data8(_in1;)
+B5 data8(_in3;) rel3(L017045?;)
+E5 data8(_in1;0x0001;+;)
+B5 data8(_in3;0x0001;+;) rel3(L017045?;)
+C0 04
+C0 05
+C0 06
+74 data8(__str_8;)
+C0 E0
+74 data8(__str_8;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 FA
+F5 81
+D0 06
+D0 05
+D0 04
+02 addr16(L017051?;)  
+C3
+E5 data8(_in0;)
+95 data8(_in1;)
+E5 data8(_in0;0x0001;+;)
+95 data8(_in1;0x0001;+;)
+50 rel2(L017041?;)
+C3
+E5 data8(_in3;)
+95 data8(_in1;)
+E5 data8(_in3;0x0001;+;)
+95 data8(_in1;0x0001;+;)
+50 rel2(L017041?;)
+C0 04
+C0 05
+C0 06
+74 data8(__str_9;)
+C0 E0
+74 data8(__str_9;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 FA
+F5 81
+D0 06
+D0 05
+D0 04
+02 addr16(L017051?;)  
+C3
+E5 data8(_in2;)
+95 data8(_in3;)
+E5 data8(_in2;0x0001;+;)
+95 data8(_in3;0x0001;+;)
+50 rel2(L017037?;)
+C3
+E5 data8(_in1;)
+95 data8(_in3;)
+E5 data8(_in1;0x0001;+;)
+95 data8(_in3;0x0001;+;)
+50 rel2(L017037?;)
+C0 04
+C0 05
+C0 06
+74 data8(__str_10;)
+C0 E0
+74 data8(__str_10;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 FA
+F5 81
+D0 06
+D0 05
+D0 04
+02 addr16(L017051?;)  
+E5 data8(_in1;)
+B5 data8(_in0;) rel3(L017033?;)
+E5 data8(_in1;0x0001;+;)
+B5 data8(_in0;0x0001;+;) rel3(L017033?;)
+E5 data8(_in3;)
+B5 data8(_in2;) rel3(L017033?;)
+E5 data8(_in3;0x0001;+;)
+B5 data8(_in2;0x0001;+;) rel3(L017033?;)
+C0 04
+C0 05
+C0 06
+74 data8(__str_11;)
+C0 E0
+74 data8(__str_11;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 FA
+F5 81
+D0 06
+D0 05
+D0 04
+02 addr16(L017051?;)  
+E5 data8(_in1;)
+B5 data8(_in0;) rel3(L017029?;)
+E5 data8(_in1;0x0001;+;)
+B5 data8(_in0;0x0001;+;) rel3(L017029?;)
+C3
+E5 data8(_in3;)
+95 data8(_in2;)
+E5 data8(_in3;0x0001;+;)
+95 data8(_in2;0x0001;+;)
+50 rel2(L017029?;)
+C0 04
+C0 05
+C0 06
+74 data8(__str_12;)
+C0 E0
+74 data8(__str_12;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 FA
+F5 81
+D0 06
+D0 05
+D0 04
+80 rel2(L017051?;)
+E5 data8(_in1;)
+B5 data8(_in0;) rel3(L017025?;)
+E5 data8(_in1;0x0001;+;)
+B5 data8(_in0;0x0001;+;) rel3(L017025?;)
+C3
+E5 data8(_in2;)
+95 data8(_in3;)
+E5 data8(_in2;0x0001;+;)
+95 data8(_in3;0x0001;+;)
+50 rel2(L017025?;)
+C0 04
+C0 05
+C0 06
+74 data8(__str_13;)
+C0 E0
+74 data8(__str_13;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 FA
+F5 81
+D0 06
+D0 05
+D0 04
+80 rel2(L017051?;)
+C0 04
+C0 05
+C0 06
+74 data8(__str_14;)
+C0 E0
+74 data8(__str_14;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+C0 04
+C0 05
+C0 06
+12 addr16(_sprintf;)  
+E5 81
+24 FA
+F5 81
+D0 06
+D0 05
+D0 04
+75 data8(_LCDprint_PARM_2;) 02
+D2 bit(_LCDprint_PARM_3;)
+8C 82
+8D 83
+8E F0
+C0 04
+C0 05
+C0 06
+12 addr16(_LCDprint;)  
+D0 06
+D0 05
+D0 04
+8C 82
+8D 83
+8E F0
+12 addr16(_free;)  
+7A 00
+7B 00
+75 82 06
+C0 02
+C0 03
+12 addr16(_Volts_at_Pin;)  
+AC 82
+AD 83
+AE F0
+FF
+C0 04
+C0 05
+C0 06
+C0 07
+74 data8(__str_15;)
+C0 E0
+74 data8(__str_15;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+E5 81
+24 F9
+F5 81
+D0 03
+D0 02
+02 addr16(L017062?;)  
+74 data8(__str_0;)
+C0 E0
+74 data8(__str_0;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+15 81
+15 81
+15 81
+74 data8(__str_16;)
+C0 E0
+74 data8(__str_16;0x0008;>>;)
+C0 E0
+74 80
+C0 E0
+12 addr16(_printf;)  
+15 81
+15 81
+15 81
+22
+</CODE>
+
+<CODE R_CSEG>
+</CODE>
+
+<CODE R_XINIT>
+</CODE>
+
+<CODE R_CONST>
+1B
+5B 32 4A 
+00
+0D
+45 6E 74 65 72 20 34 20 73 70 61 63 65 64 20 6E 75
+6D 62 65 72 73 20 28 32 20 66 6F 72 20 72 69 67
+68 74 2F 6C 65 66 74 20 6D 6F 74 6F 72 73 29 20
+62 65 74 77 65 65 6E 20 30 2D 
+31 30 30 3A 20 
+00
+25 64 20 25 64 20 25 64 20 25 64 
+0A
+00
+20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 
+00
+50 57 4D 31 3A 25 64 2C 25 64 
+00
+50 57 4D 32 3A 25 64 2C 25 64 
+00
+44 69 72 65 63 74 69 6F 6E 3A 
+00
+42 61 63 6B 77 61 72 64 
+00
+46 6F 72 77 61 72 64 
+00
+46 6F 72 77 61 72 64 20 4C 65 66 74 
+00
+46 6F 72 77 61 72 64 20 52 69 67 68 74 
+00
+53 74 6F 70 
+00
+42 61 63 6B 20 4C 65 66 74 
+00
+42 61 63 6B 20 52 69 67 68 
+00
+54 75 72 6E 69 6E 67 
+00
+25 66 
+0A
+00
+0D
+4E 75 6D 62 65 72 73 20 65 6E 74 65 72 65 64 20 6E
+6F 74 20 77 69 74 68 69 6E 20 30 2D 31 30 30 20
+72 61 6E 67 65 
+0A
+20 50 72 6F 67 72 61 6D 20 45 6E 64 65 64 
+00
+</CODE>
+
+<CODE AT 002E>
+</CODE>

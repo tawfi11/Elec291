@@ -1,0 +1,35 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: STBLLIB - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\JCF\AppData\Local\Temp\RSP4F60.tmp" with contents
+[
+/nologo /MT /W3 /WX /GX /Od /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "STBLLIB_EXPORTS" /D "_VS6_USED" /FR"Release/" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Courses\ELEC291\STM32\FlashLoader\Sources\Crs232\rs232.cpp"
+]
+Creating command line "cl.exe @C:\Users\JCF\AppData\Local\Temp\RSP4F60.tmp" 
+Creating temporary file "C:\Users\JCF\AppData\Local\Temp\RSP4F70.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:no /pdb:"Release/STBLLIB.pdb" /machine:I386 /out:"..\BIN\Release\STBLLIB.dll" /implib:"Release/STBLLIB.lib" 
+.\Release\rs232.obj
+.\Release\STBLLIB.obj
+.\Release\STBLLIB.res
+]
+Creating command line "link.exe @C:\Users\JCF\AppData\Local\Temp\RSP4F70.tmp"
+<h3>Output Window</h3>
+Compiling...
+rs232.cpp
+Linking...
+   Creating library Release/STBLLIB.lib and object Release/STBLLIB.exp
+
+
+
+<h3>Results</h3>
+STBLLIB.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

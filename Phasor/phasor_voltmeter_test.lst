@@ -1,0 +1,1469 @@
+0000              1   ;--------------------------------------------------------
+0000              2   ; File Created by C51
+0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
+0000              4   ; This file was generated Tue Mar 03 17:00:27 2020
+0000              5   ;--------------------------------------------------------
+                  5   $name phasor_voltmeter_test
+                  6   $optc51 --model-small
+                  7   $printf_float
+0000              9            R_DSEG    segment data
+0000             10            R_CSEG    segment code
+0000             11            R_BSEG    segment bit
+0000             12            R_XSEG    segment xdata
+0000             13            R_PSEG    segment xdata
+0000             14            R_ISEG    segment idata
+0000             15            R_OSEG    segment data overlay
+0000             16            BIT_BANK  segment data overlay
+0000             17            R_HOME    segment code
+0000             18            R_GSINIT  segment code
+0000             19            R_IXSEG   segment xdata
+0000             20            R_CONST   segment code
+0000             21            R_XINIT   segment code
+0000             22            R_DINIT   segment code
+0000             23   
+0000             24   ;--------------------------------------------------------
+0000             25   ; Public variables in this module
+0000             26   ;--------------------------------------------------------
+0000             27            public _InitPinADC_PARM_2
+0000             28            public _main
+0000             29            public _TIMER0_Init
+0000             30            public _getsn
+0000             31            public _LCDprint
+0000             32            public _LCD_4BIT
+0000             33            public _WriteCommand
+0000             34            public _WriteData
+0000             35            public _LCD_byte
+0000             36            public _LCD_pulse
+0000             37            public _Volts_at_Pin
+0000             38            public _ADC_at_Pin
+0000             39            public _InitPinADC
+0000             40            public _waitms
+0000             41            public _Timer3us
+0000             42            public _InitADC
+0000             43            public __c51_external_startup
+0000             44            public _LCDprint_PARM_3
+0000             45            public _getsn_PARM_2
+0000             46            public _LCDprint_PARM_2
+0000             47            public _overflow_count
+0000             48   ;--------------------------------------------------------
+0000             49   ; Special Function Registers
+0000             50   ;--------------------------------------------------------
+0000             51   _ACC            DATA 0xe0
+0000             52   _ADC0ASAH       DATA 0xb6
+0000             53   _ADC0ASAL       DATA 0xb5
+0000             54   _ADC0ASCF       DATA 0xa1
+0000             55   _ADC0ASCT       DATA 0xc7
+0000             56   _ADC0CF0        DATA 0xbc
+0000             57   _ADC0CF1        DATA 0xb9
+0000             58   _ADC0CF2        DATA 0xdf
+0000             59   _ADC0CN0        DATA 0xe8
+0000             60   _ADC0CN1        DATA 0xb2
+0000             61   _ADC0CN2        DATA 0xb3
+0000             62   _ADC0GTH        DATA 0xc4
+0000             63   _ADC0GTL        DATA 0xc3
+0000             64   _ADC0H          DATA 0xbe
+0000             65   _ADC0L          DATA 0xbd
+0000             66   _ADC0LTH        DATA 0xc6
+0000             67   _ADC0LTL        DATA 0xc5
+0000             68   _ADC0MX         DATA 0xbb
+0000             69   _B              DATA 0xf0
+0000             70   _CKCON0         DATA 0x8e
+0000             71   _CKCON1         DATA 0xa6
+0000             72   _CLEN0          DATA 0xc6
+0000             73   _CLIE0          DATA 0xc7
+0000             74   _CLIF0          DATA 0xe8
+0000             75   _CLKSEL         DATA 0xa9
+0000             76   _CLOUT0         DATA 0xd1
+0000             77   _CLU0CF         DATA 0xb1
+0000             78   _CLU0FN         DATA 0xaf
+0000             79   _CLU0MX         DATA 0x84
+0000             80   _CLU1CF         DATA 0xb3
+0000             81   _CLU1FN         DATA 0xb2
+0000             82   _CLU1MX         DATA 0x85
+0000             83   _CLU2CF         DATA 0xb6
+0000             84   _CLU2FN         DATA 0xb5
+0000             85   _CLU2MX         DATA 0x91
+0000             86   _CLU3CF         DATA 0xbf
+0000             87   _CLU3FN         DATA 0xbe
+0000             88   _CLU3MX         DATA 0xae
+0000             89   _CMP0CN0        DATA 0x9b
+0000             90   _CMP0CN1        DATA 0x99
+0000             91   _CMP0MD         DATA 0x9d
+0000             92   _CMP0MX         DATA 0x9f
+0000             93   _CMP1CN0        DATA 0xbf
+0000             94   _CMP1CN1        DATA 0xac
+0000             95   _CMP1MD         DATA 0xab
+0000             96   _CMP1MX         DATA 0xaa
+0000             97   _CRC0CN0        DATA 0xce
+0000             98   _CRC0CN1        DATA 0x86
+0000             99   _CRC0CNT        DATA 0xd3
+0000            100   _CRC0DAT        DATA 0xcb
+0000            101   _CRC0FLIP       DATA 0xcf
+0000            102   _CRC0IN         DATA 0xca
+0000            103   _CRC0ST         DATA 0xd2
+0000            104   _DAC0CF0        DATA 0x91
+0000            105   _DAC0CF1        DATA 0x92
+0000            106   _DAC0H          DATA 0x85
+0000            107   _DAC0L          DATA 0x84
+0000            108   _DAC1CF0        DATA 0x93
+0000            109   _DAC1CF1        DATA 0x94
+0000            110   _DAC1H          DATA 0x8a
+0000            111   _DAC1L          DATA 0x89
+0000            112   _DAC2CF0        DATA 0x95
+0000            113   _DAC2CF1        DATA 0x96
+0000            114   _DAC2H          DATA 0x8c
+0000            115   _DAC2L          DATA 0x8b
+0000            116   _DAC3CF0        DATA 0x9a
+0000            117   _DAC3CF1        DATA 0x9c
+0000            118   _DAC3H          DATA 0x8e
+0000            119   _DAC3L          DATA 0x8d
+0000            120   _DACGCF0        DATA 0x88
+0000            121   _DACGCF1        DATA 0x98
+0000            122   _DACGCF2        DATA 0xa2
+0000            123   _DERIVID        DATA 0xad
+0000            124   _DEVICEID       DATA 0xb5
+0000            125   _DPH            DATA 0x83
+0000            126   _DPL            DATA 0x82
+0000            127   _EIE1           DATA 0xe6
+0000            128   _EIE2           DATA 0xf3
+0000            129   _EIP1           DATA 0xbb
+0000            130   _EIP1H          DATA 0xee
+0000            131   _EIP2           DATA 0xed
+0000            132   _EIP2H          DATA 0xf6
+0000            133   _EMI0CN         DATA 0xe7
+0000            134   _FLKEY          DATA 0xb7
+0000            135   _HFO0CAL        DATA 0xc7
+0000            136   _HFO1CAL        DATA 0xd6
+0000            137   _HFOCN          DATA 0xef
+0000            138   _I2C0ADM        DATA 0xff
+0000            139   _I2C0CN0        DATA 0xba
+0000            140   _I2C0DIN        DATA 0xbc
+0000            141   _I2C0DOUT       DATA 0xbb
+0000            142   _I2C0FCN0       DATA 0xad
+0000            143   _I2C0FCN1       DATA 0xab
+0000            144   _I2C0FCT        DATA 0xf5
+0000            145   _I2C0SLAD       DATA 0xbd
+0000            146   _I2C0STAT       DATA 0xb9
+0000            147   _IE             DATA 0xa8
+0000            148   _IP             DATA 0xb8
+0000            149   _IPH            DATA 0xf2
+0000            150   _IT01CF         DATA 0xe4
+0000            151   _LFO0CN         DATA 0xb1
+0000            152   _P0             DATA 0x80
+0000            153   _P0MASK         DATA 0xfe
+0000            154   _P0MAT          DATA 0xfd
+0000            155   _P0MDIN         DATA 0xf1
+0000            156   _P0MDOUT        DATA 0xa4
+0000            157   _P0SKIP         DATA 0xd4
+0000            158   _P1             DATA 0x90
+0000            159   _P1MASK         DATA 0xee
+0000            160   _P1MAT          DATA 0xed
+0000            161   _P1MDIN         DATA 0xf2
+0000            162   _P1MDOUT        DATA 0xa5
+0000            163   _P1SKIP         DATA 0xd5
+0000            164   _P2             DATA 0xa0
+0000            165   _P2MASK         DATA 0xfc
+0000            166   _P2MAT          DATA 0xfb
+0000            167   _P2MDIN         DATA 0xf3
+0000            168   _P2MDOUT        DATA 0xa6
+0000            169   _P2SKIP         DATA 0xcc
+0000            170   _P3             DATA 0xb0
+0000            171   _P3MDIN         DATA 0xf4
+0000            172   _P3MDOUT        DATA 0x9c
+0000            173   _PCA0CENT       DATA 0x9e
+0000            174   _PCA0CLR        DATA 0x9c
+0000            175   _PCA0CN0        DATA 0xd8
+0000            176   _PCA0CPH0       DATA 0xfc
+0000            177   _PCA0CPH1       DATA 0xea
+0000            178   _PCA0CPH2       DATA 0xec
+0000            179   _PCA0CPH3       DATA 0xf5
+0000            180   _PCA0CPH4       DATA 0x85
+0000            181   _PCA0CPH5       DATA 0xde
+0000            182   _PCA0CPL0       DATA 0xfb
+0000            183   _PCA0CPL1       DATA 0xe9
+0000            184   _PCA0CPL2       DATA 0xeb
+0000            185   _PCA0CPL3       DATA 0xf4
+0000            186   _PCA0CPL4       DATA 0x84
+0000            187   _PCA0CPL5       DATA 0xdd
+0000            188   _PCA0CPM0       DATA 0xda
+0000            189   _PCA0CPM1       DATA 0xdb
+0000            190   _PCA0CPM2       DATA 0xdc
+0000            191   _PCA0CPM3       DATA 0xae
+0000            192   _PCA0CPM4       DATA 0xaf
+0000            193   _PCA0CPM5       DATA 0xcc
+0000            194   _PCA0H          DATA 0xfa
+0000            195   _PCA0L          DATA 0xf9
+0000            196   _PCA0MD         DATA 0xd9
+0000            197   _PCA0POL        DATA 0x96
+0000            198   _PCA0PWM        DATA 0xf7
+0000            199   _PCON0          DATA 0x87
+0000            200   _PCON1          DATA 0xcd
+0000            201   _PFE0CN         DATA 0xc1
+0000            202   _PRTDRV         DATA 0xf6
+0000            203   _PSCTL          DATA 0x8f
+0000            204   _PSTAT0         DATA 0xaa
+0000            205   _PSW            DATA 0xd0
+0000            206   _REF0CN         DATA 0xd1
+0000            207   _REG0CN         DATA 0xc9
+0000            208   _REVID          DATA 0xb6
+0000            209   _RSTSRC         DATA 0xef
+0000            210   _SBCON1         DATA 0x94
+0000            211   _SBRLH1         DATA 0x96
+0000            212   _SBRLL1         DATA 0x95
+0000            213   _SBUF           DATA 0x99
+0000            214   _SBUF0          DATA 0x99
+0000            215   _SBUF1          DATA 0x92
+0000            216   _SCON           DATA 0x98
+0000            217   _SCON0          DATA 0x98
+0000            218   _SCON1          DATA 0xc8
+0000            219   _SFRPAGE        DATA 0xa7
+0000            220   _SFRPGCN        DATA 0xbc
+0000            221   _SFRSTACK       DATA 0xd7
+0000            222   _SMB0ADM        DATA 0xd6
+0000            223   _SMB0ADR        DATA 0xd7
+0000            224   _SMB0CF         DATA 0xc1
+0000            225   _SMB0CN0        DATA 0xc0
+0000            226   _SMB0DAT        DATA 0xc2
+0000            227   _SMB0FCN0       DATA 0xc3
+0000            228   _SMB0FCN1       DATA 0xc4
+0000            229   _SMB0FCT        DATA 0xef
+0000            230   _SMB0RXLN       DATA 0xc5
+0000            231   _SMB0TC         DATA 0xac
+0000            232   _SMOD1          DATA 0x93
+0000            233   _SP             DATA 0x81
+0000            234   _SPI0CFG        DATA 0xa1
+0000            235   _SPI0CKR        DATA 0xa2
+0000            236   _SPI0CN0        DATA 0xf8
+0000            237   _SPI0DAT        DATA 0xa3
+0000            238   _SPI0FCN0       DATA 0x9a
+0000            239   _SPI0FCN1       DATA 0x9b
+0000            240   _SPI0FCT        DATA 0xf7
+0000            241   _SPI0PCF        DATA 0xdf
+0000            242   _TCON           DATA 0x88
+0000            243   _TH0            DATA 0x8c
+0000            244   _TH1            DATA 0x8d
+0000            245   _TL0            DATA 0x8a
+0000            246   _TL1            DATA 0x8b
+0000            247   _TMOD           DATA 0x89
+0000            248   _TMR2CN0        DATA 0xc8
+0000            249   _TMR2CN1        DATA 0xfd
+0000            250   _TMR2H          DATA 0xcf
+0000            251   _TMR2L          DATA 0xce
+0000            252   _TMR2RLH        DATA 0xcb
+0000            253   _TMR2RLL        DATA 0xca
+0000            254   _TMR3CN0        DATA 0x91
+0000            255   _TMR3CN1        DATA 0xfe
+0000            256   _TMR3H          DATA 0x95
+0000            257   _TMR3L          DATA 0x94
+0000            258   _TMR3RLH        DATA 0x93
+0000            259   _TMR3RLL        DATA 0x92
+0000            260   _TMR4CN0        DATA 0x98
+0000            261   _TMR4CN1        DATA 0xff
+0000            262   _TMR4H          DATA 0xa5
+0000            263   _TMR4L          DATA 0xa4
+0000            264   _TMR4RLH        DATA 0xa3
+0000            265   _TMR4RLL        DATA 0xa2
+0000            266   _TMR5CN0        DATA 0xc0
+0000            267   _TMR5CN1        DATA 0xf1
+0000            268   _TMR5H          DATA 0xd5
+0000            269   _TMR5L          DATA 0xd4
+0000            270   _TMR5RLH        DATA 0xd3
+0000            271   _TMR5RLL        DATA 0xd2
+0000            272   _UART0PCF       DATA 0xd9
+0000            273   _UART1FCN0      DATA 0x9d
+0000            274   _UART1FCN1      DATA 0xd8
+0000            275   _UART1FCT       DATA 0xfa
+0000            276   _UART1LIN       DATA 0x9e
+0000            277   _UART1PCF       DATA 0xda
+0000            278   _VDM0CN         DATA 0xff
+0000            279   _WDTCN          DATA 0x97
+0000            280   _XBR0           DATA 0xe1
+0000            281   _XBR1           DATA 0xe2
+0000            282   _XBR2           DATA 0xe3
+0000            283   _XOSC0CN        DATA 0x86
+0000            284   _DPTR           DATA 0x8382
+0000            285   _TMR2RL         DATA 0xcbca
+0000            286   _TMR3RL         DATA 0x9392
+0000            287   _TMR4RL         DATA 0xa3a2
+0000            288   _TMR5RL         DATA 0xd3d2
+0000            289   _TMR0           DATA 0x8c8a
+0000            290   _TMR1           DATA 0x8d8b
+0000            291   _TMR2           DATA 0xcfce
+0000            292   _TMR3           DATA 0x9594
+0000            293   _TMR4           DATA 0xa5a4
+0000            294   _TMR5           DATA 0xd5d4
+0000            295   _SBRL1          DATA 0x9695
+0000            296   _PCA0           DATA 0xfaf9
+0000            297   _PCA0CP0        DATA 0xfcfb
+0000            298   _PCA0CP1        DATA 0xeae9
+0000            299   _PCA0CP2        DATA 0xeceb
+0000            300   _PCA0CP3        DATA 0xf5f4
+0000            301   _PCA0CP4        DATA 0x8584
+0000            302   _PCA0CP5        DATA 0xdedd
+0000            303   _ADC0ASA        DATA 0xb6b5
+0000            304   _ADC0GT         DATA 0xc4c3
+0000            305   _ADC0           DATA 0xbebd
+0000            306   _ADC0LT         DATA 0xc6c5
+0000            307   _DAC0           DATA 0x8584
+0000            308   _DAC1           DATA 0x8a89
+0000            309   _DAC2           DATA 0x8c8b
+0000            310   _DAC3           DATA 0x8e8d
+0000            311   ;--------------------------------------------------------
+0000            312   ; special function bits
+0000            313   ;--------------------------------------------------------
+0000            314   _ACC_0          BIT 0xe0
+0000            315   _ACC_1          BIT 0xe1
+0000            316   _ACC_2          BIT 0xe2
+0000            317   _ACC_3          BIT 0xe3
+0000            318   _ACC_4          BIT 0xe4
+0000            319   _ACC_5          BIT 0xe5
+0000            320   _ACC_6          BIT 0xe6
+0000            321   _ACC_7          BIT 0xe7
+0000            322   _TEMPE          BIT 0xe8
+0000            323   _ADGN0          BIT 0xe9
+0000            324   _ADGN1          BIT 0xea
+0000            325   _ADWINT         BIT 0xeb
+0000            326   _ADBUSY         BIT 0xec
+0000            327   _ADINT          BIT 0xed
+0000            328   _IPOEN          BIT 0xee
+0000            329   _ADEN           BIT 0xef
+0000            330   _B_0            BIT 0xf0
+0000            331   _B_1            BIT 0xf1
+0000            332   _B_2            BIT 0xf2
+0000            333   _B_3            BIT 0xf3
+0000            334   _B_4            BIT 0xf4
+0000            335   _B_5            BIT 0xf5
+0000            336   _B_6            BIT 0xf6
+0000            337   _B_7            BIT 0xf7
+0000            338   _C0FIF          BIT 0xe8
+0000            339   _C0RIF          BIT 0xe9
+0000            340   _C1FIF          BIT 0xea
+0000            341   _C1RIF          BIT 0xeb
+0000            342   _C2FIF          BIT 0xec
+0000            343   _C2RIF          BIT 0xed
+0000            344   _C3FIF          BIT 0xee
+0000            345   _C3RIF          BIT 0xef
+0000            346   _D1SRC0         BIT 0x88
+0000            347   _D1SRC1         BIT 0x89
+0000            348   _D1AMEN         BIT 0x8a
+0000            349   _D01REFSL       BIT 0x8b
+0000            350   _D3SRC0         BIT 0x8c
+0000            351   _D3SRC1         BIT 0x8d
+0000            352   _D3AMEN         BIT 0x8e
+0000            353   _D23REFSL       BIT 0x8f
+0000            354   _D0UDIS         BIT 0x98
+0000            355   _D1UDIS         BIT 0x99
+0000            356   _D2UDIS         BIT 0x9a
+0000            357   _D3UDIS         BIT 0x9b
+0000            358   _EX0            BIT 0xa8
+0000            359   _ET0            BIT 0xa9
+0000            360   _EX1            BIT 0xaa
+0000            361   _ET1            BIT 0xab
+0000            362   _ES0            BIT 0xac
+0000            363   _ET2            BIT 0xad
+0000            364   _ESPI0          BIT 0xae
+0000            365   _EA             BIT 0xaf
+0000            366   _PX0            BIT 0xb8
+0000            367   _PT0            BIT 0xb9
+0000            368   _PX1            BIT 0xba
+0000            369   _PT1            BIT 0xbb
+0000            370   _PS0            BIT 0xbc
+0000            371   _PT2            BIT 0xbd
+0000            372   _PSPI0          BIT 0xbe
+0000            373   _P0_0           BIT 0x80
+0000            374   _P0_1           BIT 0x81
+0000            375   _P0_2           BIT 0x82
+0000            376   _P0_3           BIT 0x83
+0000            377   _P0_4           BIT 0x84
+0000            378   _P0_5           BIT 0x85
+0000            379   _P0_6           BIT 0x86
+0000            380   _P0_7           BIT 0x87
+0000            381   _P1_0           BIT 0x90
+0000            382   _P1_1           BIT 0x91
+0000            383   _P1_2           BIT 0x92
+0000            384   _P1_3           BIT 0x93
+0000            385   _P1_4           BIT 0x94
+0000            386   _P1_5           BIT 0x95
+0000            387   _P1_6           BIT 0x96
+0000            388   _P1_7           BIT 0x97
+0000            389   _P2_0           BIT 0xa0
+0000            390   _P2_1           BIT 0xa1
+0000            391   _P2_2           BIT 0xa2
+0000            392   _P2_3           BIT 0xa3
+0000            393   _P2_4           BIT 0xa4
+0000            394   _P2_5           BIT 0xa5
+0000            395   _P2_6           BIT 0xa6
+0000            396   _P3_0           BIT 0xb0
+0000            397   _P3_1           BIT 0xb1
+0000            398   _P3_2           BIT 0xb2
+0000            399   _P3_3           BIT 0xb3
+0000            400   _P3_4           BIT 0xb4
+0000            401   _P3_7           BIT 0xb7
+0000            402   _CCF0           BIT 0xd8
+0000            403   _CCF1           BIT 0xd9
+0000            404   _CCF2           BIT 0xda
+0000            405   _CCF3           BIT 0xdb
+0000            406   _CCF4           BIT 0xdc
+0000            407   _CCF5           BIT 0xdd
+0000            408   _CR             BIT 0xde
+0000            409   _CF             BIT 0xdf
+0000            410   _PARITY         BIT 0xd0
+0000            411   _F1             BIT 0xd1
+0000            412   _OV             BIT 0xd2
+0000            413   _RS0            BIT 0xd3
+0000            414   _RS1            BIT 0xd4
+0000            415   _F0             BIT 0xd5
+0000            416   _AC             BIT 0xd6
+0000            417   _CY             BIT 0xd7
+0000            418   _RI             BIT 0x98
+0000            419   _TI             BIT 0x99
+0000            420   _RB8            BIT 0x9a
+0000            421   _TB8            BIT 0x9b
+0000            422   _REN            BIT 0x9c
+0000            423   _CE             BIT 0x9d
+0000            424   _SMODE          BIT 0x9e
+0000            425   _RI1            BIT 0xc8
+0000            426   _TI1            BIT 0xc9
+0000            427   _RBX1           BIT 0xca
+0000            428   _TBX1           BIT 0xcb
+0000            429   _REN1           BIT 0xcc
+0000            430   _PERR1          BIT 0xcd
+0000            431   _OVR1           BIT 0xce
+0000            432   _SI             BIT 0xc0
+0000            433   _ACK            BIT 0xc1
+0000            434   _ARBLOST        BIT 0xc2
+0000            435   _ACKRQ          BIT 0xc3
+0000            436   _STO            BIT 0xc4
+0000            437   _STA            BIT 0xc5
+0000            438   _TXMODE         BIT 0xc6
+0000            439   _MASTER         BIT 0xc7
+0000            440   _SPIEN          BIT 0xf8
+0000            441   _TXNF           BIT 0xf9
+0000            442   _NSSMD0         BIT 0xfa
+0000            443   _NSSMD1         BIT 0xfb
+0000            444   _RXOVRN         BIT 0xfc
+0000            445   _MODF           BIT 0xfd
+0000            446   _WCOL           BIT 0xfe
+0000            447   _SPIF           BIT 0xff
+0000            448   _IT0            BIT 0x88
+0000            449   _IE0            BIT 0x89
+0000            450   _IT1            BIT 0x8a
+0000            451   _IE1            BIT 0x8b
+0000            452   _TR0            BIT 0x8c
+0000            453   _TF0            BIT 0x8d
+0000            454   _TR1            BIT 0x8e
+0000            455   _TF1            BIT 0x8f
+0000            456   _T2XCLK0        BIT 0xc8
+0000            457   _T2XCLK1        BIT 0xc9
+0000            458   _TR2            BIT 0xca
+0000            459   _T2SPLIT        BIT 0xcb
+0000            460   _TF2CEN         BIT 0xcc
+0000            461   _TF2LEN         BIT 0xcd
+0000            462   _TF2L           BIT 0xce
+0000            463   _TF2H           BIT 0xcf
+0000            464   _T4XCLK0        BIT 0x98
+0000            465   _T4XCLK1        BIT 0x99
+0000            466   _TR4            BIT 0x9a
+0000            467   _T4SPLIT        BIT 0x9b
+0000            468   _TF4CEN         BIT 0x9c
+0000            469   _TF4LEN         BIT 0x9d
+0000            470   _TF4L           BIT 0x9e
+0000            471   _TF4H           BIT 0x9f
+0000            472   _T5XCLK0        BIT 0xc0
+0000            473   _T5XCLK1        BIT 0xc1
+0000            474   _TR5            BIT 0xc2
+0000            475   _T5SPLIT        BIT 0xc3
+0000            476   _TF5CEN         BIT 0xc4
+0000            477   _TF5LEN         BIT 0xc5
+0000            478   _TF5L           BIT 0xc6
+0000            479   _TF5H           BIT 0xc7
+0000            480   _RIE            BIT 0xd8
+0000            481   _RXTO0          BIT 0xd9
+0000            482   _RXTO1          BIT 0xda
+0000            483   _RFRQ           BIT 0xdb
+0000            484   _TIE            BIT 0xdc
+0000            485   _TXHOLD         BIT 0xdd
+0000            486   _TXNF1          BIT 0xde
+0000            487   _TFRQ           BIT 0xdf
+0000            488   ;--------------------------------------------------------
+0000            489   ; overlayable register banks
+0000            490   ;--------------------------------------------------------
+0000            491            rbank0 segment data overlay
+0000            492   ;--------------------------------------------------------
+0000            493   ; internal ram data
+0000            494   ;--------------------------------------------------------
+0000            495            rseg R_DSEG
+0000            496   _overflow_count:
+0000            497            ds 1
+0001            498   _LCDprint_PARM_2:
+0001            499            ds 1
+0002            500   _getsn_PARM_2:
+0002            501            ds 2
+0004            502   _getsn_buff_1_94:
+0004            503            ds 3
+0007            504   _getsn_sloc0_1_0:
+0007            505            ds 2
+0009            506   ;--------------------------------------------------------
+0009            507   ; overlayable items in internal ram 
+0009            508   ;--------------------------------------------------------
+0000            509            rseg    R_OSEG
+0000            510            rseg    R_OSEG
+0000            511   _InitPinADC_PARM_2:
+0000            512            ds 1
+0001            513            rseg    R_OSEG
+0001            514   ;--------------------------------------------------------
+0001            515   ; indirectly addressable internal ram data
+0001            516   ;--------------------------------------------------------
+0000            517            rseg R_ISEG
+0000            518   ;--------------------------------------------------------
+0000            519   ; absolute internal ram data
+0000            520   ;--------------------------------------------------------
+0000            521            DSEG
+0000            522   ;--------------------------------------------------------
+0000            523   ; bit data
+0000            524   ;--------------------------------------------------------
+0000            525            rseg R_BSEG
+0000            526   _LCDprint_PARM_3:
+0000            527            DBIT    1
+0001            528   ;--------------------------------------------------------
+0001            529   ; paged external ram data
+0001            530   ;--------------------------------------------------------
+0000            531            rseg R_PSEG
+0000            532   ;--------------------------------------------------------
+0000            533   ; external ram data
+0000            534   ;--------------------------------------------------------
+0000            535            rseg R_XSEG
+0000            536   ;--------------------------------------------------------
+0000            537   ; absolute external ram data
+0000            538   ;--------------------------------------------------------
+0000            539            XSEG
+0000            540   ;--------------------------------------------------------
+0000            541   ; external initialized ram data
+0000            542   ;--------------------------------------------------------
+0000            543            rseg R_IXSEG
+0000            544            rseg R_HOME
+0000            545            rseg R_GSINIT
+0000            546            rseg R_CSEG
+0000            547   ;--------------------------------------------------------
+0000            548   ; Reset entry point and interrupt vectors
+0000            549   ;--------------------------------------------------------
+0000            550            CSEG at 0x0000
+0000 020100     551            ljmp    _crt0
+0003            552   ;--------------------------------------------------------
+0003            553   ; global & static initialisations
+0003            554   ;--------------------------------------------------------
+0000            555            rseg R_HOME
+0000            556            rseg R_GSINIT
+0000            557            rseg R_GSINIT
+0000            558   ;--------------------------------------------------------
+0000            559   ; data variables initialization
+0000            560   ;--------------------------------------------------------
+0000            561            rseg R_DINIT
+0000            562            ; The linker places a 'ret' at the end of segment R_DINIT.
+0000            563   ;--------------------------------------------------------
+0000            564   ; code
+0000            565   ;--------------------------------------------------------
+0000            566            rseg R_CSEG
+0000            567   ;------------------------------------------------------------
+0000            568   ;Allocation info for local variables in function '_c51_external_startup'
+0000            569   ;------------------------------------------------------------
+0000            570   ;------------------------------------------------------------
+0000            571   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:24: char _c51_external_startup (void)
+0000            572   ;        -----------------------------------------
+0000            573   ;         function _c51_external_startup
+0000            574   ;        -----------------------------------------
+0000            575   __c51_external_startup:
+0000            576            using   0
+0000            577   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:27: SFRPAGE = 0x00;
+0000 75A700     578            mov     _SFRPAGE,#0x00
+0003            579   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:28: WDTCN = 0xDE; //First key
+0003 7597DE     580            mov     _WDTCN,#0xDE
+0006            581   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:29: WDTCN = 0xAD; //Second key
+0006 7597AD     582            mov     _WDTCN,#0xAD
+0009            583   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:31: VDM0CN |= 0x80;
+0009 43FF80     584            orl     _VDM0CN,#0x80
+000C            585   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:32: RSTSRC = 0x02;
+000C 75EF02     586            mov     _RSTSRC,#0x02
+000F            587   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:39: SFRPAGE = 0x10;
+000F 75A710     588            mov     _SFRPAGE,#0x10
+0012            589   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:40: PFE0CN  = 0x20; // SYSCLK < 75 MHz.
+0012 75C120     590            mov     _PFE0CN,#0x20
+0015            591   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:41: SFRPAGE = 0x00;
+0015 75A700     592            mov     _SFRPAGE,#0x00
+0018            593   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:62: CLKSEL = 0x00;
+0018 75A900     594            mov     _CLKSEL,#0x00
+001B            595   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:63: CLKSEL = 0x00;
+001B 75A900     596            mov     _CLKSEL,#0x00
+001E            597   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:64: while ((CLKSEL & 0x80) == 0);
+001E            598   L002001?:
+001E E5A9       599            mov     a,_CLKSEL
+0020 30E7B0     600            jnb     acc.7,L002001?
+0023            601   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:65: CLKSEL = 0x03;
+0023 75A903     602            mov     _CLKSEL,#0x03
+0026            603   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:66: CLKSEL = 0x03;
+0026 75A903     604            mov     _CLKSEL,#0x03
+0029            605   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:67: while ((CLKSEL & 0x80) == 0);
+0029            606   L002004?:
+0029 E5A9       607            mov     a,_CLKSEL
+002B 30E730     608            jnb     acc.7,L002004?
+002E            609   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:72: P0MDOUT |= 0x10; // Enable UART0 TX as push-pull output
+002E 43A410     610            orl     _P0MDOUT,#0x10
+0031            611   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:73: XBR0     = 0x01; // Enable UART0 on P0.4(TX) and P0.5(RX)                     
+0031 75E101     612            mov     _XBR0,#0x01
+0034            613   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:74: XBR1     = 0X10; // Enable T0 on P0.0
+0034 75E210     614            mov     _XBR1,#0x10
+0037            615   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:75: XBR2     = 0x40; // Enable crossbar and weak pull-ups
+0037 75E340     616            mov     _XBR2,#0x40
+003A            617   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:81: SCON0 = 0x10;
+003A 759810     618            mov     _SCON0,#0x10
+003D            619   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:82: CKCON0 |= 0b_0000_0000 ; // Timer 1 uses the system clock divided by 12.
+003D 858E8E     620            mov     _CKCON0,_CKCON0
+0040            621   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:83: TH1 = 0x100-((SYSCLK/BAUDRATE)/(2L*12L));
+0040 758DE6     622            mov     _TH1,#0xE6
+0043            623   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:84: TL1 = TH1;      // Init Timer1
+0043 858D8B     624            mov     _TL1,_TH1
+0046            625   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:85: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit auto-reload
+0046 53890F     626            anl     _TMOD,#0x0F
+0049            627   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:86: TMOD |=  0x20;                       
+0049 438920     628            orl     _TMOD,#0x20
+004C            629   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:87: TR1 = 1; // START Timer1
+004C D28E       630            setb    _TR1
+004E            631   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:88: TI = 1;  // Indicate TX0 ready
+004E D299       632            setb    _TI
+0050            633   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:90: return 0;
+0050 758200     634            mov     dpl,#0x00
+0053 22         635            ret
+0054            636   ;------------------------------------------------------------
+0054            637   ;Allocation info for local variables in function 'InitADC'
+0054            638   ;------------------------------------------------------------
+0054            639   ;------------------------------------------------------------
+0054            640   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:93: void InitADC (void)
+0054            641   ;        -----------------------------------------
+0054            642   ;         function InitADC
+0054            643   ;        -----------------------------------------
+0054            644   _InitADC:
+0054            645   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:95: SFRPAGE = 0x00;
+0054 75A700     646            mov     _SFRPAGE,#0x00
+0057            647   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:96: ADC0CN1 = 0b_10_000_000; //14-bit,  Right justified no shifting applied, perform and Accumulate 1 conversion.
+0057 75B280     648            mov     _ADC0CN1,#0x80
+005A            649   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:97: ADC0CF0 = 0b_11111_0_00; // SYSCLK/32
+005A 75BCF8     650            mov     _ADC0CF0,#0xF8
+005D            651   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:98: ADC0CF1 = 0b_0_0_011110; // Same as default for now
+005D 75B91E     652            mov     _ADC0CF1,#0x1E
+0060            653   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:99: ADC0CN0 = 0b_0_0_0_0_0_00_0; // Same as default for now
+0060 75E800     654            mov     _ADC0CN0,#0x00
+0063            655   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:100: ADC0CF2 = 0b_0_01_11111 ; // GND pin, Vref=VDD
+0063 75DF3F     656            mov     _ADC0CF2,#0x3F
+0066            657   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:101: ADC0CN2 = 0b_0_000_0000;  // Same as default for now. ADC0 conversion initiated on write of 1 to ADBUSY.
+0066 75B300     658            mov     _ADC0CN2,#0x00
+0069            659   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:102: ADEN=1; // Enable ADC
+0069 D2EF       660            setb    _ADEN
+006B 22         661            ret
+006C            662   ;------------------------------------------------------------
+006C            663   ;Allocation info for local variables in function 'Timer3us'
+006C            664   ;------------------------------------------------------------
+006C            665   ;us                        Allocated to registers r2 
+006C            666   ;i                         Allocated to registers r3 
+006C            667   ;------------------------------------------------------------
+006C            668   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:106: void Timer3us(unsigned char us)
+006C            669   ;        -----------------------------------------
+006C            670   ;         function Timer3us
+006C            671   ;        -----------------------------------------
+006C            672   _Timer3us:
+006C AA82       673            mov     r2,dpl
+006E            674   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:111: CKCON0|=0b_0100_0000;
+006E 438E40     675            orl     _CKCON0,#0x40
+0071            676   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:113: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+0071 7592B8     677            mov     _TMR3RL,#0xB8
+0074 7593FF     678            mov     (_TMR3RL >> 8),#0xFF
+0077            679   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:114: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+0077 859294     680            mov     _TMR3,_TMR3RL
+007A 859395     681            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
+007D            682   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:116: TMR3CN0 = 0x04;                 // Sart Timer3 and clear overflow flag
+007D 759104     683            mov     _TMR3CN0,#0x04
+0080            684   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:117: for (i = 0; i < us; i++)       // Count <us> overflows
+0080 7B00       685            mov     r3,#0x00
+0082            686   L004006?:
+0082 C3         687            clr     c
+0083 EB         688            mov     a,r3
+0084 9A         689            subb    a,r2
+0085 5001       690            jnc     L004009?
+0087            691   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:119: while (!(TMR3CN0 & 0x80));  // Wait for overflow
+0087            692   L004001?:
+0087 E591       693            mov     a,_TMR3CN0
+0089 30E730     694            jnb     acc.7,L004001?
+008C            695   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:120: TMR3CN0 &= ~(0x80);         // Clear overflow indicator
+008C 53917F     696            anl     _TMR3CN0,#0x7F
+008F            697   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:121: if (TF0)
+008F            698   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:123: TF0=0;
+008F 108D70     699            jbc     _TF0,L004019?
+0092 8001       700            sjmp    L004008?
+0094            701   L004019?:
+0094            702   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:124: overflow_count++;
+0094 05B8       703            inc     _overflow_count
+0096            704   L004008?:
+0096            705   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:117: for (i = 0; i < us; i++)       // Count <us> overflows
+0096 0B         706            inc     r3
+0097 8001       707            sjmp    L004006?
+0099            708   L004009?:
+0099            709   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:127: TMR3CN0 = 0 ;                   // Stop Timer3 and clear overflow flag
+0099 759100     710            mov     _TMR3CN0,#0x00
+009C 22         711            ret
+009D            712   ;------------------------------------------------------------
+009D            713   ;Allocation info for local variables in function 'waitms'
+009D            714   ;------------------------------------------------------------
+009D            715   ;ms                        Allocated to registers r2 r3 
+009D            716   ;j                         Allocated to registers r2 r3 
+009D            717   ;------------------------------------------------------------
+009D            718   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:130: void waitms (unsigned int ms)
+009D            719   ;        -----------------------------------------
+009D            720   ;         function waitms
+009D            721   ;        -----------------------------------------
+009D            722   _waitms:
+009D AA82       723            mov     r2,dpl
+009F AB83       724            mov     r3,dph
+00A1            725   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:133: for(j=ms; j!=0; j--)
+00A1            726   L005001?:
+00A1 BA0070     727            cjne    r2,#0x00,L005010?
+00A4 BB0070     728            cjne    r3,#0x00,L005010?
+00A7 22         729            ret
+00A8            730   L005010?:
+00A8            731   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:135: Timer3us(249);
+00A8 7582F9     732            mov     dpl,#0xF9
+00AB C002       733            push    ar2
+00AD C003       734            push    ar3
+00AF 120100     735            lcall   _Timer3us
+00B2            736   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:136: Timer3us(249);
+00B2 7582F9     737            mov     dpl,#0xF9
+00B5 120100     738            lcall   _Timer3us
+00B8            739   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:137: Timer3us(249);
+00B8 7582F9     740            mov     dpl,#0xF9
+00BB 120100     741            lcall   _Timer3us
+00BE            742   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:138: Timer3us(250);
+00BE 7582FA     743            mov     dpl,#0xFA
+00C1 120100     744            lcall   _Timer3us
+00C4 D003       745            pop     ar3
+00C6 D002       746            pop     ar2
+00C8            747   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:133: for(j=ms; j!=0; j--)
+00C8 1A         748            dec     r2
+00C9 BAFFB0     749            cjne    r2,#0xff,L005011?
+00CC 1B         750            dec     r3
+00CD            751   L005011?:
+00CD 8001       752            sjmp    L005001?
+00CF            753   ;------------------------------------------------------------
+00CF            754   ;Allocation info for local variables in function 'InitPinADC'
+00CF            755   ;------------------------------------------------------------
+00CF            756   ;pinno                     Allocated with name '_InitPinADC_PARM_2'
+00CF            757   ;portno                    Allocated to registers r2 
+00CF            758   ;mask                      Allocated to registers r3 
+00CF            759   ;------------------------------------------------------------
+00CF            760   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:143: void InitPinADC (unsigned char portno, unsigned char pinno)
+00CF            761   ;        -----------------------------------------
+00CF            762   ;         function InitPinADC
+00CF            763   ;        -----------------------------------------
+00CF            764   _InitPinADC:
+00CF AA82       765            mov     r2,dpl
+00D1            766   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:147: mask=1<<pinno;
+00D1 8588F0     767            mov     b,_InitPinADC_PARM_2
+00D4 05F0       768            inc     b
+00D6 7401       769            mov     a,#0x01
+00D8 8001       770            sjmp    L006013?
+00DA            771   L006011?:
+00DA 25E0       772            add     a,acc
+00DC            773   L006013?:
+00DC D5F070     774            djnz    b,L006011?
+00DF FB         775            mov     r3,a
+00E0            776   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:149: SFRPAGE = 0x20;
+00E0 75A720     777            mov     _SFRPAGE,#0x20
+00E3            778   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:150: switch (portno)
+00E3 BA00B0     779            cjne    r2,#0x00,L006014?
+00E6 8001       780            sjmp    L006001?
+00E8            781   L006014?:
+00E8 BA0130     782            cjne    r2,#0x01,L006015?
+00EB 8001       783            sjmp    L006002?
+00ED            784   L006015?:
+00ED            785   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:152: case 0:
+00ED BA02B0     786            cjne    r2,#0x02,L006005?
+00F0 8001       787            sjmp    L006003?
+00F2            788   L006001?:
+00F2            789   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:153: P0MDIN &= (~mask); // Set pin as analog input
+00F2 EB         790            mov     a,r3
+00F3 F4         791            cpl     a
+00F4 FA         792            mov     r2,a
+00F5 52F1       793            anl     _P0MDIN,a
+00F7            794   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:154: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+00F7 EB         795            mov     a,r3
+00F8 42D4       796            orl     _P0SKIP,a
+00FA            797   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:155: break;
+00FA            798   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:156: case 1:
+00FA 8001       799            sjmp    L006005?
+00FC            800   L006002?:
+00FC            801   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:157: P1MDIN &= (~mask); // Set pin as analog input
+00FC EB         802            mov     a,r3
+00FD F4         803            cpl     a
+00FE FA         804            mov     r2,a
+00FF 52F2       805            anl     _P1MDIN,a
+0101            806   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:158: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+0101 EB         807            mov     a,r3
+0102 42D5       808            orl     _P1SKIP,a
+0104            809   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:159: break;
+0104            810   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:160: case 2:
+0104 8001       811            sjmp    L006005?
+0106            812   L006003?:
+0106            813   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:161: P2MDIN &= (~mask); // Set pin as analog input
+0106 EB         814            mov     a,r3
+0107 F4         815            cpl     a
+0108 FA         816            mov     r2,a
+0109 52F3       817            anl     _P2MDIN,a
+010B            818   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:162: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+010B EB         819            mov     a,r3
+010C 42CC       820            orl     _P2SKIP,a
+010E            821   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:166: }
+010E            822   L006005?:
+010E            823   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:167: SFRPAGE = 0x00;
+010E 75A700     824            mov     _SFRPAGE,#0x00
+0111 22         825            ret
+0112            826   ;------------------------------------------------------------
+0112            827   ;Allocation info for local variables in function 'ADC_at_Pin'
+0112            828   ;------------------------------------------------------------
+0112            829   ;pin                       Allocated to registers 
+0112            830   ;------------------------------------------------------------
+0112            831   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:170: unsigned int ADC_at_Pin(unsigned char pin)
+0112            832   ;        -----------------------------------------
+0112            833   ;         function ADC_at_Pin
+0112            834   ;        -----------------------------------------
+0112            835   _ADC_at_Pin:
+0112 8582BB     836            mov     _ADC0MX,dpl
+0115            837   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:173: ADBUSY=1;       // Dummy conversion first to select new pin
+0115 D2EC       838            setb    _ADBUSY
+0117            839   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:174: while (ADBUSY); // Wait for dummy conversion to finish
+0117            840   L007001?:
+0117 20EC30     841            jb      _ADBUSY,L007001?
+011A            842   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:175: ADBUSY = 1;     // Convert voltage at the pin
+011A D2EC       843            setb    _ADBUSY
+011C            844   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:176: while (ADBUSY); // Wait for conversion to complete
+011C            845   L007004?:
+011C 20EC70     846            jb      _ADBUSY,L007004?
+011F            847   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:177: return (ADC0);
+011F 85BD82     848            mov     dpl,_ADC0
+0122 85BE83     849            mov     dph,(_ADC0 >> 8)
+0125 22         850            ret
+0126            851   ;------------------------------------------------------------
+0126            852   ;Allocation info for local variables in function 'Volts_at_Pin'
+0126            853   ;------------------------------------------------------------
+0126            854   ;pin                       Allocated to registers r2 
+0126            855   ;------------------------------------------------------------
+0126            856   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:180: float Volts_at_Pin(unsigned char pin)
+0126            857   ;        -----------------------------------------
+0126            858   ;         function Volts_at_Pin
+0126            859   ;        -----------------------------------------
+0126            860   _Volts_at_Pin:
+0126            861   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:182: return ((ADC_at_Pin(pin)*VDD)/0b_0011_1111_1111_1111);
+0126 120100     862            lcall   _ADC_at_Pin
+0129 120100     863            lcall   ___uint2fs
+012C AA82       864            mov     r2,dpl
+012E AB83       865            mov     r3,dph
+0130 ACF0       866            mov     r4,b
+0132 FD         867            mov     r5,a
+0133 C002       868            push    ar2
+0135 C003       869            push    ar3
+0137 C004       870            push    ar4
+0139 C005       871            push    ar5
+013B 906C8B     872            mov     dptr,#0x6C8B
+013E 75F053     873            mov     b,#0x53
+0141 7440       874            mov     a,#0x40
+0143 120100     875            lcall   ___fsmul
+0146 AA82       876            mov     r2,dpl
+0148 AB83       877            mov     r3,dph
+014A ACF0       878            mov     r4,b
+014C FD         879            mov     r5,a
+014D E581       880            mov     a,sp
+014F 24FC       881            add     a,#0xfc
+0151 F581       882            mov     sp,a
+0153 E4         883            clr     a
+0154 C0E0       884            push    acc
+0156 74FC       885            mov     a,#0xFC
+0158 C0E0       886            push    acc
+015A 747F       887            mov     a,#0x7F
+015C C0E0       888            push    acc
+015E 7446       889            mov     a,#0x46
+0160 C0E0       890            push    acc
+0162 8A82       891            mov     dpl,r2
+0164 8B83       892            mov     dph,r3
+0166 8CF0       893            mov     b,r4
+0168 ED         894            mov     a,r5
+0169 120100     895            lcall   ___fsdiv
+016C AA82       896            mov     r2,dpl
+016E AB83       897            mov     r3,dph
+0170 ACF0       898            mov     r4,b
+0172 FD         899            mov     r5,a
+0173 E581       900            mov     a,sp
+0175 24FC       901            add     a,#0xfc
+0177 F581       902            mov     sp,a
+0179 8A82       903            mov     dpl,r2
+017B 8B83       904            mov     dph,r3
+017D 8CF0       905            mov     b,r4
+017F ED         906            mov     a,r5
+0180 22         907            ret
+0181            908   ;------------------------------------------------------------
+0181            909   ;Allocation info for local variables in function 'LCD_pulse'
+0181            910   ;------------------------------------------------------------
+0181            911   ;------------------------------------------------------------
+0181            912   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:186: void LCD_pulse (void)
+0181            913   ;        -----------------------------------------
+0181            914   ;         function LCD_pulse
+0181            915   ;        -----------------------------------------
+0181            916   _LCD_pulse:
+0181            917   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:188: LCD_E=1;
+0181 D2A5       918            setb    _P2_5
+0183            919   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:189: Timer3us(40);
+0183 758228     920            mov     dpl,#0x28
+0186 120100     921            lcall   _Timer3us
+0189            922   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:190: LCD_E=0;
+0189 C2A5       923            clr     _P2_5
+018B 22         924            ret
+018C            925   ;------------------------------------------------------------
+018C            926   ;Allocation info for local variables in function 'LCD_byte'
+018C            927   ;------------------------------------------------------------
+018C            928   ;x                         Allocated to registers r2 
+018C            929   ;------------------------------------------------------------
+018C            930   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:193: void LCD_byte (unsigned char x)
+018C            931   ;        -----------------------------------------
+018C            932   ;         function LCD_byte
+018C            933   ;        -----------------------------------------
+018C            934   _LCD_byte:
+018C AA82       935            mov     r2,dpl
+018E            936   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:196: ACC=x; //Send high nible
+018E 8AE0       937            mov     _ACC,r2
+0190            938   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:197: LCD_D7=ACC_7;
+0190 A2E7       939            mov     c,_ACC_7
+0192 92A1       940            mov     _P2_1,c
+0194            941   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:198: LCD_D6=ACC_6;
+0194 A2E6       942            mov     c,_ACC_6
+0196 92A2       943            mov     _P2_2,c
+0198            944   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:199: LCD_D5=ACC_5;
+0198 A2E5       945            mov     c,_ACC_5
+019A 92A3       946            mov     _P2_3,c
+019C            947   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:200: LCD_D4=ACC_4;
+019C A2E4       948            mov     c,_ACC_4
+019E 92A4       949            mov     _P2_4,c
+01A0            950   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:201: LCD_pulse();
+01A0 C002       951            push    ar2
+01A2 120100     952            lcall   _LCD_pulse
+01A5            953   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:202: Timer3us(40);
+01A5 758228     954            mov     dpl,#0x28
+01A8 120100     955            lcall   _Timer3us
+01AB D002       956            pop     ar2
+01AD            957   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:203: ACC=x; //Send low nible
+01AD 8AE0       958            mov     _ACC,r2
+01AF            959   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:204: LCD_D7=ACC_3;
+01AF A2E3       960            mov     c,_ACC_3
+01B1 92A1       961            mov     _P2_1,c
+01B3            962   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:205: LCD_D6=ACC_2;
+01B3 A2E2       963            mov     c,_ACC_2
+01B5 92A2       964            mov     _P2_2,c
+01B7            965   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:206: LCD_D5=ACC_1;
+01B7 A2E1       966            mov     c,_ACC_1
+01B9 92A3       967            mov     _P2_3,c
+01BB            968   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:207: LCD_D4=ACC_0;
+01BB A2E0       969            mov     c,_ACC_0
+01BD 92A4       970            mov     _P2_4,c
+01BF            971   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:208: LCD_pulse();
+01BF 020100     972            ljmp    _LCD_pulse
+01C2            973   ;------------------------------------------------------------
+01C2            974   ;Allocation info for local variables in function 'WriteData'
+01C2            975   ;------------------------------------------------------------
+01C2            976   ;x                         Allocated to registers r2 
+01C2            977   ;------------------------------------------------------------
+01C2            978   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:211: void WriteData (unsigned char x)
+01C2            979   ;        -----------------------------------------
+01C2            980   ;         function WriteData
+01C2            981   ;        -----------------------------------------
+01C2            982   _WriteData:
+01C2 AA82       983            mov     r2,dpl
+01C4            984   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:213: LCD_RS=1;
+01C4 D2A6       985            setb    _P2_6
+01C6            986   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:214: LCD_byte(x);
+01C6 8A82       987            mov     dpl,r2
+01C8 120100     988            lcall   _LCD_byte
+01CB            989   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:215: waitms(2);
+01CB 900002     990            mov     dptr,#0x0002
+01CE 020100     991            ljmp    _waitms
+01D1            992   ;------------------------------------------------------------
+01D1            993   ;Allocation info for local variables in function 'WriteCommand'
+01D1            994   ;------------------------------------------------------------
+01D1            995   ;x                         Allocated to registers r2 
+01D1            996   ;------------------------------------------------------------
+01D1            997   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:218: void WriteCommand (unsigned char x)
+01D1            998   ;        -----------------------------------------
+01D1            999   ;         function WriteCommand
+01D1           1000   ;        -----------------------------------------
+01D1           1001   _WriteCommand:
+01D1 AA82      1002            mov     r2,dpl
+01D3           1003   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:220: LCD_RS=0;
+01D3 C2A6      1004            clr     _P2_6
+01D5           1005   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:221: LCD_byte(x);
+01D5 8A82      1006            mov     dpl,r2
+01D7 120100    1007            lcall   _LCD_byte
+01DA           1008   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:222: waitms(5);
+01DA 900005    1009            mov     dptr,#0x0005
+01DD 020100    1010            ljmp    _waitms
+01E0           1011   ;------------------------------------------------------------
+01E0           1012   ;Allocation info for local variables in function 'LCD_4BIT'
+01E0           1013   ;------------------------------------------------------------
+01E0           1014   ;------------------------------------------------------------
+01E0           1015   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:225: void LCD_4BIT (void)
+01E0           1016   ;        -----------------------------------------
+01E0           1017   ;         function LCD_4BIT
+01E0           1018   ;        -----------------------------------------
+01E0           1019   _LCD_4BIT:
+01E0           1020   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:227: LCD_E=0; // Resting state of LCD's enable is zero
+01E0 C2A5      1021            clr     _P2_5
+01E2           1022   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:229: waitms(20);
+01E2 900014    1023            mov     dptr,#0x0014
+01E5 120100    1024            lcall   _waitms
+01E8           1025   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:231: WriteCommand(0x33);
+01E8 758233    1026            mov     dpl,#0x33
+01EB 120100    1027            lcall   _WriteCommand
+01EE           1028   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:232: WriteCommand(0x33);
+01EE 758233    1029            mov     dpl,#0x33
+01F1 120100    1030            lcall   _WriteCommand
+01F4           1031   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:233: WriteCommand(0x32); // Change to 4-bit mode
+01F4 758232    1032            mov     dpl,#0x32
+01F7 120100    1033            lcall   _WriteCommand
+01FA           1034   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:236: WriteCommand(0x28);
+01FA 758228    1035            mov     dpl,#0x28
+01FD 120100    1036            lcall   _WriteCommand
+0200           1037   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:237: WriteCommand(0x0c);
+0200 75820C    1038            mov     dpl,#0x0C
+0203 120100    1039            lcall   _WriteCommand
+0206           1040   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:238: WriteCommand(0x01); // Clear screen command (takes some time)
+0206 758201    1041            mov     dpl,#0x01
+0209 120100    1042            lcall   _WriteCommand
+020C           1043   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:239: waitms(20); // Wait for clear screen command to finsih.
+020C 900014    1044            mov     dptr,#0x0014
+020F 020100    1045            ljmp    _waitms
+0212           1046   ;------------------------------------------------------------
+0212           1047   ;Allocation info for local variables in function 'LCDprint'
+0212           1048   ;------------------------------------------------------------
+0212           1049   ;line                      Allocated with name '_LCDprint_PARM_2'
+0212           1050   ;string                    Allocated to registers r2 r3 r4 
+0212           1051   ;j                         Allocated to registers r5 r6 
+0212           1052   ;------------------------------------------------------------
+0212           1053   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:242: void LCDprint(char * string, unsigned char line, bit clear)
+0212           1054   ;        -----------------------------------------
+0212           1055   ;         function LCDprint
+0212           1056   ;        -----------------------------------------
+0212           1057   _LCDprint:
+0212 AA82      1058            mov     r2,dpl
+0214 AB83      1059            mov     r3,dph
+0216 ACF0      1060            mov     r4,b
+0218           1061   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:246: WriteCommand(line==2?0xc0:0x80);
+0218 7402      1062            mov     a,#0x02
+021A B578B0    1063            cjne    a,_LCDprint_PARM_2,L014013?
+021D 7DC0      1064            mov     r5,#0xC0
+021F 8001      1065            sjmp    L014014?
+0221           1066   L014013?:
+0221 7D80      1067            mov     r5,#0x80
+0223           1068   L014014?:
+0223 8D82      1069            mov     dpl,r5
+0225 C002      1070            push    ar2
+0227 C003      1071            push    ar3
+0229 C004      1072            push    ar4
+022B 120100    1073            lcall   _WriteCommand
+022E           1074   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:247: waitms(5);
+022E 900005    1075            mov     dptr,#0x0005
+0231 120100    1076            lcall   _waitms
+0234 D004      1077            pop     ar4
+0236 D003      1078            pop     ar3
+0238 D002      1079            pop     ar2
+023A           1080   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:248: for(j=0; string[j]!=0; j++)         WriteData(string[j]);// Write the message
+023A 7D00      1081            mov     r5,#0x00
+023C 7E00      1082            mov     r6,#0x00
+023E           1083   L014003?:
+023E ED        1084            mov     a,r5
+023F 2A        1085            add     a,r2
+0240 FF        1086            mov     r7,a
+0241 EE        1087            mov     a,r6
+0242 3B        1088            addc    a,r3
+0243 F8        1089            mov     r0,a
+0244 8C01      1090            mov     ar1,r4
+0246 8F82      1091            mov     dpl,r7
+0248 8883      1092            mov     dph,r0
+024A 89F0      1093            mov     b,r1
+024C 120100    1094            lcall   __gptrget
+024F FF        1095            mov     r7,a
+0250 6001      1096            jz      L014006?
+0252 8F82      1097            mov     dpl,r7
+0254 C002      1098            push    ar2
+0256 C003      1099            push    ar3
+0258 C004      1100            push    ar4
+025A C005      1101            push    ar5
+025C C006      1102            push    ar6
+025E 120100    1103            lcall   _WriteData
+0261 D006      1104            pop     ar6
+0263 D005      1105            pop     ar5
+0265 D004      1106            pop     ar4
+0267 D003      1107            pop     ar3
+0269 D002      1108            pop     ar2
+026B 0D        1109            inc     r5
+026C BD0030    1110            cjne    r5,#0x00,L014003?
+026F 0E        1111            inc     r6
+0270 8001      1112            sjmp    L014003?
+0272           1113   L014006?:
+0272           1114   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:249: if(clear) for(; j<CHARS_PER_LINE; j++) WriteData(' '); // Clear the rest of the line
+0272 30E8F0    1115            jnb     _LCDprint_PARM_3,L014011?
+0275 8D02      1116            mov     ar2,r5
+0277 8E03      1117            mov     ar3,r6
+0279           1118   L014007?:
+0279 C3        1119            clr     c
+027A EA        1120            mov     a,r2
+027B 9410      1121            subb    a,#0x10
+027D EB        1122            mov     a,r3
+027E 6480      1123            xrl     a,#0x80
+0280 9480      1124            subb    a,#0x80
+0282 5001      1125            jnc     L014011?
+0284 758220    1126            mov     dpl,#0x20
+0287 C002      1127            push    ar2
+0289 C003      1128            push    ar3
+028B 120100    1129            lcall   _WriteData
+028E D003      1130            pop     ar3
+0290 D002      1131            pop     ar2
+0292 0A        1132            inc     r2
+0293 BA0030    1133            cjne    r2,#0x00,L014007?
+0296 0B        1134            inc     r3
+0297 8001      1135            sjmp    L014007?
+0299           1136   L014011?:
+0299 22        1137            ret
+029A           1138   ;------------------------------------------------------------
+029A           1139   ;Allocation info for local variables in function 'getsn'
+029A           1140   ;------------------------------------------------------------
+029A           1141   ;len                       Allocated with name '_getsn_PARM_2'
+029A           1142   ;buff                      Allocated with name '_getsn_buff_1_94'
+029A           1143   ;j                         Allocated with name '_getsn_sloc0_1_0'
+029A           1144   ;c                         Allocated to registers r3 
+029A           1145   ;sloc0                     Allocated with name '_getsn_sloc0_1_0'
+029A           1146   ;------------------------------------------------------------
+029A           1147   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:252: int getsn (char * buff, int len)
+029A           1148   ;        -----------------------------------------
+029A           1149   ;         function getsn
+029A           1150   ;        -----------------------------------------
+029A           1151   _getsn:
+029A 8582E0    1152            mov     _getsn_buff_1_94,dpl
+029D 8583E1    1153            mov     (_getsn_buff_1_94 + 1),dph
+02A0 85F0E2    1154            mov     (_getsn_buff_1_94 + 2),b
+02A3           1155   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:257: for(j=0; j<(len-1); j++)
+02A3 E4        1156            clr     a
+02A4 F530      1157            mov     _getsn_sloc0_1_0,a
+02A6 F531      1158            mov     (_getsn_sloc0_1_0 + 1),a
+02A8 E528      1159            mov     a,_getsn_PARM_2
+02AA 24FF      1160            add     a,#0xff
+02AC FF        1161            mov     r7,a
+02AD E529      1162            mov     a,(_getsn_PARM_2 + 1)
+02AF 34FF      1163            addc    a,#0xff
+02B1 F8        1164            mov     r0,a
+02B2 7900      1165            mov     r1,#0x00
+02B4 7A00      1166            mov     r2,#0x00
+02B6           1167   L015005?:
+02B6 C3        1168            clr     c
+02B7 E9        1169            mov     a,r1
+02B8 9F        1170            subb    a,r7
+02B9 EA        1171            mov     a,r2
+02BA 6480      1172            xrl     a,#0x80
+02BC 88F0      1173            mov     b,r0
+02BE 63F080    1174            xrl     b,#0x80
+02C1 95F0      1175            subb    a,b
+02C3 5001      1176            jnc     L015008?
+02C5           1177   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:259: c=getchar();
+02C5 C002      1178            push    ar2
+02C7 C007      1179            push    ar7
+02C9 C000      1180            push    ar0
+02CB C001      1181            push    ar1
+02CD 120100    1182            lcall   _getchar
+02D0 AB82      1183            mov     r3,dpl
+02D2 D001      1184            pop     ar1
+02D4 D000      1185            pop     ar0
+02D6 D007      1186            pop     ar7
+02D8 D002      1187            pop     ar2
+02DA           1188   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:260: if ( (c=='\n') || (c=='\r') )
+02DA BB0A30    1189            cjne    r3,#0x0A,L015015?
+02DD 8001      1190            sjmp    L015001?
+02DF           1191   L015015?:
+02DF BB0DB0    1192            cjne    r3,#0x0D,L015002?
+02E2           1193   L015001?:
+02E2           1194   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:262: buff[j]=0;
+02E2 E530      1195            mov     a,_getsn_sloc0_1_0
+02E4 25E0      1196            add     a,_getsn_buff_1_94
+02E6 FC        1197            mov     r4,a
+02E7 E531      1198            mov     a,(_getsn_sloc0_1_0 + 1)
+02E9 35E1      1199            addc    a,(_getsn_buff_1_94 + 1)
+02EB FD        1200            mov     r5,a
+02EC AEE2      1201            mov     r6,(_getsn_buff_1_94 + 2)
+02EE 8C82      1202            mov     dpl,r4
+02F0 8D83      1203            mov     dph,r5
+02F2 8EF0      1204            mov     b,r6
+02F4 E4        1205            clr     a
+02F5 120100    1206            lcall   __gptrput
+02F8           1207   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:263: return j;
+02F8 853082    1208            mov     dpl,_getsn_sloc0_1_0
+02FB 853183    1209            mov     dph,(_getsn_sloc0_1_0 + 1)
+02FE 22        1210            ret
+02FF           1211   L015002?:
+02FF           1212   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:267: buff[j]=c;
+02FF E9        1213            mov     a,r1
+0300 25E0      1214            add     a,_getsn_buff_1_94
+0302 FC        1215            mov     r4,a
+0303 EA        1216            mov     a,r2
+0304 35E1      1217            addc    a,(_getsn_buff_1_94 + 1)
+0306 FD        1218            mov     r5,a
+0307 AEE2      1219            mov     r6,(_getsn_buff_1_94 + 2)
+0309 8C82      1220            mov     dpl,r4
+030B 8D83      1221            mov     dph,r5
+030D 8EF0      1222            mov     b,r6
+030F EB        1223            mov     a,r3
+0310 120100    1224            lcall   __gptrput
+0313           1225   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:257: for(j=0; j<(len-1); j++)
+0313 09        1226            inc     r1
+0314 B90030    1227            cjne    r1,#0x00,L015018?
+0317 0A        1228            inc     r2
+0318           1229   L015018?:
+0318 8930      1230            mov     _getsn_sloc0_1_0,r1
+031A 8A31      1231            mov     (_getsn_sloc0_1_0 + 1),r2
+031C 8001      1232            sjmp    L015005?
+031E           1233   L015008?:
+031E           1234   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:270: buff[j]=0;
+031E E530      1235            mov     a,_getsn_sloc0_1_0
+0320 25E0      1236            add     a,_getsn_buff_1_94
+0322 FA        1237            mov     r2,a
+0323 E531      1238            mov     a,(_getsn_sloc0_1_0 + 1)
+0325 35E1      1239            addc    a,(_getsn_buff_1_94 + 1)
+0327 FB        1240            mov     r3,a
+0328 ACE2      1241            mov     r4,(_getsn_buff_1_94 + 2)
+032A 8A82      1242            mov     dpl,r2
+032C 8B83      1243            mov     dph,r3
+032E 8CF0      1244            mov     b,r4
+0330 E4        1245            clr     a
+0331 120100    1246            lcall   __gptrput
+0334           1247   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:271: return len;
+0334 852882    1248            mov     dpl,_getsn_PARM_2
+0337 852983    1249            mov     dph,(_getsn_PARM_2 + 1)
+033A 22        1250            ret
+033B           1251   ;------------------------------------------------------------
+033B           1252   ;Allocation info for local variables in function 'TIMER0_Init'
+033B           1253   ;------------------------------------------------------------
+033B           1254   ;------------------------------------------------------------
+033B           1255   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:274: void TIMER0_Init(void)
+033B           1256   ;        -----------------------------------------
+033B           1257   ;         function TIMER0_Init
+033B           1258   ;        -----------------------------------------
+033B           1259   _TIMER0_Init:
+033B           1260   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:276: TMOD&=0b_1111_0000; // Set the bits of Timer/Counter 0 to zero
+033B 5389F0    1261            anl     _TMOD,#0xF0
+033E           1262   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:277: TMOD|=0b_0000_0101; // Timer/Counter 0 used as a 16-bit counter
+033E 438905    1263            orl     _TMOD,#0x05
+0341           1264   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:278: TR0=0; // Stop Timer/Counter 0
+0341 C28C      1265            clr     _TR0
+0343 22        1266            ret
+0344           1267   ;------------------------------------------------------------
+0344           1268   ;Allocation info for local variables in function 'main'
+0344           1269   ;------------------------------------------------------------
+0344           1270   ;period                    Allocated to registers r2 r3 r4 r5 
+0344           1271   ;freq                      Allocated with name '_main_freq_1_102'
+0344           1272   ;half_period               Allocated with name '_main_half_period_1_102'
+0344           1273   ;peak_time                 Allocated with name '_main_peak_time_1_102'
+0344           1274   ;------------------------------------------------------------
+0344           1275   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:281: void main (void) 
+0344           1276   ;        -----------------------------------------
+0344           1277   ;         function main
+0344           1278   ;        -----------------------------------------
+0344           1279   _main:
+0344           1280   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:308: waitms(500); // Give PuTTY a chance to start.
+0344 9001F4    1281            mov     dptr,#0x01F4
+0347 120100    1282            lcall   _waitms
+034A           1283   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:309: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+034A 7470      1284            mov     a,#__str_0
+034C C0E0      1285            push    acc
+034E 74C3      1286            mov     a,#(__str_0 >> 8)
+0350 C0E0      1287            push    acc
+0352 7480      1288            mov     a,#0x80
+0354 C0E0      1289            push    acc
+0356 120100    1290            lcall   _printf
+0359 1581      1291            dec     sp
+035B 1581      1292            dec     sp
+035D 1581      1293            dec     sp
+035F           1294   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:325: __FILE__, __DATE__, __TIME__);
+035F           1295   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:324: "Compiled: %s, %s\n\n",
+035F 74F0      1296            mov     a,#__str_4
+0361 C0E0      1297            push    acc
+0363 74C3      1298            mov     a,#(__str_4 >> 8)
+0365 C0E0      1299            push    acc
+0367 7480      1300            mov     a,#0x80
+0369 C0E0      1301            push    acc
+036B 7430      1302            mov     a,#__str_3
+036D C0E0      1303            push    acc
+036F 74C4      1304            mov     a,#(__str_3 >> 8)
+0371 C0E0      1305            push    acc
+0373 7480      1306            mov     a,#0x80
+0375 C0E0      1307            push    acc
+0377 7470      1308            mov     a,#__str_2
+0379 C0E0      1309            push    acc
+037B 74C4      1310            mov     a,#(__str_2 >> 8)
+037D C0E0      1311            push    acc
+037F 7480      1312            mov     a,#0x80
+0381 C0E0      1313            push    acc
+0383 74B0      1314            mov     a,#__str_1
+0385 C0E0      1315            push    acc
+0387 74C4      1316            mov     a,#(__str_1 >> 8)
+0389 C0E0      1317            push    acc
+038B 7480      1318            mov     a,#0x80
+038D C0E0      1319            push    acc
+038F 120100    1320            lcall   _printf
+0392 E581      1321            mov     a,sp
+0394 24F4      1322            add     a,#0xf4
+0396 F581      1323            mov     sp,a
+0398           1324   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:329: TR0=0;
+0398 C28C      1325            clr     _TR0
+039A           1326   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:330: TMOD|=0b_0000_0001;
+039A 438901    1327            orl     _TMOD,#0x01
+039D           1328   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:331: TH0=0; TL0=0;
+039D 758C00    1329            mov     _TH0,#0x00
+03A0 758A00    1330            mov     _TL0,#0x00
+03A3           1331   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:333: while(1) {
+03A3           1332   L017011?:
+03A3           1333   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:372: TR0=0;
+03A3 C28C      1334            clr     _TR0
+03A5           1335   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:373: TMOD|=0B_0000_0001;
+03A5 438901    1336            orl     _TMOD,#0x01
+03A8           1337   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:374: TH0=0; TL0=0;
+03A8 758C00    1338            mov     _TH0,#0x00
+03AB 758A00    1339            mov     _TL0,#0x00
+03AE           1340   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:375: while(P1_1==1);
+03AE           1341   L017001?:
+03AE 209130    1342            jb      _P1_1,L017001?
+03B1           1343   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:376: while (P1_1==0);
+03B1           1344   L017004?:
+03B1 309170    1345            jnb     _P1_1,L017004?
+03B4           1346   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:377: TR0=1;
+03B4 D28C      1347            setb    _TR0
+03B6           1348   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:378: while (P1_1==1);
+03B6           1349   L017007?:
+03B6 2091B0    1350            jb      _P1_1,L017007?
+03B9           1351   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:379: TR0=0;
+03B9 C28C      1352            clr     _TR0
+03BB           1353   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:380: period=(TH0*0x100+TL0)*2;
+03BB AB8C      1354            mov     r3,_TH0
+03BD 7A00      1355            mov     r2,#0x00
+03BF AC8A      1356            mov     r4,_TL0
+03C1 7D00      1357            mov     r5,#0x00
+03C3 EC        1358            mov     a,r4
+03C4 2A        1359            add     a,r2
+03C5 FA        1360            mov     r2,a
+03C6 ED        1361            mov     a,r5
+03C7 3B        1362            addc    a,r3
+03C8 8A82      1363            mov     dpl,r2
+03CA C582      1364            xch     a,dpl
+03CC 25E0      1365            add     a,acc
+03CE C582      1366            xch     a,dpl
+03D0 33        1367            rlc     a
+03D1 F583      1368            mov     dph,a
+03D3 120100    1369            lcall   ___sint2fs
+03D6 AA82      1370            mov     r2,dpl
+03D8 AB83      1371            mov     r3,dph
+03DA ACF0      1372            mov     r4,b
+03DC FD        1373            mov     r5,a
+03DD           1374   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\phasor_voltmeter_test.c:412: printf( "\rPeriod = %f ms", period);
+03DD C002      1375            push    ar2
+03DF C003      1376            push    ar3
+03E1 C004      1377            push    ar4
+03E3 C005      1378            push    ar5
+03E5 7430      1379            mov     a,#__str_5
+03E7 C0E0      1380            push    acc
+03E9 74C6      1381            mov     a,#(__str_5 >> 8)
+03EB C0E0      1382            push    acc
+03ED 7480      1383            mov     a,#0x80
+03EF C0E0      1384            push    acc
+03F1 120100    1385            lcall   _printf
+03F4 E581      1386            mov     a,sp
+03F6 24F9      1387            add     a,#0xf9
+03F8 F581      1388            mov     sp,a
+03FA 8001      1389            sjmp    L017011?
+03FC           1390            rseg R_CSEG
+03FC           1391   
+0000           1392            rseg R_XINIT
+0000           1393   
+0000           1394            rseg R_CONST
+0000           1395   __str_0:
+0000 1B        1396            db 0x1B
+0001 5B324A    1397            db '[2J'
+0004 00        1398            db 0x00
+0005           1399   __str_1:
+0005 45464D38  1400            db 'EFM8 Period measurement at pin P1.1 using Timer 0.'
+     20506572
+     696F6420
+     6D656173
+     7572656D
+     656E7420
+     61742070
+     696E2050
+     312E3120
+     7573696E
+     67205469
+     6D657220
+     302E
+0037 0A        1401            db 0x0A
+0038 46696C65  1402            db 'File: %s'
+     3A202573
+0040 0A        1403            db 0x0A
+0041 436F6D70  1404            db 'Compiled: %s, %s'
+     696C6564
+     3A202573
+     2C202573
+0051 0A        1405            db 0x0A
+0052 0A        1406            db 0x0A
+0053 00        1407            db 0x00
+0054           1408   __str_2:
+0054 433A      1409            db 'C:'
+0056 5C        1410            db 0x5C
+0057 55736572  1411            db 'Users'
+     73
+005C 5C        1412            db 0x5C
+005D 6E757361  1413            db 'nusai'
+     69
+0062 5C        1414            db 0x5C
+0063 4465736B  1415            db 'Desktop'
+     746F70
+006A 5C        1416            db 0x5C
+006B 454C4543  1417            db 'ELEC 291'
+     20323931
+0073 5C        1418            db 0x5C
+0074 50686173  1419            db 'Phasor'
+     6F72
+007A 5C        1420            db 0x5C
+007B 70686173  1421            db 'phasor_voltmeter_test'
+     6F725F76
+     6F6C746D
+     65746572
+     5F746573
+     74
+0090 2E63      1422            db '.c'
+0092 00        1423            db 0x00
+0093           1424   __str_3:
+0093 4D617220  1425            db 'Mar  3 2020'
+     20332032
+     303230
+009E 00        1426            db 0x00
+009F           1427   __str_4:
+009F 31373A30  1428            db '17:00:27'
+     303A3237
+00A7 00        1429            db 0x00
+00A8           1430   __str_5:
+00A8 0D        1431            db 0x0D
+00A9 50657269  1432            db 'Period = %f ms'
+     6F64203D
+     20256620
+     6D73
+00B7 00        1433            db 0x00
+00B8           1434   
+0003           1435            CSEG
+0003           1436   
+0003           1437   end

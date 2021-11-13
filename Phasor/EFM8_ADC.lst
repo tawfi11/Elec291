@@ -1,0 +1,1849 @@
+0000              1   ;--------------------------------------------------------
+0000              2   ; File Created by C51
+0000              3   ; Version 1.0.0 #1069 (Apr 23 2015) (MSVC)
+0000              4   ; This file was generated Wed Mar 04 14:03:40 2020
+0000              5   ;--------------------------------------------------------
+                  5   $name EFM8_ADC
+                  6   $optc51 --model-small
+                  7   $printf_float
+0000              9            R_DSEG    segment data
+0000             10            R_CSEG    segment code
+0000             11            R_BSEG    segment bit
+0000             12            R_XSEG    segment xdata
+0000             13            R_PSEG    segment xdata
+0000             14            R_ISEG    segment idata
+0000             15            R_OSEG    segment data overlay
+0000             16            BIT_BANK  segment data overlay
+0000             17            R_HOME    segment code
+0000             18            R_GSINIT  segment code
+0000             19            R_IXSEG   segment xdata
+0000             20            R_CONST   segment code
+0000             21            R_XINIT   segment code
+0000             22            R_DINIT   segment code
+0000             23   
+0000             24   ;--------------------------------------------------------
+0000             25   ; Public variables in this module
+0000             26   ;--------------------------------------------------------
+0000             27            public _InitPinADC_PARM_2
+0000             28            public _main
+0000             29            public _sendPython
+0000             30            public _TIMER0_Init
+0000             31            public _Volts_at_Pin
+0000             32            public _ADC_at_Pin
+0000             33            public _InitPinADC
+0000             34            public _waitms
+0000             35            public _Timer3us
+0000             36            public _InitADC
+0000             37            public __c51_external_startup
+0000             38   ;--------------------------------------------------------
+0000             39   ; Special Function Registers
+0000             40   ;--------------------------------------------------------
+0000             41   _ACC            DATA 0xe0
+0000             42   _ADC0ASAH       DATA 0xb6
+0000             43   _ADC0ASAL       DATA 0xb5
+0000             44   _ADC0ASCF       DATA 0xa1
+0000             45   _ADC0ASCT       DATA 0xc7
+0000             46   _ADC0CF0        DATA 0xbc
+0000             47   _ADC0CF1        DATA 0xb9
+0000             48   _ADC0CF2        DATA 0xdf
+0000             49   _ADC0CN0        DATA 0xe8
+0000             50   _ADC0CN1        DATA 0xb2
+0000             51   _ADC0CN2        DATA 0xb3
+0000             52   _ADC0GTH        DATA 0xc4
+0000             53   _ADC0GTL        DATA 0xc3
+0000             54   _ADC0H          DATA 0xbe
+0000             55   _ADC0L          DATA 0xbd
+0000             56   _ADC0LTH        DATA 0xc6
+0000             57   _ADC0LTL        DATA 0xc5
+0000             58   _ADC0MX         DATA 0xbb
+0000             59   _B              DATA 0xf0
+0000             60   _CKCON0         DATA 0x8e
+0000             61   _CKCON1         DATA 0xa6
+0000             62   _CLEN0          DATA 0xc6
+0000             63   _CLIE0          DATA 0xc7
+0000             64   _CLIF0          DATA 0xe8
+0000             65   _CLKSEL         DATA 0xa9
+0000             66   _CLOUT0         DATA 0xd1
+0000             67   _CLU0CF         DATA 0xb1
+0000             68   _CLU0FN         DATA 0xaf
+0000             69   _CLU0MX         DATA 0x84
+0000             70   _CLU1CF         DATA 0xb3
+0000             71   _CLU1FN         DATA 0xb2
+0000             72   _CLU1MX         DATA 0x85
+0000             73   _CLU2CF         DATA 0xb6
+0000             74   _CLU2FN         DATA 0xb5
+0000             75   _CLU2MX         DATA 0x91
+0000             76   _CLU3CF         DATA 0xbf
+0000             77   _CLU3FN         DATA 0xbe
+0000             78   _CLU3MX         DATA 0xae
+0000             79   _CMP0CN0        DATA 0x9b
+0000             80   _CMP0CN1        DATA 0x99
+0000             81   _CMP0MD         DATA 0x9d
+0000             82   _CMP0MX         DATA 0x9f
+0000             83   _CMP1CN0        DATA 0xbf
+0000             84   _CMP1CN1        DATA 0xac
+0000             85   _CMP1MD         DATA 0xab
+0000             86   _CMP1MX         DATA 0xaa
+0000             87   _CRC0CN0        DATA 0xce
+0000             88   _CRC0CN1        DATA 0x86
+0000             89   _CRC0CNT        DATA 0xd3
+0000             90   _CRC0DAT        DATA 0xcb
+0000             91   _CRC0FLIP       DATA 0xcf
+0000             92   _CRC0IN         DATA 0xca
+0000             93   _CRC0ST         DATA 0xd2
+0000             94   _DAC0CF0        DATA 0x91
+0000             95   _DAC0CF1        DATA 0x92
+0000             96   _DAC0H          DATA 0x85
+0000             97   _DAC0L          DATA 0x84
+0000             98   _DAC1CF0        DATA 0x93
+0000             99   _DAC1CF1        DATA 0x94
+0000            100   _DAC1H          DATA 0x8a
+0000            101   _DAC1L          DATA 0x89
+0000            102   _DAC2CF0        DATA 0x95
+0000            103   _DAC2CF1        DATA 0x96
+0000            104   _DAC2H          DATA 0x8c
+0000            105   _DAC2L          DATA 0x8b
+0000            106   _DAC3CF0        DATA 0x9a
+0000            107   _DAC3CF1        DATA 0x9c
+0000            108   _DAC3H          DATA 0x8e
+0000            109   _DAC3L          DATA 0x8d
+0000            110   _DACGCF0        DATA 0x88
+0000            111   _DACGCF1        DATA 0x98
+0000            112   _DACGCF2        DATA 0xa2
+0000            113   _DERIVID        DATA 0xad
+0000            114   _DEVICEID       DATA 0xb5
+0000            115   _DPH            DATA 0x83
+0000            116   _DPL            DATA 0x82
+0000            117   _EIE1           DATA 0xe6
+0000            118   _EIE2           DATA 0xf3
+0000            119   _EIP1           DATA 0xbb
+0000            120   _EIP1H          DATA 0xee
+0000            121   _EIP2           DATA 0xed
+0000            122   _EIP2H          DATA 0xf6
+0000            123   _EMI0CN         DATA 0xe7
+0000            124   _FLKEY          DATA 0xb7
+0000            125   _HFO0CAL        DATA 0xc7
+0000            126   _HFO1CAL        DATA 0xd6
+0000            127   _HFOCN          DATA 0xef
+0000            128   _I2C0ADM        DATA 0xff
+0000            129   _I2C0CN0        DATA 0xba
+0000            130   _I2C0DIN        DATA 0xbc
+0000            131   _I2C0DOUT       DATA 0xbb
+0000            132   _I2C0FCN0       DATA 0xad
+0000            133   _I2C0FCN1       DATA 0xab
+0000            134   _I2C0FCT        DATA 0xf5
+0000            135   _I2C0SLAD       DATA 0xbd
+0000            136   _I2C0STAT       DATA 0xb9
+0000            137   _IE             DATA 0xa8
+0000            138   _IP             DATA 0xb8
+0000            139   _IPH            DATA 0xf2
+0000            140   _IT01CF         DATA 0xe4
+0000            141   _LFO0CN         DATA 0xb1
+0000            142   _P0             DATA 0x80
+0000            143   _P0MASK         DATA 0xfe
+0000            144   _P0MAT          DATA 0xfd
+0000            145   _P0MDIN         DATA 0xf1
+0000            146   _P0MDOUT        DATA 0xa4
+0000            147   _P0SKIP         DATA 0xd4
+0000            148   _P1             DATA 0x90
+0000            149   _P1MASK         DATA 0xee
+0000            150   _P1MAT          DATA 0xed
+0000            151   _P1MDIN         DATA 0xf2
+0000            152   _P1MDOUT        DATA 0xa5
+0000            153   _P1SKIP         DATA 0xd5
+0000            154   _P2             DATA 0xa0
+0000            155   _P2MASK         DATA 0xfc
+0000            156   _P2MAT          DATA 0xfb
+0000            157   _P2MDIN         DATA 0xf3
+0000            158   _P2MDOUT        DATA 0xa6
+0000            159   _P2SKIP         DATA 0xcc
+0000            160   _P3             DATA 0xb0
+0000            161   _P3MDIN         DATA 0xf4
+0000            162   _P3MDOUT        DATA 0x9c
+0000            163   _PCA0CENT       DATA 0x9e
+0000            164   _PCA0CLR        DATA 0x9c
+0000            165   _PCA0CN0        DATA 0xd8
+0000            166   _PCA0CPH0       DATA 0xfc
+0000            167   _PCA0CPH1       DATA 0xea
+0000            168   _PCA0CPH2       DATA 0xec
+0000            169   _PCA0CPH3       DATA 0xf5
+0000            170   _PCA0CPH4       DATA 0x85
+0000            171   _PCA0CPH5       DATA 0xde
+0000            172   _PCA0CPL0       DATA 0xfb
+0000            173   _PCA0CPL1       DATA 0xe9
+0000            174   _PCA0CPL2       DATA 0xeb
+0000            175   _PCA0CPL3       DATA 0xf4
+0000            176   _PCA0CPL4       DATA 0x84
+0000            177   _PCA0CPL5       DATA 0xdd
+0000            178   _PCA0CPM0       DATA 0xda
+0000            179   _PCA0CPM1       DATA 0xdb
+0000            180   _PCA0CPM2       DATA 0xdc
+0000            181   _PCA0CPM3       DATA 0xae
+0000            182   _PCA0CPM4       DATA 0xaf
+0000            183   _PCA0CPM5       DATA 0xcc
+0000            184   _PCA0H          DATA 0xfa
+0000            185   _PCA0L          DATA 0xf9
+0000            186   _PCA0MD         DATA 0xd9
+0000            187   _PCA0POL        DATA 0x96
+0000            188   _PCA0PWM        DATA 0xf7
+0000            189   _PCON0          DATA 0x87
+0000            190   _PCON1          DATA 0xcd
+0000            191   _PFE0CN         DATA 0xc1
+0000            192   _PRTDRV         DATA 0xf6
+0000            193   _PSCTL          DATA 0x8f
+0000            194   _PSTAT0         DATA 0xaa
+0000            195   _PSW            DATA 0xd0
+0000            196   _REF0CN         DATA 0xd1
+0000            197   _REG0CN         DATA 0xc9
+0000            198   _REVID          DATA 0xb6
+0000            199   _RSTSRC         DATA 0xef
+0000            200   _SBCON1         DATA 0x94
+0000            201   _SBRLH1         DATA 0x96
+0000            202   _SBRLL1         DATA 0x95
+0000            203   _SBUF           DATA 0x99
+0000            204   _SBUF0          DATA 0x99
+0000            205   _SBUF1          DATA 0x92
+0000            206   _SCON           DATA 0x98
+0000            207   _SCON0          DATA 0x98
+0000            208   _SCON1          DATA 0xc8
+0000            209   _SFRPAGE        DATA 0xa7
+0000            210   _SFRPGCN        DATA 0xbc
+0000            211   _SFRSTACK       DATA 0xd7
+0000            212   _SMB0ADM        DATA 0xd6
+0000            213   _SMB0ADR        DATA 0xd7
+0000            214   _SMB0CF         DATA 0xc1
+0000            215   _SMB0CN0        DATA 0xc0
+0000            216   _SMB0DAT        DATA 0xc2
+0000            217   _SMB0FCN0       DATA 0xc3
+0000            218   _SMB0FCN1       DATA 0xc4
+0000            219   _SMB0FCT        DATA 0xef
+0000            220   _SMB0RXLN       DATA 0xc5
+0000            221   _SMB0TC         DATA 0xac
+0000            222   _SMOD1          DATA 0x93
+0000            223   _SP             DATA 0x81
+0000            224   _SPI0CFG        DATA 0xa1
+0000            225   _SPI0CKR        DATA 0xa2
+0000            226   _SPI0CN0        DATA 0xf8
+0000            227   _SPI0DAT        DATA 0xa3
+0000            228   _SPI0FCN0       DATA 0x9a
+0000            229   _SPI0FCN1       DATA 0x9b
+0000            230   _SPI0FCT        DATA 0xf7
+0000            231   _SPI0PCF        DATA 0xdf
+0000            232   _TCON           DATA 0x88
+0000            233   _TH0            DATA 0x8c
+0000            234   _TH1            DATA 0x8d
+0000            235   _TL0            DATA 0x8a
+0000            236   _TL1            DATA 0x8b
+0000            237   _TMOD           DATA 0x89
+0000            238   _TMR2CN0        DATA 0xc8
+0000            239   _TMR2CN1        DATA 0xfd
+0000            240   _TMR2H          DATA 0xcf
+0000            241   _TMR2L          DATA 0xce
+0000            242   _TMR2RLH        DATA 0xcb
+0000            243   _TMR2RLL        DATA 0xca
+0000            244   _TMR3CN0        DATA 0x91
+0000            245   _TMR3CN1        DATA 0xfe
+0000            246   _TMR3H          DATA 0x95
+0000            247   _TMR3L          DATA 0x94
+0000            248   _TMR3RLH        DATA 0x93
+0000            249   _TMR3RLL        DATA 0x92
+0000            250   _TMR4CN0        DATA 0x98
+0000            251   _TMR4CN1        DATA 0xff
+0000            252   _TMR4H          DATA 0xa5
+0000            253   _TMR4L          DATA 0xa4
+0000            254   _TMR4RLH        DATA 0xa3
+0000            255   _TMR4RLL        DATA 0xa2
+0000            256   _TMR5CN0        DATA 0xc0
+0000            257   _TMR5CN1        DATA 0xf1
+0000            258   _TMR5H          DATA 0xd5
+0000            259   _TMR5L          DATA 0xd4
+0000            260   _TMR5RLH        DATA 0xd3
+0000            261   _TMR5RLL        DATA 0xd2
+0000            262   _UART0PCF       DATA 0xd9
+0000            263   _UART1FCN0      DATA 0x9d
+0000            264   _UART1FCN1      DATA 0xd8
+0000            265   _UART1FCT       DATA 0xfa
+0000            266   _UART1LIN       DATA 0x9e
+0000            267   _UART1PCF       DATA 0xda
+0000            268   _VDM0CN         DATA 0xff
+0000            269   _WDTCN          DATA 0x97
+0000            270   _XBR0           DATA 0xe1
+0000            271   _XBR1           DATA 0xe2
+0000            272   _XBR2           DATA 0xe3
+0000            273   _XOSC0CN        DATA 0x86
+0000            274   _DPTR           DATA 0x8382
+0000            275   _TMR2RL         DATA 0xcbca
+0000            276   _TMR3RL         DATA 0x9392
+0000            277   _TMR4RL         DATA 0xa3a2
+0000            278   _TMR5RL         DATA 0xd3d2
+0000            279   _TMR0           DATA 0x8c8a
+0000            280   _TMR1           DATA 0x8d8b
+0000            281   _TMR2           DATA 0xcfce
+0000            282   _TMR3           DATA 0x9594
+0000            283   _TMR4           DATA 0xa5a4
+0000            284   _TMR5           DATA 0xd5d4
+0000            285   _SBRL1          DATA 0x9695
+0000            286   _PCA0           DATA 0xfaf9
+0000            287   _PCA0CP0        DATA 0xfcfb
+0000            288   _PCA0CP1        DATA 0xeae9
+0000            289   _PCA0CP2        DATA 0xeceb
+0000            290   _PCA0CP3        DATA 0xf5f4
+0000            291   _PCA0CP4        DATA 0x8584
+0000            292   _PCA0CP5        DATA 0xdedd
+0000            293   _ADC0ASA        DATA 0xb6b5
+0000            294   _ADC0GT         DATA 0xc4c3
+0000            295   _ADC0           DATA 0xbebd
+0000            296   _ADC0LT         DATA 0xc6c5
+0000            297   _DAC0           DATA 0x8584
+0000            298   _DAC1           DATA 0x8a89
+0000            299   _DAC2           DATA 0x8c8b
+0000            300   _DAC3           DATA 0x8e8d
+0000            301   ;--------------------------------------------------------
+0000            302   ; special function bits
+0000            303   ;--------------------------------------------------------
+0000            304   _ACC_0          BIT 0xe0
+0000            305   _ACC_1          BIT 0xe1
+0000            306   _ACC_2          BIT 0xe2
+0000            307   _ACC_3          BIT 0xe3
+0000            308   _ACC_4          BIT 0xe4
+0000            309   _ACC_5          BIT 0xe5
+0000            310   _ACC_6          BIT 0xe6
+0000            311   _ACC_7          BIT 0xe7
+0000            312   _TEMPE          BIT 0xe8
+0000            313   _ADGN0          BIT 0xe9
+0000            314   _ADGN1          BIT 0xea
+0000            315   _ADWINT         BIT 0xeb
+0000            316   _ADBUSY         BIT 0xec
+0000            317   _ADINT          BIT 0xed
+0000            318   _IPOEN          BIT 0xee
+0000            319   _ADEN           BIT 0xef
+0000            320   _B_0            BIT 0xf0
+0000            321   _B_1            BIT 0xf1
+0000            322   _B_2            BIT 0xf2
+0000            323   _B_3            BIT 0xf3
+0000            324   _B_4            BIT 0xf4
+0000            325   _B_5            BIT 0xf5
+0000            326   _B_6            BIT 0xf6
+0000            327   _B_7            BIT 0xf7
+0000            328   _C0FIF          BIT 0xe8
+0000            329   _C0RIF          BIT 0xe9
+0000            330   _C1FIF          BIT 0xea
+0000            331   _C1RIF          BIT 0xeb
+0000            332   _C2FIF          BIT 0xec
+0000            333   _C2RIF          BIT 0xed
+0000            334   _C3FIF          BIT 0xee
+0000            335   _C3RIF          BIT 0xef
+0000            336   _D1SRC0         BIT 0x88
+0000            337   _D1SRC1         BIT 0x89
+0000            338   _D1AMEN         BIT 0x8a
+0000            339   _D01REFSL       BIT 0x8b
+0000            340   _D3SRC0         BIT 0x8c
+0000            341   _D3SRC1         BIT 0x8d
+0000            342   _D3AMEN         BIT 0x8e
+0000            343   _D23REFSL       BIT 0x8f
+0000            344   _D0UDIS         BIT 0x98
+0000            345   _D1UDIS         BIT 0x99
+0000            346   _D2UDIS         BIT 0x9a
+0000            347   _D3UDIS         BIT 0x9b
+0000            348   _EX0            BIT 0xa8
+0000            349   _ET0            BIT 0xa9
+0000            350   _EX1            BIT 0xaa
+0000            351   _ET1            BIT 0xab
+0000            352   _ES0            BIT 0xac
+0000            353   _ET2            BIT 0xad
+0000            354   _ESPI0          BIT 0xae
+0000            355   _EA             BIT 0xaf
+0000            356   _PX0            BIT 0xb8
+0000            357   _PT0            BIT 0xb9
+0000            358   _PX1            BIT 0xba
+0000            359   _PT1            BIT 0xbb
+0000            360   _PS0            BIT 0xbc
+0000            361   _PT2            BIT 0xbd
+0000            362   _PSPI0          BIT 0xbe
+0000            363   _P0_0           BIT 0x80
+0000            364   _P0_1           BIT 0x81
+0000            365   _P0_2           BIT 0x82
+0000            366   _P0_3           BIT 0x83
+0000            367   _P0_4           BIT 0x84
+0000            368   _P0_5           BIT 0x85
+0000            369   _P0_6           BIT 0x86
+0000            370   _P0_7           BIT 0x87
+0000            371   _P1_0           BIT 0x90
+0000            372   _P1_1           BIT 0x91
+0000            373   _P1_2           BIT 0x92
+0000            374   _P1_3           BIT 0x93
+0000            375   _P1_4           BIT 0x94
+0000            376   _P1_5           BIT 0x95
+0000            377   _P1_6           BIT 0x96
+0000            378   _P1_7           BIT 0x97
+0000            379   _P2_0           BIT 0xa0
+0000            380   _P2_1           BIT 0xa1
+0000            381   _P2_2           BIT 0xa2
+0000            382   _P2_3           BIT 0xa3
+0000            383   _P2_4           BIT 0xa4
+0000            384   _P2_5           BIT 0xa5
+0000            385   _P2_6           BIT 0xa6
+0000            386   _P3_0           BIT 0xb0
+0000            387   _P3_1           BIT 0xb1
+0000            388   _P3_2           BIT 0xb2
+0000            389   _P3_3           BIT 0xb3
+0000            390   _P3_4           BIT 0xb4
+0000            391   _P3_7           BIT 0xb7
+0000            392   _CCF0           BIT 0xd8
+0000            393   _CCF1           BIT 0xd9
+0000            394   _CCF2           BIT 0xda
+0000            395   _CCF3           BIT 0xdb
+0000            396   _CCF4           BIT 0xdc
+0000            397   _CCF5           BIT 0xdd
+0000            398   _CR             BIT 0xde
+0000            399   _CF             BIT 0xdf
+0000            400   _PARITY         BIT 0xd0
+0000            401   _F1             BIT 0xd1
+0000            402   _OV             BIT 0xd2
+0000            403   _RS0            BIT 0xd3
+0000            404   _RS1            BIT 0xd4
+0000            405   _F0             BIT 0xd5
+0000            406   _AC             BIT 0xd6
+0000            407   _CY             BIT 0xd7
+0000            408   _RI             BIT 0x98
+0000            409   _TI             BIT 0x99
+0000            410   _RB8            BIT 0x9a
+0000            411   _TB8            BIT 0x9b
+0000            412   _REN            BIT 0x9c
+0000            413   _CE             BIT 0x9d
+0000            414   _SMODE          BIT 0x9e
+0000            415   _RI1            BIT 0xc8
+0000            416   _TI1            BIT 0xc9
+0000            417   _RBX1           BIT 0xca
+0000            418   _TBX1           BIT 0xcb
+0000            419   _REN1           BIT 0xcc
+0000            420   _PERR1          BIT 0xcd
+0000            421   _OVR1           BIT 0xce
+0000            422   _SI             BIT 0xc0
+0000            423   _ACK            BIT 0xc1
+0000            424   _ARBLOST        BIT 0xc2
+0000            425   _ACKRQ          BIT 0xc3
+0000            426   _STO            BIT 0xc4
+0000            427   _STA            BIT 0xc5
+0000            428   _TXMODE         BIT 0xc6
+0000            429   _MASTER         BIT 0xc7
+0000            430   _SPIEN          BIT 0xf8
+0000            431   _TXNF           BIT 0xf9
+0000            432   _NSSMD0         BIT 0xfa
+0000            433   _NSSMD1         BIT 0xfb
+0000            434   _RXOVRN         BIT 0xfc
+0000            435   _MODF           BIT 0xfd
+0000            436   _WCOL           BIT 0xfe
+0000            437   _SPIF           BIT 0xff
+0000            438   _IT0            BIT 0x88
+0000            439   _IE0            BIT 0x89
+0000            440   _IT1            BIT 0x8a
+0000            441   _IE1            BIT 0x8b
+0000            442   _TR0            BIT 0x8c
+0000            443   _TF0            BIT 0x8d
+0000            444   _TR1            BIT 0x8e
+0000            445   _TF1            BIT 0x8f
+0000            446   _T2XCLK0        BIT 0xc8
+0000            447   _T2XCLK1        BIT 0xc9
+0000            448   _TR2            BIT 0xca
+0000            449   _T2SPLIT        BIT 0xcb
+0000            450   _TF2CEN         BIT 0xcc
+0000            451   _TF2LEN         BIT 0xcd
+0000            452   _TF2L           BIT 0xce
+0000            453   _TF2H           BIT 0xcf
+0000            454   _T4XCLK0        BIT 0x98
+0000            455   _T4XCLK1        BIT 0x99
+0000            456   _TR4            BIT 0x9a
+0000            457   _T4SPLIT        BIT 0x9b
+0000            458   _TF4CEN         BIT 0x9c
+0000            459   _TF4LEN         BIT 0x9d
+0000            460   _TF4L           BIT 0x9e
+0000            461   _TF4H           BIT 0x9f
+0000            462   _T5XCLK0        BIT 0xc0
+0000            463   _T5XCLK1        BIT 0xc1
+0000            464   _TR5            BIT 0xc2
+0000            465   _T5SPLIT        BIT 0xc3
+0000            466   _TF5CEN         BIT 0xc4
+0000            467   _TF5LEN         BIT 0xc5
+0000            468   _TF5L           BIT 0xc6
+0000            469   _TF5H           BIT 0xc7
+0000            470   _RIE            BIT 0xd8
+0000            471   _RXTO0          BIT 0xd9
+0000            472   _RXTO1          BIT 0xda
+0000            473   _RFRQ           BIT 0xdb
+0000            474   _TIE            BIT 0xdc
+0000            475   _TXHOLD         BIT 0xdd
+0000            476   _TXNF1          BIT 0xde
+0000            477   _TFRQ           BIT 0xdf
+0000            478   ;--------------------------------------------------------
+0000            479   ; overlayable register banks
+0000            480   ;--------------------------------------------------------
+0000            481            rbank0 segment data overlay
+0000            482   ;--------------------------------------------------------
+0000            483   ; internal ram data
+0000            484   ;--------------------------------------------------------
+0000            485            rseg R_DSEG
+0000            486   _main_periodtest_1_86:
+0000            487            ds 4
+0004            488   _main_overflow_count_1_86:
+0004            489            ds 2
+0006            490   _main_peak_1_86:
+0006            491            ds 4
+000A            492   _main_sloc0_1_0:
+000A            493            ds 4
+000E            494   ;--------------------------------------------------------
+000E            495   ; overlayable items in internal ram 
+000E            496   ;--------------------------------------------------------
+0000            497            rseg    R_OSEG
+0000            498            rseg    R_OSEG
+0000            499   _InitPinADC_PARM_2:
+0000            500            ds 1
+0001            501            rseg    R_OSEG
+0001            502   ;--------------------------------------------------------
+0001            503   ; indirectly addressable internal ram data
+0001            504   ;--------------------------------------------------------
+0000            505            rseg R_ISEG
+0000            506   ;--------------------------------------------------------
+0000            507   ; absolute internal ram data
+0000            508   ;--------------------------------------------------------
+0000            509            DSEG
+0000            510   ;--------------------------------------------------------
+0000            511   ; bit data
+0000            512   ;--------------------------------------------------------
+0000            513            rseg R_BSEG
+0000            514   ;--------------------------------------------------------
+0000            515   ; paged external ram data
+0000            516   ;--------------------------------------------------------
+0000            517            rseg R_PSEG
+0000            518   ;--------------------------------------------------------
+0000            519   ; external ram data
+0000            520   ;--------------------------------------------------------
+0000            521            rseg R_XSEG
+0000            522   ;--------------------------------------------------------
+0000            523   ; absolute external ram data
+0000            524   ;--------------------------------------------------------
+0000            525            XSEG
+0000            526   ;--------------------------------------------------------
+0000            527   ; external initialized ram data
+0000            528   ;--------------------------------------------------------
+0000            529            rseg R_IXSEG
+0000            530            rseg R_HOME
+0000            531            rseg R_GSINIT
+0000            532            rseg R_CSEG
+0000            533   ;--------------------------------------------------------
+0000            534   ; Reset entry point and interrupt vectors
+0000            535   ;--------------------------------------------------------
+0000            536            CSEG at 0x0000
+0000 020100     537            ljmp    _crt0
+0003            538   ;--------------------------------------------------------
+0003            539   ; global & static initialisations
+0003            540   ;--------------------------------------------------------
+0000            541            rseg R_HOME
+0000            542            rseg R_GSINIT
+0000            543            rseg R_GSINIT
+0000            544   ;--------------------------------------------------------
+0000            545   ; data variables initialization
+0000            546   ;--------------------------------------------------------
+0000            547            rseg R_DINIT
+0000            548            ; The linker places a 'ret' at the end of segment R_DINIT.
+0000            549   ;--------------------------------------------------------
+0000            550   ; code
+0000            551   ;--------------------------------------------------------
+0000            552            rseg R_CSEG
+0000            553   ;------------------------------------------------------------
+0000            554   ;Allocation info for local variables in function '_c51_external_startup'
+0000            555   ;------------------------------------------------------------
+0000            556   ;------------------------------------------------------------
+0000            557   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:17: char _c51_external_startup (void)
+0000            558   ;        -----------------------------------------
+0000            559   ;         function _c51_external_startup
+0000            560   ;        -----------------------------------------
+0000            561   __c51_external_startup:
+0000            562            using   0
+0000            563   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:20: SFRPAGE = 0x00;
+0000 75A700     564            mov     _SFRPAGE,#0x00
+0003            565   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:21: WDTCN = 0xDE; //First key
+0003 7597DE     566            mov     _WDTCN,#0xDE
+0006            567   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:22: WDTCN = 0xAD; //Second key
+0006 7597AD     568            mov     _WDTCN,#0xAD
+0009            569   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:24: VDM0CN=0x80;       // enable VDD monitor
+0009 75FF80     570            mov     _VDM0CN,#0x80
+000C            571   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:25: RSTSRC=0x02|0x04;  // Enable reset on missing clock detector and VDD
+000C 75EF06     572            mov     _RSTSRC,#0x06
+000F            573   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:32: SFRPAGE = 0x10;
+000F 75A710     574            mov     _SFRPAGE,#0x10
+0012            575   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:33: PFE0CN  = 0x20; // SYSCLK < 75 MHz.
+0012 75C120     576            mov     _PFE0CN,#0x20
+0015            577   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:34: SFRPAGE = 0x00;
+0015 75A700     578            mov     _SFRPAGE,#0x00
+0018            579   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:55: CLKSEL = 0x00;
+0018 75A900     580            mov     _CLKSEL,#0x00
+001B            581   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:56: CLKSEL = 0x00;
+001B 75A900     582            mov     _CLKSEL,#0x00
+001E            583   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:57: while ((CLKSEL & 0x80) == 0);
+001E            584   L002001?:
+001E E5A9       585            mov     a,_CLKSEL
+0020 30E790     586            jnb     acc.7,L002001?
+0023            587   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:58: CLKSEL = 0x03;
+0023 75A903     588            mov     _CLKSEL,#0x03
+0026            589   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:59: CLKSEL = 0x03;
+0026 75A903     590            mov     _CLKSEL,#0x03
+0029            591   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:60: while ((CLKSEL & 0x80) == 0);
+0029            592   L002004?:
+0029 E5A9       593            mov     a,_CLKSEL
+002B 30E710     594            jnb     acc.7,L002004?
+002E            595   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:65: P0MDOUT |= 0x10; // Enable UART0 TX as push-pull output
+002E 43A410     596            orl     _P0MDOUT,#0x10
+0031            597   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:66: XBR0     = 0x01; // Enable UART0 on P0.4(TX) and P0.5(RX)                     
+0031 75E101     598            mov     _XBR0,#0x01
+0034            599   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:67: XBR1     = 0X00;
+0034 75E200     600            mov     _XBR1,#0x00
+0037            601   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:68: XBR2     = 0x40; // Enable crossbar and weak pull-ups
+0037 75E340     602            mov     _XBR2,#0x40
+003A            603   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:74: SCON0 = 0x10;
+003A 759810     604            mov     _SCON0,#0x10
+003D            605   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:75: TH1 = 0x100-((SYSCLK/BAUDRATE)/(2L*12L));
+003D 758DE6     606            mov     _TH1,#0xE6
+0040            607   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:76: TL1 = TH1;      // Init Timer1
+0040 858D8B     608            mov     _TL1,_TH1
+0043            609   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:77: TMOD &= ~0xf0;  // TMOD: timer 1 in 8-bit auto-reload
+0043 53890F     610            anl     _TMOD,#0x0F
+0046            611   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:78: TMOD |=  0x20;                       
+0046 438920     612            orl     _TMOD,#0x20
+0049            613   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:79: TR1 = 1; // START Timer1
+0049 D28E       614            setb    _TR1
+004B            615   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:80: TI = 1;  // Indicate TX0 ready
+004B D299       616            setb    _TI
+004D            617   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:82: return 0;
+004D 758200     618            mov     dpl,#0x00
+0050 22         619            ret
+0051            620   ;------------------------------------------------------------
+0051            621   ;Allocation info for local variables in function 'InitADC'
+0051            622   ;------------------------------------------------------------
+0051            623   ;------------------------------------------------------------
+0051            624   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:85: void InitADC (void)
+0051            625   ;        -----------------------------------------
+0051            626   ;         function InitADC
+0051            627   ;        -----------------------------------------
+0051            628   _InitADC:
+0051            629   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:87: SFRPAGE = 0x00;
+0051 75A700     630            mov     _SFRPAGE,#0x00
+0054            631   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:88: ADC0CN1 = 0b_10_000_000; //14-bit,  Right justified no shifting applied, perform and Accumulate 1 conversion.
+0054 75B280     632            mov     _ADC0CN1,#0x80
+0057            633   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:89: ADC0CF0 = 0b_11111_0_00; // SYSCLK/32
+0057 75BCF8     634            mov     _ADC0CF0,#0xF8
+005A            635   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:90: ADC0CF1 = 0b_0_0_011110; // Same as default for now
+005A 75B91E     636            mov     _ADC0CF1,#0x1E
+005D            637   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:91: ADC0CN0 = 0b_0_0_0_0_0_00_0; // Same as default for now
+005D 75E800     638            mov     _ADC0CN0,#0x00
+0060            639   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:92: ADC0CF2 = 0b_0_01_11111 ; // GND pin, Vref=VDD
+0060 75DF3F     640            mov     _ADC0CF2,#0x3F
+0063            641   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:93: ADC0CN2 = 0b_0_000_0000;  // Same as default for now. ADC0 conversion initiated on write of 1 to ADBUSY.
+0063 75B300     642            mov     _ADC0CN2,#0x00
+0066            643   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:94: ADEN=1; // Enable ADC
+0066 D2EF       644            setb    _ADEN
+0068 22         645            ret
+0069            646   ;------------------------------------------------------------
+0069            647   ;Allocation info for local variables in function 'Timer3us'
+0069            648   ;------------------------------------------------------------
+0069            649   ;us                        Allocated to registers r2 
+0069            650   ;i                         Allocated to registers r3 
+0069            651   ;------------------------------------------------------------
+0069            652   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:98: void Timer3us(unsigned char us)
+0069            653   ;        -----------------------------------------
+0069            654   ;         function Timer3us
+0069            655   ;        -----------------------------------------
+0069            656   _Timer3us:
+0069 AA82       657            mov     r2,dpl
+006B            658   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:103: CKCON0|=0b_0100_0000;
+006B 438E40     659            orl     _CKCON0,#0x40
+006E            660   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:105: TMR3RL = (-(SYSCLK)/1000000L); // Set Timer3 to overflow in 1us.
+006E 7592B8     661            mov     _TMR3RL,#0xB8
+0071 7593FF     662            mov     (_TMR3RL >> 8),#0xFF
+0074            663   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:106: TMR3 = TMR3RL;                 // Initialize Timer3 for first overflow
+0074 859294     664            mov     _TMR3,_TMR3RL
+0077 859395     665            mov     (_TMR3 >> 8),(_TMR3RL >> 8)
+007A            666   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:108: TMR3CN0 = 0x04;                 // Sart Timer3 and clear overflow flag
+007A 759104     667            mov     _TMR3CN0,#0x04
+007D            668   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:109: for (i = 0; i < us; i++)       // Count <us> overflows
+007D 7B00       669            mov     r3,#0x00
+007F            670   L004004?:
+007F C3         671            clr     c
+0080 EB         672            mov     a,r3
+0081 9A         673            subb    a,r2
+0082 5001       674            jnc     L004007?
+0084            675   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:111: while (!(TMR3CN0 & 0x80));  // Wait for overflow
+0084            676   L004001?:
+0084 E591       677            mov     a,_TMR3CN0
+0086 30E710     678            jnb     acc.7,L004001?
+0089            679   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:112: TMR3CN0 &= ~(0x80);         // Clear overflow indicator
+0089 53917F     680            anl     _TMR3CN0,#0x7F
+008C            681   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:109: for (i = 0; i < us; i++)       // Count <us> overflows
+008C 0B         682            inc     r3
+008D 8001       683            sjmp    L004004?
+008F            684   L004007?:
+008F            685   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:114: TMR3CN0 = 0 ;                   // Stop Timer3 and clear overflow flag
+008F 759100     686            mov     _TMR3CN0,#0x00
+0092 22         687            ret
+0093            688   ;------------------------------------------------------------
+0093            689   ;Allocation info for local variables in function 'waitms'
+0093            690   ;------------------------------------------------------------
+0093            691   ;ms                        Allocated to registers r2 r3 
+0093            692   ;j                         Allocated to registers r4 r5 
+0093            693   ;k                         Allocated to registers r6 
+0093            694   ;------------------------------------------------------------
+0093            695   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:117: void waitms (unsigned int ms)
+0093            696   ;        -----------------------------------------
+0093            697   ;         function waitms
+0093            698   ;        -----------------------------------------
+0093            699   _waitms:
+0093 AA82       700            mov     r2,dpl
+0095 AB83       701            mov     r3,dph
+0097            702   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:121: for(j=0; j<ms; j++)
+0097 7C00       703            mov     r4,#0x00
+0099 7D00       704            mov     r5,#0x00
+009B            705   L005005?:
+009B C3         706            clr     c
+009C EC         707            mov     a,r4
+009D 9A         708            subb    a,r2
+009E ED         709            mov     a,r5
+009F 9B         710            subb    a,r3
+00A0 5001       711            jnc     L005009?
+00A2            712   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:122: for (k=0; k<4; k++) Timer3us(250);
+00A2 7E00       713            mov     r6,#0x00
+00A4            714   L005001?:
+00A4 BE0450     715            cjne    r6,#0x04,L005018?
+00A7            716   L005018?:
+00A7 5001       717            jnc     L005007?
+00A9 7582FA     718            mov     dpl,#0xFA
+00AC C002       719            push    ar2
+00AE C003       720            push    ar3
+00B0 C004       721            push    ar4
+00B2 C005       722            push    ar5
+00B4 C006       723            push    ar6
+00B6 120100     724            lcall   _Timer3us
+00B9 D006       725            pop     ar6
+00BB D005       726            pop     ar5
+00BD D004       727            pop     ar4
+00BF D003       728            pop     ar3
+00C1 D002       729            pop     ar2
+00C3 0E         730            inc     r6
+00C4 8001       731            sjmp    L005001?
+00C6            732   L005007?:
+00C6            733   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:121: for(j=0; j<ms; j++)
+00C6 0C         734            inc     r4
+00C7 BC0090     735            cjne    r4,#0x00,L005005?
+00CA 0D         736            inc     r5
+00CB 8001       737            sjmp    L005005?
+00CD            738   L005009?:
+00CD 22         739            ret
+00CE            740   ;------------------------------------------------------------
+00CE            741   ;Allocation info for local variables in function 'InitPinADC'
+00CE            742   ;------------------------------------------------------------
+00CE            743   ;pinno                     Allocated with name '_InitPinADC_PARM_2'
+00CE            744   ;portno                    Allocated to registers r2 
+00CE            745   ;mask                      Allocated to registers r3 
+00CE            746   ;------------------------------------------------------------
+00CE            747   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:127: void InitPinADC (unsigned char portno, unsigned char pinno)
+00CE            748   ;        -----------------------------------------
+00CE            749   ;         function InitPinADC
+00CE            750   ;        -----------------------------------------
+00CE            751   _InitPinADC:
+00CE AA82       752            mov     r2,dpl
+00D0            753   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:131: mask=1<<pinno;
+00D0 8560F0     754            mov     b,_InitPinADC_PARM_2
+00D3 05F0       755            inc     b
+00D5 7401       756            mov     a,#0x01
+00D7 8001       757            sjmp    L006013?
+00D9            758   L006011?:
+00D9 25E0       759            add     a,acc
+00DB            760   L006013?:
+00DB D5F050     761            djnz    b,L006011?
+00DE FB         762            mov     r3,a
+00DF            763   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:133: SFRPAGE = 0x20;
+00DF 75A720     764            mov     _SFRPAGE,#0x20
+00E2            765   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:134: switch (portno)
+00E2 BA0090     766            cjne    r2,#0x00,L006014?
+00E5 8001       767            sjmp    L006001?
+00E7            768   L006014?:
+00E7 BA0110     769            cjne    r2,#0x01,L006015?
+00EA 8001       770            sjmp    L006002?
+00EC            771   L006015?:
+00EC            772   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:136: case 0:
+00EC BA0290     773            cjne    r2,#0x02,L006005?
+00EF 8001       774            sjmp    L006003?
+00F1            775   L006001?:
+00F1            776   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:137: P0MDIN &= (~mask); // Set pin as analog input
+00F1 EB         777            mov     a,r3
+00F2 F4         778            cpl     a
+00F3 FA         779            mov     r2,a
+00F4 52F1       780            anl     _P0MDIN,a
+00F6            781   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:138: P0SKIP |= mask; // Skip Crossbar decoding for this pin
+00F6 EB         782            mov     a,r3
+00F7 42D4       783            orl     _P0SKIP,a
+00F9            784   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:139: break;
+00F9            785   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:140: case 1:
+00F9 8001       786            sjmp    L006005?
+00FB            787   L006002?:
+00FB            788   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:141: P1MDIN &= (~mask); // Set pin as analog input
+00FB EB         789            mov     a,r3
+00FC F4         790            cpl     a
+00FD FA         791            mov     r2,a
+00FE 52F2       792            anl     _P1MDIN,a
+0100            793   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:142: P1SKIP |= mask; // Skip Crossbar decoding for this pin
+0100 EB         794            mov     a,r3
+0101 42D5       795            orl     _P1SKIP,a
+0103            796   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:143: break;
+0103            797   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:144: case 2:
+0103 8001       798            sjmp    L006005?
+0105            799   L006003?:
+0105            800   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:145: P2MDIN &= (~mask); // Set pin as analog input
+0105 EB         801            mov     a,r3
+0106 F4         802            cpl     a
+0107 FA         803            mov     r2,a
+0108 52F3       804            anl     _P2MDIN,a
+010A            805   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:146: P2SKIP |= mask; // Skip Crossbar decoding for this pin
+010A EB         806            mov     a,r3
+010B 42CC       807            orl     _P2SKIP,a
+010D            808   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:150: }
+010D            809   L006005?:
+010D            810   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:151: SFRPAGE = 0x00;
+010D 75A700     811            mov     _SFRPAGE,#0x00
+0110 22         812            ret
+0111            813   ;------------------------------------------------------------
+0111            814   ;Allocation info for local variables in function 'ADC_at_Pin'
+0111            815   ;------------------------------------------------------------
+0111            816   ;pin                       Allocated to registers 
+0111            817   ;------------------------------------------------------------
+0111            818   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:154: unsigned int ADC_at_Pin(unsigned char pin)
+0111            819   ;        -----------------------------------------
+0111            820   ;         function ADC_at_Pin
+0111            821   ;        -----------------------------------------
+0111            822   _ADC_at_Pin:
+0111 8582BB     823            mov     _ADC0MX,dpl
+0114            824   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:157: ADBUSY=1;       // Dummy conversion first to select new pin
+0114 D2EC       825            setb    _ADBUSY
+0116            826   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:158: while (ADBUSY); // Wait for dummy conversion to finish
+0116            827   L007001?:
+0116 20EC10     828            jb      _ADBUSY,L007001?
+0119            829   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:159: ADBUSY = 1;     // Convert voltage at the pin
+0119 D2EC       830            setb    _ADBUSY
+011B            831   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:160: while (ADBUSY); // Wait for conversion to complete
+011B            832   L007004?:
+011B 20EC50     833            jb      _ADBUSY,L007004?
+011E            834   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:161: return (ADC0);
+011E 85BD82     835            mov     dpl,_ADC0
+0121 85BE83     836            mov     dph,(_ADC0 >> 8)
+0124 22         837            ret
+0125            838   ;------------------------------------------------------------
+0125            839   ;Allocation info for local variables in function 'Volts_at_Pin'
+0125            840   ;------------------------------------------------------------
+0125            841   ;pin                       Allocated to registers r2 
+0125            842   ;------------------------------------------------------------
+0125            843   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:164: float Volts_at_Pin(unsigned char pin)
+0125            844   ;        -----------------------------------------
+0125            845   ;         function Volts_at_Pin
+0125            846   ;        -----------------------------------------
+0125            847   _Volts_at_Pin:
+0125            848   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:166: return ((ADC_at_Pin(pin)*VDD)/0b_0011_1111_1111_1111);
+0125 120100     849            lcall   _ADC_at_Pin
+0128 120100     850            lcall   ___uint2fs
+012B AA82       851            mov     r2,dpl
+012D AB83       852            mov     r3,dph
+012F ACF0       853            mov     r4,b
+0131 FD         854            mov     r5,a
+0132 C002       855            push    ar2
+0134 C003       856            push    ar3
+0136 C004       857            push    ar4
+0138 C005       858            push    ar5
+013A 906C8B     859            mov     dptr,#0x6C8B
+013D 75F053     860            mov     b,#0x53
+0140 7440       861            mov     a,#0x40
+0142 120100     862            lcall   ___fsmul
+0145 AA82       863            mov     r2,dpl
+0147 AB83       864            mov     r3,dph
+0149 ACF0       865            mov     r4,b
+014B FD         866            mov     r5,a
+014C E581       867            mov     a,sp
+014E 24FC       868            add     a,#0xfc
+0150 F581       869            mov     sp,a
+0152 E4         870            clr     a
+0153 C0E0       871            push    acc
+0155 74FC       872            mov     a,#0xFC
+0157 C0E0       873            push    acc
+0159 747F       874            mov     a,#0x7F
+015B C0E0       875            push    acc
+015D 7446       876            mov     a,#0x46
+015F C0E0       877            push    acc
+0161 8A82       878            mov     dpl,r2
+0163 8B83       879            mov     dph,r3
+0165 8CF0       880            mov     b,r4
+0167 ED         881            mov     a,r5
+0168 120100     882            lcall   ___fsdiv
+016B AA82       883            mov     r2,dpl
+016D AB83       884            mov     r3,dph
+016F ACF0       885            mov     r4,b
+0171 FD         886            mov     r5,a
+0172 E581       887            mov     a,sp
+0174 24FC       888            add     a,#0xfc
+0176 F581       889            mov     sp,a
+0178 8A82       890            mov     dpl,r2
+017A 8B83       891            mov     dph,r3
+017C 8CF0       892            mov     b,r4
+017E ED         893            mov     a,r5
+017F 22         894            ret
+0180            895   ;------------------------------------------------------------
+0180            896   ;Allocation info for local variables in function 'TIMER0_Init'
+0180            897   ;------------------------------------------------------------
+0180            898   ;------------------------------------------------------------
+0180            899   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:169: void TIMER0_Init(void)
+0180            900   ;        -----------------------------------------
+0180            901   ;         function TIMER0_Init
+0180            902   ;        -----------------------------------------
+0180            903   _TIMER0_Init:
+0180            904   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:171: TMOD &= 0b_1111_0000; // Set the bits of Timer/Counter 0 to zero
+0180 5389F0     905            anl     _TMOD,#0xF0
+0183            906   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:172: TMOD |= 0b_0000_0001; // Timer/Counter 0 used as a 16-bit timer
+0183 438901     907            orl     _TMOD,#0x01
+0186            908   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:173: TR0 = 0; // Stop Timer/Counter 0
+0186 C28C       909            clr     _TR0
+0188 22         910            ret
+0189            911   ;------------------------------------------------------------
+0189            912   ;Allocation info for local variables in function 'sendPython'
+0189            913   ;------------------------------------------------------------
+0189            914   ;------------------------------------------------------------
+0189            915   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:176: void sendPython(void) {
+0189            916   ;        -----------------------------------------
+0189            917   ;         function sendPython
+0189            918   ;        -----------------------------------------
+0189            919   _sendPython:
+0189            920   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:177: waitms(500); // Give PuTTy a chance to start before sending
+0189 9001F4     921            mov     dptr,#0x01F4
+018C 120100     922            lcall   _waitms
+018F            923   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:178: InitPinADC(1, 4); // Configure P2.2 as analog input
+018F 756004     924            mov     _InitPinADC_PARM_2,#0x04
+0192 758201     925            mov     dpl,#0x01
+0195 120100     926            lcall   _InitPinADC
+0198            927   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:179: InitPinADC(1, 5); // Configure P2.3 as analog input
+0198 756005     928            mov     _InitPinADC_PARM_2,#0x05
+019B 758201     929            mov     dpl,#0x01
+019E 120100     930            lcall   _InitPinADC
+01A1            931   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:180: InitPinADC(1, 6); // Configure P2.4 as analog input
+01A1 756006     932            mov     _InitPinADC_PARM_2,#0x06
+01A4 758201     933            mov     dpl,#0x01
+01A7 120100     934            lcall   _InitPinADC
+01AA            935   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:181: InitPinADC(1, 7); // Configure P2.5 as analog input
+01AA 756007     936            mov     _InitPinADC_PARM_2,#0x07
+01AD 758201     937            mov     dpl,#0x01
+01B0 120100     938            lcall   _InitPinADC
+01B3            939   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:182: InitADC();
+01B3 120100     940            lcall   _InitADC
+01B6            941   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:183: while (1) {
+01B6            942   L010002?:
+01B6            943   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:184: printf("%f\n", Volts_at_Pin(QFP32_MUX_P1_5));
+01B6 75820B     944            mov     dpl,#0x0B
+01B9 120100     945            lcall   _Volts_at_Pin
+01BC AA82       946            mov     r2,dpl
+01BE AB83       947            mov     r3,dph
+01C0 ACF0       948            mov     r4,b
+01C2 FD         949            mov     r5,a
+01C3 C002       950            push    ar2
+01C5 C003       951            push    ar3
+01C7 C004       952            push    ar4
+01C9 C005       953            push    ar5
+01CB 74D0       954            mov     a,#__str_0
+01CD C0E0       955            push    acc
+01CF 74BD       956            mov     a,#(__str_0 >> 8)
+01D1 C0E0       957            push    acc
+01D3 7480       958            mov     a,#0x80
+01D5 C0E0       959            push    acc
+01D7 120100     960            lcall   _printf
+01DA E581       961            mov     a,sp
+01DC 24F9       962            add     a,#0xf9
+01DE F581       963            mov     sp,a
+01E0 8001       964            sjmp    L010002?
+01E2            965   ;------------------------------------------------------------
+01E2            966   ;Allocation info for local variables in function 'main'
+01E2            967   ;------------------------------------------------------------
+01E2            968   ;periodtest                Allocated with name '_main_periodtest_1_86'
+01E2            969   ;overflow_count            Allocated with name '_main_overflow_count_1_86'
+01E2            970   ;peak                      Allocated with name '_main_peak_1_86'
+01E2            971   ;phasetime                 Allocated to registers r2 r3 r4 r5 
+01E2            972   ;phase                     Allocated to registers r2 r3 r4 r5 
+01E2            973   ;index                     Allocated to registers r2 r3 r4 r5 
+01E2            974   ;sloc0                     Allocated with name '_main_sloc0_1_0'
+01E2            975   ;------------------------------------------------------------
+01E2            976   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:187: void main (void)
+01E2            977   ;        -----------------------------------------
+01E2            978   ;         function main
+01E2            979   ;        -----------------------------------------
+01E2            980   _main:
+01E2            981   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:198: TIMER0_Init();
+01E2 120100     982            lcall   _TIMER0_Init
+01E5            983   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:200: waitms(500); // Give PuTTy a chance to start before sending
+01E5 9001F4     984            mov     dptr,#0x01F4
+01E8 120100     985            lcall   _waitms
+01EB            986   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:201: printf("\x1b[2J"); // Clear screen using ANSI escape sequence.
+01EB 7450       987            mov     a,#__str_1
+01ED C0E0       988            push    acc
+01EF 74BE       989            mov     a,#(__str_1 >> 8)
+01F1 C0E0       990            push    acc
+01F3 7480       991            mov     a,#0x80
+01F5 C0E0       992            push    acc
+01F7 120100     993            lcall   _printf
+01FA 1581       994            dec     sp
+01FC 1581       995            dec     sp
+01FE 1581       996            dec     sp
+0200            997   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:206: __FILE__, __DATE__, __TIME__);
+0200            998   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:205: "Compiled: %s, %s\n\n",
+0200 7490       999            mov     a,#__str_5
+0202 C0E0      1000            push    acc
+0204 74BE      1001            mov     a,#(__str_5 >> 8)
+0206 C0E0      1002            push    acc
+0208 7480      1003            mov     a,#0x80
+020A C0E0      1004            push    acc
+020C 74D0      1005            mov     a,#__str_4
+020E C0E0      1006            push    acc
+0210 74BE      1007            mov     a,#(__str_4 >> 8)
+0212 C0E0      1008            push    acc
+0214 7480      1009            mov     a,#0x80
+0216 C0E0      1010            push    acc
+0218 7410      1011            mov     a,#__str_3
+021A C0E0      1012            push    acc
+021C 74BF      1013            mov     a,#(__str_3 >> 8)
+021E C0E0      1014            push    acc
+0220 7480      1015            mov     a,#0x80
+0222 C0E0      1016            push    acc
+0224 7450      1017            mov     a,#__str_2
+0226 C0E0      1018            push    acc
+0228 74BF      1019            mov     a,#(__str_2 >> 8)
+022A C0E0      1020            push    acc
+022C 7480      1021            mov     a,#0x80
+022E C0E0      1022            push    acc
+0230 120100    1023            lcall   _printf
+0233 E581      1024            mov     a,sp
+0235 24F4      1025            add     a,#0xf4
+0237 F581      1026            mov     sp,a
+0239           1027   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:208: InitPinADC(1, 4); // Configure P2.2 as analog input
+0239 756004    1028            mov     _InitPinADC_PARM_2,#0x04
+023C 758201    1029            mov     dpl,#0x01
+023F 120100    1030            lcall   _InitPinADC
+0242           1031   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:209: InitPinADC(1, 5); // Configure P2.3 as analog input
+0242 756005    1032            mov     _InitPinADC_PARM_2,#0x05
+0245 758201    1033            mov     dpl,#0x01
+0248 120100    1034            lcall   _InitPinADC
+024B           1035   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:210: InitPinADC(1, 6); // Configure P2.4 as analog input
+024B 756006    1036            mov     _InitPinADC_PARM_2,#0x06
+024E 758201    1037            mov     dpl,#0x01
+0251 120100    1038            lcall   _InitPinADC
+0254           1039   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:211: InitPinADC(1, 7); // Configure P2.5 as analog input
+0254 756007    1040            mov     _InitPinADC_PARM_2,#0x07
+0257 758201    1041            mov     dpl,#0x01
+025A 120100    1042            lcall   _InitPinADC
+025D           1043   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:213: InitADC();
+025D 120100    1044            lcall   _InitADC
+0260           1045   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:214: printf("Timer initialization done. TMOD = %d, TR0 = %d\n", TMOD, TR0);
+0260 A28C      1046            mov     c,_TR0
+0262 E4        1047            clr     a
+0263 33        1048            rlc     a
+0264 FA        1049            mov     r2,a
+0265 7B00      1050            mov     r3,#0x00
+0267 AC89      1051            mov     r4,_TMOD
+0269 7D00      1052            mov     r5,#0x00
+026B C002      1053            push    ar2
+026D C003      1054            push    ar3
+026F C004      1055            push    ar4
+0271 C005      1056            push    ar5
+0273 7490      1057            mov     a,#__str_6
+0275 C0E0      1058            push    acc
+0277 74BF      1059            mov     a,#(__str_6 >> 8)
+0279 C0E0      1060            push    acc
+027B 7480      1061            mov     a,#0x80
+027D C0E0      1062            push    acc
+027F 120100    1063            lcall   _printf
+0282 E581      1064            mov     a,sp
+0284 24F9      1065            add     a,#0xf9
+0286 F581      1066            mov     sp,a
+0288           1067   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:228: TH0 = 0;
+0288 758C00    1068            mov     _TH0,#0x00
+028B           1069   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:229: TL0 = 0;
+028B 758A00    1070            mov     _TL0,#0x00
+028E           1071   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:230: TF0 = 0;
+028E C28D      1072            clr     _TF0
+0290           1073   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:233: while (P1_1 == 1);
+0290           1074   L011001?:
+0290 2091D0    1075            jb      _P1_1,L011001?
+0293           1076   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:234: while (P1_1 == 0);
+0293           1077   L011004?:
+0293 309110    1078            jnb     _P1_1,L011004?
+0296           1079   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:235: TR0 = 1;
+0296 D28C      1080            setb    _TR0
+0298           1081   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:236: while (P1_1 == 1) {
+0298 7A00      1082            mov     r2,#0x00
+029A 7B00      1083            mov     r3,#0x00
+029C           1084   L011009?:
+029C 309190    1085            jnb     _P1_1,L011057?
+029F           1086   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:237: if (TF0 == 1) {
+029F           1087   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:238: TF0 = 0;
+029F 108DD0    1088            jbc     _TF0,L011082?
+02A2 8001      1089            sjmp    L011009?
+02A4           1090   L011082?:
+02A4           1091   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:239: overflow_count++;
+02A4 0A        1092            inc     r2
+02A5 BA0050    1093            cjne    r2,#0x00,L011009?
+02A8 0B        1094            inc     r3
+02A9           1095   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:242: while (P1_1 == 0) {
+02A9 8001      1096            sjmp    L011009?
+02AB           1097   L011057?:
+02AB 8A90      1098            mov     _main_overflow_count_1_86,r2
+02AD 8B91      1099            mov     (_main_overflow_count_1_86 + 1),r3
+02AF           1100   L011014?:
+02AF 209150    1101            jb      _P1_1,L011016?
+02B2           1102   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:243: if (TF0 == 1) {
+02B2           1103   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:244: TF0 = 0;
+02B2 108D90    1104            jbc     _TF0,L011084?
+02B5 8001      1105            sjmp    L011014?
+02B7           1106   L011084?:
+02B7           1107   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:245: overflow_count++;
+02B7 0590      1108            inc     _main_overflow_count_1_86
+02B9 E4        1109            clr     a
+02BA B59010    1110            cjne    a,_main_overflow_count_1_86,L011014?
+02BD 0591      1111            inc     (_main_overflow_count_1_86 + 1)
+02BF 8001      1112            sjmp    L011014?
+02C1           1113   L011016?:
+02C1           1114   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:248: TR0 = 0;
+02C1 C28C      1115            clr     _TR0
+02C3           1116   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:249: periodtest = (overflow_count * 65536.0 + TH0 * 256.0 + TL0) * (12.0 / SYSCLK);
+02C3 859082    1117            mov     dpl,_main_overflow_count_1_86
+02C6 859183    1118            mov     dph,(_main_overflow_count_1_86 + 1)
+02C9 120100    1119            lcall   ___sint2fs
+02CC AC82      1120            mov     r4,dpl
+02CE AD83      1121            mov     r5,dph
+02D0 AEF0      1122            mov     r6,b
+02D2 FF        1123            mov     r7,a
+02D3 C004      1124            push    ar4
+02D5 C005      1125            push    ar5
+02D7 C006      1126            push    ar6
+02D9 C007      1127            push    ar7
+02DB 900000    1128            mov     dptr,#0x0000
+02DE 75F080    1129            mov     b,#0x80
+02E1 7447      1130            mov     a,#0x47
+02E3 120100    1131            lcall   ___fsmul
+02E6 AC82      1132            mov     r4,dpl
+02E8 AD83      1133            mov     r5,dph
+02EA AEF0      1134            mov     r6,b
+02EC FF        1135            mov     r7,a
+02ED E581      1136            mov     a,sp
+02EF 24FC      1137            add     a,#0xfc
+02F1 F581      1138            mov     sp,a
+02F3 858C82    1139            mov     dpl,_TH0
+02F6 C004      1140            push    ar4
+02F8 C005      1141            push    ar5
+02FA C006      1142            push    ar6
+02FC C007      1143            push    ar7
+02FE 120100    1144            lcall   ___uchar2fs
+0301 A882      1145            mov     r0,dpl
+0303 A983      1146            mov     r1,dph
+0305 AAF0      1147            mov     r2,b
+0307 FB        1148            mov     r3,a
+0308 C000      1149            push    ar0
+030A C001      1150            push    ar1
+030C C002      1151            push    ar2
+030E C003      1152            push    ar3
+0310 900000    1153            mov     dptr,#0x0000
+0313 75F080    1154            mov     b,#0x80
+0316 7443      1155            mov     a,#0x43
+0318 120100    1156            lcall   ___fsmul
+031B AA82      1157            mov     r2,dpl
+031D AB83      1158            mov     r3,dph
+031F A8F0      1159            mov     r0,b
+0321 F9        1160            mov     r1,a
+0322 E581      1161            mov     a,sp
+0324 24FC      1162            add     a,#0xfc
+0326 F581      1163            mov     sp,a
+0328 D007      1164            pop     ar7
+032A D006      1165            pop     ar6
+032C D005      1166            pop     ar5
+032E D004      1167            pop     ar4
+0330 C002      1168            push    ar2
+0332 C003      1169            push    ar3
+0334 C000      1170            push    ar0
+0336 C001      1171            push    ar1
+0338 8C82      1172            mov     dpl,r4
+033A 8D83      1173            mov     dph,r5
+033C 8EF0      1174            mov     b,r6
+033E EF        1175            mov     a,r7
+033F 120100    1176            lcall   ___fsadd
+0342 AA82      1177            mov     r2,dpl
+0344 AB83      1178            mov     r3,dph
+0346 ACF0      1179            mov     r4,b
+0348 FD        1180            mov     r5,a
+0349 E581      1181            mov     a,sp
+034B 24FC      1182            add     a,#0xfc
+034D F581      1183            mov     sp,a
+034F AE8A      1184            mov     r6,_TL0
+0351 7F00      1185            mov     r7,#0x00
+0353 8E82      1186            mov     dpl,r6
+0355 8F83      1187            mov     dph,r7
+0357 C002      1188            push    ar2
+0359 C003      1189            push    ar3
+035B C004      1190            push    ar4
+035D C005      1191            push    ar5
+035F 120100    1192            lcall   ___sint2fs
+0362 AE82      1193            mov     r6,dpl
+0364 AF83      1194            mov     r7,dph
+0366 A8F0      1195            mov     r0,b
+0368 F9        1196            mov     r1,a
+0369 D005      1197            pop     ar5
+036B D004      1198            pop     ar4
+036D D003      1199            pop     ar3
+036F D002      1200            pop     ar2
+0371 C006      1201            push    ar6
+0373 C007      1202            push    ar7
+0375 C000      1203            push    ar0
+0377 C001      1204            push    ar1
+0379 8A82      1205            mov     dpl,r2
+037B 8B83      1206            mov     dph,r3
+037D 8CF0      1207            mov     b,r4
+037F ED        1208            mov     a,r5
+0380 120100    1209            lcall   ___fsadd
+0383 AA82      1210            mov     r2,dpl
+0385 AB83      1211            mov     r3,dph
+0387 ACF0      1212            mov     r4,b
+0389 FD        1213            mov     r5,a
+038A E581      1214            mov     a,sp
+038C 24FC      1215            add     a,#0xfc
+038E F581      1216            mov     sp,a
+0390 C002      1217            push    ar2
+0392 C003      1218            push    ar3
+0394 C004      1219            push    ar4
+0396 C005      1220            push    ar5
+0398 90F4FC    1221            mov     dptr,#0xF4FC
+039B 75F032    1222            mov     b,#0x32
+039E 7434      1223            mov     a,#0x34
+03A0 120100    1224            lcall   ___fsmul
+03A3 858240    1225            mov     _main_periodtest_1_86,dpl
+03A6 858341    1226            mov     (_main_periodtest_1_86 + 1),dph
+03A9 85F042    1227            mov     (_main_periodtest_1_86 + 2),b
+03AC F543      1228            mov     (_main_periodtest_1_86 + 3),a
+03AE E581      1229            mov     a,sp
+03B0 24FC      1230            add     a,#0xfc
+03B2 F581      1231            mov     sp,a
+03B4           1232   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:250: printf("T= %fms, TH0 = %d, TL0 = %d, overflow_count = %d\n", periodtest * 1000, TH0, TL0, overflow_count);
+03B4 AE8A      1233            mov     r6,_TL0
+03B6 7F00      1234            mov     r7,#0x00
+03B8 A88C      1235            mov     r0,_TH0
+03BA 7900      1236            mov     r1,#0x00
+03BC C006      1237            push    ar6
+03BE C007      1238            push    ar7
+03C0 C000      1239            push    ar0
+03C2 C001      1240            push    ar1
+03C4 C040      1241            push    _main_periodtest_1_86
+03C6 C041      1242            push    (_main_periodtest_1_86 + 1)
+03C8 C042      1243            push    (_main_periodtest_1_86 + 2)
+03CA C043      1244            push    (_main_periodtest_1_86 + 3)
+03CC 900000    1245            mov     dptr,#0x0000
+03CF 75F07A    1246            mov     b,#0x7A
+03D2 7444      1247            mov     a,#0x44
+03D4 120100    1248            lcall   ___fsmul
+03D7 858210    1249            mov     _main_sloc0_1_0,dpl
+03DA 858311    1250            mov     (_main_sloc0_1_0 + 1),dph
+03DD 85F012    1251            mov     (_main_sloc0_1_0 + 2),b
+03E0 F513      1252            mov     (_main_sloc0_1_0 + 3),a
+03E2 E581      1253            mov     a,sp
+03E4 24FC      1254            add     a,#0xfc
+03E6 F581      1255            mov     sp,a
+03E8 D001      1256            pop     ar1
+03EA D000      1257            pop     ar0
+03EC D007      1258            pop     ar7
+03EE D006      1259            pop     ar6
+03F0 C090      1260            push    _main_overflow_count_1_86
+03F2 C091      1261            push    (_main_overflow_count_1_86 + 1)
+03F4 C006      1262            push    ar6
+03F6 C007      1263            push    ar7
+03F8 C000      1264            push    ar0
+03FA C001      1265            push    ar1
+03FC C010      1266            push    _main_sloc0_1_0
+03FE C011      1267            push    (_main_sloc0_1_0 + 1)
+0400 C012      1268            push    (_main_sloc0_1_0 + 2)
+0402 C013      1269            push    (_main_sloc0_1_0 + 3)
+0404 7490      1270            mov     a,#__str_7
+0406 C0E0      1271            push    acc
+0408 74C2      1272            mov     a,#(__str_7 >> 8)
+040A C0E0      1273            push    acc
+040C 7480      1274            mov     a,#0x80
+040E C0E0      1275            push    acc
+0410 120100    1276            lcall   _printf
+0413 E581      1277            mov     a,sp
+0415 24F3      1278            add     a,#0xf3
+0417 F581      1279            mov     sp,a
+0419           1280   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:252: TH0 = 0;
+0419 758C00    1281            mov     _TH0,#0x00
+041C           1282   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:253: TL0 = 0;
+041C 758A00    1283            mov     _TL0,#0x00
+041F           1284   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:254: TF0 = 0;
+041F C28D      1285            clr     _TF0
+0421           1286   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:257: printf("Measuring peak");
+0421 74D0      1287            mov     a,#__str_8
+0423 C0E0      1288            push    acc
+0425 74C2      1289            mov     a,#(__str_8 >> 8)
+0427 C0E0      1290            push    acc
+0429 7480      1291            mov     a,#0x80
+042B C0E0      1292            push    acc
+042D 120100    1293            lcall   _printf
+0430 1581      1294            dec     sp
+0432 1581      1295            dec     sp
+0434 1581      1296            dec     sp
+0436           1297   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:258: while (P1_1 == 1);
+0436           1298   L011017?:
+0436 209110    1299            jb      _P1_1,L011017?
+0439           1300   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:259: while (P1_1 == 0);
+0439           1301   L011020?:
+0439 309150    1302            jnb     _P1_1,L011020?
+043C           1303   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:260: peak = 0;
+043C 75D000    1304            mov     _main_peak_1_86,#0x00
+043F 75D100    1305            mov     (_main_peak_1_86 + 1),#0x00
+0442 75D200    1306            mov     (_main_peak_1_86 + 2),#0x00
+0445 75D300    1307            mov     (_main_peak_1_86 + 3),#0x00
+0448           1308   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:261: for (index = 0.000; index < periodtest * 1000; index = index + 0.01) {
+0448 7A00      1309            mov     r2,#0x00
+044A 7B00      1310            mov     r3,#0x00
+044C 7C00      1311            mov     r4,#0x00
+044E 7D00      1312            mov     r5,#0x00
+0450           1313   L011044?:
+0450 C002      1314            push    ar2
+0452 C003      1315            push    ar3
+0454 C004      1316            push    ar4
+0456 C005      1317            push    ar5
+0458 C010      1318            push    _main_sloc0_1_0
+045A C011      1319            push    (_main_sloc0_1_0 + 1)
+045C C012      1320            push    (_main_sloc0_1_0 + 2)
+045E C013      1321            push    (_main_sloc0_1_0 + 3)
+0460 8A82      1322            mov     dpl,r2
+0462 8B83      1323            mov     dph,r3
+0464 8CF0      1324            mov     b,r4
+0466 ED        1325            mov     a,r5
+0467 120100    1326            lcall   ___fslt
+046A AE82      1327            mov     r6,dpl
+046C E581      1328            mov     a,sp
+046E 24FC      1329            add     a,#0xfc
+0470 F581      1330            mov     sp,a
+0472 D005      1331            pop     ar5
+0474 D004      1332            pop     ar4
+0476 D003      1333            pop     ar3
+0478 D002      1334            pop     ar2
+047A EE        1335            mov     a,r6
+047B 7001      1336            jnz     L011087?
+047D 020100    1337            ljmp    L011047?
+0480           1338   L011087?:
+0480           1339   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:262: if (peak < Volts_at_Pin(QFP32_MUX_P1_5)) {
+0480 75820B    1340            mov     dpl,#0x0B
+0483 C002      1341            push    ar2
+0485 C003      1342            push    ar3
+0487 C004      1343            push    ar4
+0489 C005      1344            push    ar5
+048B 120100    1345            lcall   _Volts_at_Pin
+048E AE82      1346            mov     r6,dpl
+0490 AF83      1347            mov     r7,dph
+0492 A8F0      1348            mov     r0,b
+0494 F9        1349            mov     r1,a
+0495 C006      1350            push    ar6
+0497 C007      1351            push    ar7
+0499 C000      1352            push    ar0
+049B C001      1353            push    ar1
+049D 85D082    1354            mov     dpl,_main_peak_1_86
+04A0 85D183    1355            mov     dph,(_main_peak_1_86 + 1)
+04A3 85D2F0    1356            mov     b,(_main_peak_1_86 + 2)
+04A6 E5D3      1357            mov     a,(_main_peak_1_86 + 3)
+04A8 120100    1358            lcall   ___fslt
+04AB AE82      1359            mov     r6,dpl
+04AD E581      1360            mov     a,sp
+04AF 24FC      1361            add     a,#0xfc
+04B1 F581      1362            mov     sp,a
+04B3 D005      1363            pop     ar5
+04B5 D004      1364            pop     ar4
+04B7 D003      1365            pop     ar3
+04B9 D002      1366            pop     ar2
+04BB EE        1367            mov     a,r6
+04BC 6001      1368            jz      L011046?
+04BE           1369   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:263: peak = Volts_at_Pin(QFP32_MUX_P1_5);
+04BE 75820B    1370            mov     dpl,#0x0B
+04C1 C002      1371            push    ar2
+04C3 C003      1372            push    ar3
+04C5 C004      1373            push    ar4
+04C7 C005      1374            push    ar5
+04C9 120100    1375            lcall   _Volts_at_Pin
+04CC 8582D0    1376            mov     _main_peak_1_86,dpl
+04CF 8583D1    1377            mov     (_main_peak_1_86 + 1),dph
+04D2 85F0D2    1378            mov     (_main_peak_1_86 + 2),b
+04D5 F5D3      1379            mov     (_main_peak_1_86 + 3),a
+04D7 D005      1380            pop     ar5
+04D9 D004      1381            pop     ar4
+04DB D003      1382            pop     ar3
+04DD D002      1383            pop     ar2
+04DF           1384   L011046?:
+04DF           1385   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:261: for (index = 0.000; index < periodtest * 1000; index = index + 0.01) {
+04DF 740A      1386            mov     a,#0x0A
+04E1 C0E0      1387            push    acc
+04E3 74D7      1388            mov     a,#0xD7
+04E5 C0E0      1389            push    acc
+04E7 7423      1390            mov     a,#0x23
+04E9 C0E0      1391            push    acc
+04EB 743C      1392            mov     a,#0x3C
+04ED C0E0      1393            push    acc
+04EF 8A82      1394            mov     dpl,r2
+04F1 8B83      1395            mov     dph,r3
+04F3 8CF0      1396            mov     b,r4
+04F5 ED        1397            mov     a,r5
+04F6 120100    1398            lcall   ___fsadd
+04F9 AA82      1399            mov     r2,dpl
+04FB AB83      1400            mov     r3,dph
+04FD ACF0      1401            mov     r4,b
+04FF FD        1402            mov     r5,a
+0500 E581      1403            mov     a,sp
+0502 24FC      1404            add     a,#0xfc
+0504 F581      1405            mov     sp,a
+0506 020100    1406            ljmp    L011044?
+0509           1407   L011047?:
+0509           1408   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:266: printf("peak is = %7.5f\n", peak);
+0509 C0D0      1409            push    _main_peak_1_86
+050B C0D1      1410            push    (_main_peak_1_86 + 1)
+050D C0D2      1411            push    (_main_peak_1_86 + 2)
+050F C0D3      1412            push    (_main_peak_1_86 + 3)
+0511 74D0      1413            mov     a,#__str_9
+0513 C0E0      1414            push    acc
+0515 74C4      1415            mov     a,#(__str_9 >> 8)
+0517 C0E0      1416            push    acc
+0519 7480      1417            mov     a,#0x80
+051B C0E0      1418            push    acc
+051D 120100    1419            lcall   _printf
+0520 E581      1420            mov     a,sp
+0522 24F9      1421            add     a,#0xf9
+0524 F581      1422            mov     sp,a
+0526           1423   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:268: printf("peak voltage (RMS) = %7.5f\n", peak*0.707);
+0526 C0D0      1424            push    _main_peak_1_86
+0528 C0D1      1425            push    (_main_peak_1_86 + 1)
+052A C0D2      1426            push    (_main_peak_1_86 + 2)
+052C C0D3      1427            push    (_main_peak_1_86 + 3)
+052E 90FDF4    1428            mov     dptr,#0xFDF4
+0531 75F034    1429            mov     b,#0x34
+0534 743F      1430            mov     a,#0x3F
+0536 120100    1431            lcall   ___fsmul
+0539 AA82      1432            mov     r2,dpl
+053B AB83      1433            mov     r3,dph
+053D ACF0      1434            mov     r4,b
+053F FD        1435            mov     r5,a
+0540 E581      1436            mov     a,sp
+0542 24FC      1437            add     a,#0xfc
+0544 F581      1438            mov     sp,a
+0546 C002      1439            push    ar2
+0548 C003      1440            push    ar3
+054A C004      1441            push    ar4
+054C C005      1442            push    ar5
+054E 7410      1443            mov     a,#__str_10
+0550 C0E0      1444            push    acc
+0552 74C5      1445            mov     a,#(__str_10 >> 8)
+0554 C0E0      1446            push    acc
+0556 7480      1447            mov     a,#0x80
+0558 C0E0      1448            push    acc
+055A 120100    1449            lcall   _printf
+055D E581      1450            mov     a,sp
+055F 24F9      1451            add     a,#0xf9
+0561 F581      1452            mov     sp,a
+0563           1453   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:269: printf("Measuring phase difference\n");
+0563 7450      1454            mov     a,#__str_11
+0565 C0E0      1455            push    acc
+0567 74C5      1456            mov     a,#(__str_11 >> 8)
+0569 C0E0      1457            push    acc
+056B 7480      1458            mov     a,#0x80
+056D C0E0      1459            push    acc
+056F 120100    1460            lcall   _printf
+0572 1581      1461            dec     sp
+0574 1581      1462            dec     sp
+0576 1581      1463            dec     sp
+0578           1464   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:270: TH0 = 0;
+0578 758C00    1465            mov     _TH0,#0x00
+057B           1466   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:271: TL0 = 0;
+057B 758A00    1467            mov     _TL0,#0x00
+057E           1468   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:272: TF0 = 0;
+057E C28D      1469            clr     _TF0
+0580           1470   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:274: while (P1_0 == 1);
+0580           1471   L011025?:
+0580 209090    1472            jb      _P1_0,L011025?
+0583           1473   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:275: while (P1_0 == 0);
+0583           1474   L011028?:
+0583 3090D0    1475            jnb     _P1_0,L011028?
+0586           1476   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:276: TR0 = 1;
+0586 D28C      1477            setb    _TR0
+0588           1478   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:277: while (P1_1 == 1) {
+0588 7A00      1479            mov     r2,#0x00
+058A 7B00      1480            mov     r3,#0x00
+058C           1481   L011033?:
+058C 309150    1482            jnb     _P1_1,L011072?
+058F           1483   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:278: if (TF0 == 1) {
+058F           1484   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:279: TF0 = 0;
+058F 108D90    1485            jbc     _TF0,L011092?
+0592 8001      1486            sjmp    L011033?
+0594           1487   L011092?:
+0594           1488   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:280: overflow_count++;
+0594 0A        1489            inc     r2
+0595 BA0010    1490            cjne    r2,#0x00,L011033?
+0598 0B        1491            inc     r3
+0599           1492   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:283: while (P1_1 == 0) {
+0599 8001      1493            sjmp    L011033?
+059B           1494   L011072?:
+059B           1495   L011038?:
+059B 209110    1496            jb      _P1_1,L011040?
+059E           1497   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:284: if (TF0 == 1) {
+059E           1498   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:285: TF0 = 0;
+059E 108D50    1499            jbc     _TF0,L011094?
+05A1 8001      1500            sjmp    L011038?
+05A3           1501   L011094?:
+05A3           1502   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:286: overflow_count++;
+05A3 0A        1503            inc     r2
+05A4 BA00D0    1504            cjne    r2,#0x00,L011038?
+05A7 0B        1505            inc     r3
+05A8 8001      1506            sjmp    L011038?
+05AA           1507   L011040?:
+05AA           1508   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:289: TR0 = 0;
+05AA C28C      1509            clr     _TR0
+05AC           1510   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:290: phasetime = (overflow_count * 65536.0 + TH0 * 256.0 + TL0) * (12.0 / SYSCLK);
+05AC 8A82      1511            mov     dpl,r2
+05AE 8B83      1512            mov     dph,r3
+05B0 120100    1513            lcall   ___sint2fs
+05B3 AA82      1514            mov     r2,dpl
+05B5 AB83      1515            mov     r3,dph
+05B7 ACF0      1516            mov     r4,b
+05B9 FD        1517            mov     r5,a
+05BA C002      1518            push    ar2
+05BC C003      1519            push    ar3
+05BE C004      1520            push    ar4
+05C0 C005      1521            push    ar5
+05C2 900000    1522            mov     dptr,#0x0000
+05C5 75F080    1523            mov     b,#0x80
+05C8 7447      1524            mov     a,#0x47
+05CA 120100    1525            lcall   ___fsmul
+05CD AA82      1526            mov     r2,dpl
+05CF AB83      1527            mov     r3,dph
+05D1 ACF0      1528            mov     r4,b
+05D3 FD        1529            mov     r5,a
+05D4 E581      1530            mov     a,sp
+05D6 24FC      1531            add     a,#0xfc
+05D8 F581      1532            mov     sp,a
+05DA 858C82    1533            mov     dpl,_TH0
+05DD C002      1534            push    ar2
+05DF C003      1535            push    ar3
+05E1 C004      1536            push    ar4
+05E3 C005      1537            push    ar5
+05E5 120100    1538            lcall   ___uchar2fs
+05E8 AE82      1539            mov     r6,dpl
+05EA AF83      1540            mov     r7,dph
+05EC A8F0      1541            mov     r0,b
+05EE F9        1542            mov     r1,a
+05EF C006      1543            push    ar6
+05F1 C007      1544            push    ar7
+05F3 C000      1545            push    ar0
+05F5 C001      1546            push    ar1
+05F7 900000    1547            mov     dptr,#0x0000
+05FA 75F080    1548            mov     b,#0x80
+05FD 7443      1549            mov     a,#0x43
+05FF 120100    1550            lcall   ___fsmul
+0602 AE82      1551            mov     r6,dpl
+0604 AF83      1552            mov     r7,dph
+0606 A8F0      1553            mov     r0,b
+0608 F9        1554            mov     r1,a
+0609 E581      1555            mov     a,sp
+060B 24FC      1556            add     a,#0xfc
+060D F581      1557            mov     sp,a
+060F D005      1558            pop     ar5
+0611 D004      1559            pop     ar4
+0613 D003      1560            pop     ar3
+0615 D002      1561            pop     ar2
+0617 C006      1562            push    ar6
+0619 C007      1563            push    ar7
+061B C000      1564            push    ar0
+061D C001      1565            push    ar1
+061F 8A82      1566            mov     dpl,r2
+0621 8B83      1567            mov     dph,r3
+0623 8CF0      1568            mov     b,r4
+0625 ED        1569            mov     a,r5
+0626 120100    1570            lcall   ___fsadd
+0629 AA82      1571            mov     r2,dpl
+062B AB83      1572            mov     r3,dph
+062D ACF0      1573            mov     r4,b
+062F FD        1574            mov     r5,a
+0630 E581      1575            mov     a,sp
+0632 24FC      1576            add     a,#0xfc
+0634 F581      1577            mov     sp,a
+0636 AE8A      1578            mov     r6,_TL0
+0638 7F00      1579            mov     r7,#0x00
+063A 8E82      1580            mov     dpl,r6
+063C 8F83      1581            mov     dph,r7
+063E C002      1582            push    ar2
+0640 C003      1583            push    ar3
+0642 C004      1584            push    ar4
+0644 C005      1585            push    ar5
+0646 120100    1586            lcall   ___sint2fs
+0649 AE82      1587            mov     r6,dpl
+064B AF83      1588            mov     r7,dph
+064D A8F0      1589            mov     r0,b
+064F F9        1590            mov     r1,a
+0650 D005      1591            pop     ar5
+0652 D004      1592            pop     ar4
+0654 D003      1593            pop     ar3
+0656 D002      1594            pop     ar2
+0658 C006      1595            push    ar6
+065A C007      1596            push    ar7
+065C C000      1597            push    ar0
+065E C001      1598            push    ar1
+0660 8A82      1599            mov     dpl,r2
+0662 8B83      1600            mov     dph,r3
+0664 8CF0      1601            mov     b,r4
+0666 ED        1602            mov     a,r5
+0667 120100    1603            lcall   ___fsadd
+066A AA82      1604            mov     r2,dpl
+066C AB83      1605            mov     r3,dph
+066E ACF0      1606            mov     r4,b
+0670 FD        1607            mov     r5,a
+0671 E581      1608            mov     a,sp
+0673 24FC      1609            add     a,#0xfc
+0675 F581      1610            mov     sp,a
+0677 C002      1611            push    ar2
+0679 C003      1612            push    ar3
+067B C004      1613            push    ar4
+067D C005      1614            push    ar5
+067F 90F4FC    1615            mov     dptr,#0xF4FC
+0682 75F032    1616            mov     b,#0x32
+0685 7434      1617            mov     a,#0x34
+0687 120100    1618            lcall   ___fsmul
+068A AA82      1619            mov     r2,dpl
+068C AB83      1620            mov     r3,dph
+068E ACF0      1621            mov     r4,b
+0690 FD        1622            mov     r5,a
+0691 E581      1623            mov     a,sp
+0693 24FC      1624            add     a,#0xfc
+0695 F581      1625            mov     sp,a
+0697           1626   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:291: phase = phasetime * 360 / periodtest - 5;
+0697 C002      1627            push    ar2
+0699 C003      1628            push    ar3
+069B C004      1629            push    ar4
+069D C005      1630            push    ar5
+069F 900000    1631            mov     dptr,#0x0000
+06A2 75F0B4    1632            mov     b,#0xB4
+06A5 7443      1633            mov     a,#0x43
+06A7 120100    1634            lcall   ___fsmul
+06AA AA82      1635            mov     r2,dpl
+06AC AB83      1636            mov     r3,dph
+06AE ACF0      1637            mov     r4,b
+06B0 FD        1638            mov     r5,a
+06B1 E581      1639            mov     a,sp
+06B3 24FC      1640            add     a,#0xfc
+06B5 F581      1641            mov     sp,a
+06B7 C040      1642            push    _main_periodtest_1_86
+06B9 C041      1643            push    (_main_periodtest_1_86 + 1)
+06BB C042      1644            push    (_main_periodtest_1_86 + 2)
+06BD C043      1645            push    (_main_periodtest_1_86 + 3)
+06BF 8A82      1646            mov     dpl,r2
+06C1 8B83      1647            mov     dph,r3
+06C3 8CF0      1648            mov     b,r4
+06C5 ED        1649            mov     a,r5
+06C6 120100    1650            lcall   ___fsdiv
+06C9 AA82      1651            mov     r2,dpl
+06CB AB83      1652            mov     r3,dph
+06CD ACF0      1653            mov     r4,b
+06CF FD        1654            mov     r5,a
+06D0 E581      1655            mov     a,sp
+06D2 24FC      1656            add     a,#0xfc
+06D4 F581      1657            mov     sp,a
+06D6 E4        1658            clr     a
+06D7 C0E0      1659            push    acc
+06D9 C0E0      1660            push    acc
+06DB 74A0      1661            mov     a,#0xA0
+06DD C0E0      1662            push    acc
+06DF 7440      1663            mov     a,#0x40
+06E1 C0E0      1664            push    acc
+06E3 8A82      1665            mov     dpl,r2
+06E5 8B83      1666            mov     dph,r3
+06E7 8CF0      1667            mov     b,r4
+06E9 ED        1668            mov     a,r5
+06EA 120100    1669            lcall   ___fssub
+06ED AA82      1670            mov     r2,dpl
+06EF AB83      1671            mov     r3,dph
+06F1 ACF0      1672            mov     r4,b
+06F3 FD        1673            mov     r5,a
+06F4 E581      1674            mov     a,sp
+06F6 24FC      1675            add     a,#0xfc
+06F8 F581      1676            mov     sp,a
+06FA           1677   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:292: printf("Phase is = %f\n", phase);
+06FA C002      1678            push    ar2
+06FC C003      1679            push    ar3
+06FE C004      1680            push    ar4
+0700 C005      1681            push    ar5
+0702 74D0      1682            mov     a,#__str_12
+0704 C0E0      1683            push    acc
+0706 74C7      1684            mov     a,#(__str_12 >> 8)
+0708 C0E0      1685            push    acc
+070A 7480      1686            mov     a,#0x80
+070C C0E0      1687            push    acc
+070E 120100    1688            lcall   _printf
+0711 E581      1689            mov     a,sp
+0713 24F9      1690            add     a,#0xf9
+0715 F581      1691            mov     sp,a
+0717           1692   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:293: while (1) {
+0717           1693   L011042?:
+0717           1694   ;        C:\Users\nusai\Desktop\ELEC 291\Phasor\EFM8_ADC.c:294: printf("%f\n", Volts_at_Pin(QFP32_MUX_P1_5));
+0717 75820B    1695            mov     dpl,#0x0B
+071A 120100    1696            lcall   _Volts_at_Pin
+071D AA82      1697            mov     r2,dpl
+071F AB83      1698            mov     r3,dph
+0721 ACF0      1699            mov     r4,b
+0723 FD        1700            mov     r5,a
+0724 C002      1701            push    ar2
+0726 C003      1702            push    ar3
+0728 C004      1703            push    ar4
+072A C005      1704            push    ar5
+072C 74D0      1705            mov     a,#__str_0
+072E C0E0      1706            push    acc
+0730 74BD      1707            mov     a,#(__str_0 >> 8)
+0732 C0E0      1708            push    acc
+0734 7480      1709            mov     a,#0x80
+0736 C0E0      1710            push    acc
+0738 120100    1711            lcall   _printf
+073B E581      1712            mov     a,sp
+073D 24F9      1713            add     a,#0xf9
+073F F581      1714            mov     sp,a
+0741 8001      1715            sjmp    L011042?
+0743           1716            rseg R_CSEG
+0743           1717   
+0000           1718            rseg R_XINIT
+0000           1719   
+0000           1720            rseg R_CONST
+0000           1721   __str_0:
+0000 2566      1722            db '%f'
+0002 0A        1723            db 0x0A
+0003 00        1724            db 0x00
+0004           1725   __str_1:
+0004 1B        1726            db 0x1B
+0005 5B324A    1727            db '[2J'
+0008 00        1728            db 0x00
+0009           1729   __str_2:
+0009 41444320  1730            db 'ADC test program'
+     74657374
+     2070726F
+     6772616D
+0019 0A        1731            db 0x0A
+001A 46696C65  1732            db 'File: %s'
+     3A202573
+0022 0A        1733            db 0x0A
+0023 436F6D70  1734            db 'Compiled: %s, %s'
+     696C6564
+     3A202573
+     2C202573
+0033 0A        1735            db 0x0A
+0034 0A        1736            db 0x0A
+0035 00        1737            db 0x00
+0036           1738   __str_3:
+0036 433A      1739            db 'C:'
+0038 5C        1740            db 0x5C
+0039 55736572  1741            db 'Users'
+     73
+003E 5C        1742            db 0x5C
+003F 6E757361  1743            db 'nusai'
+     69
+0044 5C        1744            db 0x5C
+0045 4465736B  1745            db 'Desktop'
+     746F70
+004C 5C        1746            db 0x5C
+004D 454C4543  1747            db 'ELEC 291'
+     20323931
+0055 5C        1748            db 0x5C
+0056 50686173  1749            db 'Phasor'
+     6F72
+005C 5C        1750            db 0x5C
+005D 45464D38  1751            db 'EFM8_ADC.c'
+     5F414443
+     2E63
+0067 00        1752            db 0x00
+0068           1753   __str_4:
+0068 4D617220  1754            db 'Mar  4 2020'
+     20342032
+     303230
+0073 00        1755            db 0x00
+0074           1756   __str_5:
+0074 31343A30  1757            db '14:03:40'
+     333A3430
+007C 00        1758            db 0x00
+007D           1759   __str_6:
+007D 54696D65  1760            db 'Timer initialization done. TMOD = %d, TR0 = %d'
+     7220696E
+     69746961
+     6C697A61
+     74696F6E
+     20646F6E
+     652E2054
+     4D4F4420
+     3D202564
+     2C205452
+     30203D20
+     2564
+00AB 0A        1761            db 0x0A
+00AC 00        1762            db 0x00
+00AD           1763   __str_7:
+00AD 543D2025  1764            db 'T= %fms, TH0 = %d, TL0 = %d, overflow_count = %d'
+     666D732C
+     20544830
+     203D2025
+     642C2054
+     4C30203D
+     2025642C
+     206F7665
+     72666C6F
+     775F636F
+     756E7420
+     3D202564
+00DD 0A        1765            db 0x0A
+00DE 00        1766            db 0x00
+00DF           1767   __str_8:
+00DF 4D656173  1768            db 'Measuring peak'
+     7572696E
+     67207065
+     616B
+00ED 00        1769            db 0x00
+00EE           1770   __str_9:
+00EE 7065616B  1771            db 'peak is = %7.5f'
+     20697320
+     3D202537
+     2E3566
+00FD 0A        1772            db 0x0A
+00FE 00        1773            db 0x00
+00FF           1774   __str_10:
+00FF 7065616B  1775            db 'peak voltage (RMS) = %7.5f'
+     20766F6C
+     74616765
+     2028524D
+     5329203D
+     2025372E
+     3566
+0119 0A        1776            db 0x0A
+011A 00        1777            db 0x00
+011B           1778   __str_11:
+011B 4D656173  1779            db 'Measuring phase difference'
+     7572696E
+     67207068
+     61736520
+     64696666
+     6572656E
+     6365
+0135 0A        1780            db 0x0A
+0136 00        1781            db 0x00
+0137           1782   __str_12:
+0137 50686173  1783            db 'Phase is = %f'
+     65206973
+     203D2025
+     66
+0144 0A        1784            db 0x0A
+0145 00        1785            db 0x00
+0146           1786   
+0003           1787            CSEG
+0003           1788   
+0003           1789   end
